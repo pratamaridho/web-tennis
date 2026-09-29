@@ -1,69 +1,97 @@
-import Image from "next/image";
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { ScreenView } from '../types';
+import { Navbar } from '../components/Navbar';
+import { Footer } from '../components/Footer';
+import { SearchModal } from '../components/SearchModal';
+import { NotificationModal } from '../components/NotificationModal';
+import { OverviewView } from '../views/OverviewView';
+import { BracketView } from '../views/BracketView';
+import { RegistrationView } from '../views/RegistrationView';
 
 export default function Home() {
+  const [currentView, setCurrentView] = useState<ScreenView>('overview-and-schedule');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+
+  // Scroll to top on navigation
+  const navigateTo = (view: ScreenView) => {
+    setCurrentView(view);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Keyboard shortcut for command palette (Cmd+K / Ctrl+K)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsSearchOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <div className="min-h-screen w-full bg-surface text-on-surface antialiased flex flex-col">
+      {/* Global Modals */}
+      <SearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        onNavigate={navigateTo}
+      />
+
+      <NotificationModal
+        isOpen={isNotificationsOpen}
+        onClose={() => setIsNotificationsOpen(false)}
+        onNavigate={navigateTo}
+      />
+
+      {/* Main Navbar */}
+      <Navbar
+        currentView={currentView}
+        onNavigate={navigateTo}
+        onOpenSearch={() => setIsSearchOpen(true)}
+        onOpenNotifications={() => setIsNotificationsOpen(true)}
+        unreadNotificationsCount={3}
+      />
+
+      {/* Main Content Area */}
+      <main className="w-full pt-20 bg-surface flex-1">
+        {currentView === 'overview-and-schedule' ||
+        currentView === 'live-matches-and-scores' ||
+        currentView === 'venue-and-courts' ? (
+          <OverviewView onNavigate={navigateTo} />
+        ) : currentView === 'tournament-bracket' ? (
+          <BracketView onNavigate={navigateTo} />
+        ) : currentView === 'registration' ? (
+          <RegistrationView onNavigate={navigateTo} />
+        ) : (
+          <div className="max-w-4xl mx-auto px-6 py-16 text-center">
+            <div className="p-8 bg-surface-container-low border border-surface-container-high rounded-2xl shadow-sm">
+              <span className="material-symbols-outlined text-5xl text-primary mb-4 block">
+                construction
+              </span>
+              <h2 className="text-2xl font-bold text-primary mb-2">
+                Fitur Berikutnya: {currentView.replace(/-/g, ' ').toUpperCase()}
+              </h2>
+              <p className="text-on-surface-variant max-w-lg mx-auto mb-6">
+                Tahap 1 (Overview &amp; Jadwal Pertandingan) sudah aktif! Fitur ini siap diintegrasikan pada langkah berikutnya sesuai permintaan bertahap.
+              </p>
+              <button
+                onClick={() => navigateTo('overview-and-schedule')}
+                className="px-5 py-2.5 bg-primary-container text-on-primary font-semibold rounded-lg hover:bg-tertiary-container hover:text-on-tertiary transition-all"
+              >
+                ← Kembali ke Overview &amp; Jadwal
+              </button>
+            </div>
+          </div>
+        )}
       </main>
+
+      {/* Global Footer */}
+      <Footer onNavigate={navigateTo} />
     </div>
   );
 }
