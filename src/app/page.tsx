@@ -58,7 +58,7 @@ export default function Home() {
       />
 
       {/* Main Content Area */}
-      <main className="w-full pt-20 bg-surface flex-1">
+      <main className="w-full pt-16 bg-surface flex-1">
         {currentView === 'overview-and-schedule' ||
         currentView === 'live-matches-and-scores' ||
         currentView === 'venue-and-courts' ? (

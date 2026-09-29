@@ -21,8 +21,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             src={ASSETS.logo} 
           />
           <div className="text-xs">
-            <span className="font-bold text-primary mr-1">Jakarta Tennis 2026</span>
-            <span className="text-on-surface-variant">• Senayan Sports Complex</span>
+            <span className="font-bold text-primary mr-1">Tyrannosaurus Tennis Club</span>
+            <span className="text-on-surface-variant">• House of Tennis GS</span>
           </div>
         </div>
 
@@ -32,31 +32,31 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             onClick={() => onNavigate?.('overview-and-schedule')} 
             className="hover:text-primary transition-colors cursor-pointer"
           >
-            Jadwal
+            Beranda
           </button>
           <button 
             onClick={() => onNavigate?.('tournament-bracket')} 
             className="hover:text-primary transition-colors cursor-pointer"
           >
-            Bagan
+            Bagan Turnamen
           </button>
           <button 
             onClick={() => onNavigate?.('registration')} 
             className="hover:text-primary transition-colors cursor-pointer"
           >
-            Pendaftaran
+            Daftar Tim
           </button>
           <button 
-            onClick={() => onNavigate?.('admin-suite')} 
+            onClick={() => onNavigate?.('participant-portal')} 
             className="hover:text-primary transition-colors cursor-pointer"
           >
-            Admin
+            Portal Member
           </button>
         </div>
 
         {/* Hak Cipta Ringkas */}
         <div className="text-[11px] text-on-surface-variant">
-          © 2026 Panitia Pelaksana JTC.
+          © 2026 Tyrannosaurus Tennis Club.
         </div>
       </div>
     </footer>

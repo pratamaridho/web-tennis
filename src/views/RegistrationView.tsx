@@ -811,6 +811,48 @@ export const RegistrationView: React.FC<RegistrationViewProps> = ({ onNavigate }
                 <span className="text-xs text-on-primary-container">Selesai dalam 2 jam dengan kalibrasi digital.</span>
               </div>
             </div>
+
+            {/* Fasilitas 4 */}
+            <div className="relative overflow-hidden rounded-2xl h-56 group shadow-2xs">
+              <img
+                src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop"
+                alt="Gym & Area Pemanasan"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent flex flex-col justify-end p-4 text-on-primary">
+                <span className="text-[10px] font-bold text-surface-tint uppercase">Kebugaran &amp; Gym</span>
+                <span className="text-sm font-bold">Gym &amp; Area Pemanasan Atlet</span>
+                <span className="text-xs text-on-primary-container">Peralatan kardio, resistance training, dan area stretching dinamis.</span>
+              </div>
+            </div>
+
+            {/* Fasilitas 5 */}
+            <div className="relative overflow-hidden rounded-2xl h-56 group shadow-2xs">
+              <img
+                src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop"
+                alt="Klinik Medis & Ice Bath"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent flex flex-col justify-end p-4 text-on-primary">
+                <span className="text-[10px] font-bold text-surface-tint uppercase">Medis &amp; Pemulihan</span>
+                <span className="text-sm font-bold">Klinik Fisioterapi &amp; Ice Bath</span>
+                <span className="text-xs text-on-primary-container">Penanganan cedera lapangan &amp; bak rendam es pemulihan atlet.</span>
+              </div>
+            </div>
+
+            {/* Fasilitas 6 */}
+            <div className="relative overflow-hidden rounded-2xl h-56 group shadow-2xs">
+              <img
+                src={ASSETS.wideStadium}
+                alt="Lapangan Luar & Tribun"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent flex flex-col justify-end p-4 text-on-primary">
+                <span className="text-[10px] font-bold text-surface-tint uppercase">Outdoor Courts</span>
+                <span className="text-sm font-bold">6 Lapangan Luar Standar ITF</span>
+                <span className="text-xs text-on-primary-container">Permukaan hard court plexicushion dengan tribun penonton terpisah.</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>

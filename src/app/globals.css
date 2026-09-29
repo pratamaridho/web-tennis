@@ -63,6 +63,10 @@
   }
 }
 
+.font-display {
+  font-family: var(--font-outfit), 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
 .font-caption {
   font-size: 11px;
   line-height: 16px;

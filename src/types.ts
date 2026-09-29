@@ -8,10 +8,117 @@ export type ScreenView =
   | 'registration'
   | 'participant-portal'
   | 'admin-suite'
-  | 'court-telemetry'
-  | 'referee-umpire-console'
-  | 'bracket-generator'
-  | 'media-broadcasting';
+  | 'hall-of-fame'
+  | 'mabar-schedule';
+
+export interface ClubProfile {
+  id: string;
+  name: string;
+  shortName: string;
+  handle: string;
+  description: string;
+  founder: string;
+  stats: {
+    members: number;
+    tournaments: number;
+    brands: number;
+    events?: number;
+  };
+  homeVenue: string;
+  venueAddress: string;
+  instagram: string;
+  reclub: string;
+  waHotline: string;
+  bankAccount: {
+    bankName: string;
+    accountNumber: string;
+    accountHolder: string;
+  };
+}
+
+export interface ClubTournament {
+  id: string;
+  name: string;
+  series: string;
+  slug: string;
+  status: 'open' | 'ongoing' | 'completed';
+  statusBadge: string;
+  format: string;
+  category: string;
+  date: string;
+  time: string;
+  venue: string;
+  quota: number;
+  registeredTeams: number;
+  imageUrl?: string;
+  fees: {
+    regular: number;
+    earlyBird: number;
+  };
+}
+
+export interface ClubMabarEvent {
+  id: string;
+  title: string;
+  subtitle?: string;
+  dayBadge?: string;
+  dayTime: string;
+  venue: string;
+  court: string;
+  coach?: string;
+  level: string;
+  levelBadge?: string;
+  inclusions?: string[];
+  slotTotal: number;
+  slotFilled: number;
+  feePerPerson: number;
+  status: 'open' | 'full';
+  imageUrl?: string;
+}
+
+export interface ChampionMember {
+  name: string;
+  memberId: string;
+  avatarUrl: string;
+  ntrpRating: string;
+  hand: string;
+  racket: string;
+  club: string;
+  titlesCount: number;
+  matchesWon: number;
+  matchesPlayed: number;
+  winRate: string;
+  victoryPhotos: {
+    url: string;
+    caption: string;
+  }[];
+}
+
+export interface HallOfFameRecord {
+  id: string;
+  tournamentName: string;
+  category: string;
+  date: string;
+  imageUrl?: string;
+  finalScore?: string;
+  prize?: string;
+  champion: {
+    player1: string;
+    player2: string;
+    title: string;
+    player1Member?: ChampionMember;
+    player2Member?: ChampionMember;
+  };
+  runnerUp?: {
+    player1: string;
+    player2: string;
+  };
+}
+
+export interface ClubSponsor {
+  name: string;
+  category: string;
+}
 
 export interface Player {
   id: string;
