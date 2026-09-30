@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import { ScreenView } from '../types';
 import { ASSETS } from '../data/mockData';
+import { OfficialTournamentsList } from '../components/registration/OfficialTournamentsList';
 
 interface RegistrationViewProps {
   onNavigate: (view: ScreenView) => void;
@@ -22,6 +23,7 @@ interface CategoryConfig {
 }
 
 export const RegistrationView: React.FC<RegistrationViewProps> = ({ onNavigate }) => {
+  const [viewMode, setViewMode] = useState<'official' | 'ticket-pass'>('official');
   const [category, setCategory] = useState<TournamentCategory>('ms');
   const [shirtSize, setShirtSize] = useState('M');
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('qris');
@@ -155,11 +157,49 @@ export const RegistrationView: React.FC<RegistrationViewProps> = ({ onNavigate }
               </span>
             </div>
           </div>
+
+          {/* Mode Selector: Turnamen Resmi Klub vs Simulasi Tiket */}
+          <div className="mt-4 pt-4 border-t border-surface-container-high/60 flex flex-wrap items-center gap-3">
+            <span className="text-xs font-semibold text-on-surface-variant">Pilih Tampilan:</span>
+            <div className="inline-flex p-1 bg-surface-container rounded-xl border border-surface-container-high">
+              <button
+                type="button"
+                onClick={() => setViewMode('official')}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                  viewMode === 'official'
+                    ? 'bg-primary text-on-primary shadow-xs'
+                    : 'text-on-surface-variant hover:text-on-surface'
+                }`}
+              >
+                <span>🏆</span>
+                <span>Turnamen Resmi Klub (Database)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('ticket-pass')}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                  viewMode === 'ticket-pass'
+                    ? 'bg-primary text-on-primary shadow-xs'
+                    : 'text-on-surface-variant hover:text-on-surface'
+                }`}
+              >
+                <span>🎫</span>
+                <span>Formulir &amp; Checkout Pas Atlet</span>
+              </button>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* 2. Grid Konten Utama Form Registrasi & Checkout */}
-      <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-8">
+      {/* Konten Berdasarkan Mode Terpilih */}
+      {viewMode === 'official' ? (
+        <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-6">
+          <OfficialTournamentsList onNavigate={onNavigate} />
+        </section>
+      ) : (
+        <>
+          {/* 2. Grid Konten Utama Form Registrasi & Checkout */}
+          <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* KOLOM KIRI (lg:col-span-7 xl:col-span-8): Formulir Entri Atlet */}
           <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
@@ -856,6 +896,8 @@ export const RegistrationView: React.FC<RegistrationViewProps> = ({ onNavigate }
           </div>
         </div>
       </section>
+        </>
+      )}
 
       {/* 4. MODAL PASS ATLET RESMI (Digital Player Pass) */}
       {isPassModalOpen && (
