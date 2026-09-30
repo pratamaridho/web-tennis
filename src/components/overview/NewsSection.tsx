@@ -82,24 +82,26 @@ export const NewsSection: React.FC = () => {
               <div
                 key={item.id}
                 onClick={() => setSelectedArticle(item)}
-                className="group bg-surface-container-lowest border border-surface-container-high/90 hover:border-primary/40 rounded-3xl overflow-hidden shadow-xs hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                className="group relative w-full h-64 sm:h-72 rounded-3xl overflow-hidden shadow-xs hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-500 cursor-pointer border border-surface-container-high/80 bg-surface-container"
               >
-                {/* 1. Gambar Saja */}
-                <div className="relative w-full h-52 sm:h-56 overflow-hidden bg-surface-container">
-                  <img
-                    src={imageSrc}
-                    alt={item.judul}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
+                {/* 1. Foto Banner Penuh */}
+                <img
+                  src={imageSrc}
+                  alt={item.judul}
+                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
+                />
 
-                {/* 2. Judul Saja dengan Aksara Bersih & Indikator Klik */}
-                <div className="p-5 flex items-center justify-between gap-3">
-                  <h3 className="text-base sm:text-lg font-bold text-primary group-hover:text-surface-tint transition-colors line-clamp-2 leading-snug">
-                    {item.judul}
-                  </h3>
-                  <span className="w-8 h-8 rounded-full bg-surface-container text-surface-tint flex items-center justify-center text-xs shrink-0 group-hover:bg-primary group-hover:text-on-primary transition-all duration-300 shadow-2xs">
+                {/* 2. Gradient Overlay Halus & Elegan */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 via-50% to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-300" />
+
+                {/* 3. Judul di atas Latar Belakang Gradient */}
+                <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 flex items-end justify-between gap-3 z-10">
+                  <div className="pr-2">
+                    <h3 className="text-lg sm:text-xl font-extrabold text-white group-hover:text-[#ccff00] transition-colors line-clamp-2 leading-snug drop-shadow-md">
+                      {item.judul}
+                    </h3>
+                  </div>
+                  <span className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-md border border-white/25 text-white flex items-center justify-center text-sm shrink-0 group-hover:bg-[#ccff00] group-hover:text-black group-hover:border-[#ccff00] group-hover:scale-110 transition-all duration-300 shadow-md">
                     →
                   </span>
                 </div>
