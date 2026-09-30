@@ -56,10 +56,10 @@ export const TournamentSliderSection: React.FC<TournamentSliderSectionProps> = (
         if (apiList.length > 0) {
           const mapped: SliderCardItem[] = apiList.map((t) => {
             const statusLabelMap: Record<string, string> = {
-              DRAFT: 'DRAFT',
-              PENDAFTARAN_DIBUKA: 'PENDAFTARAN DIBUKA',
-              BERLANGSUNG: 'SEDANG BERLANGSUNG',
-              SELESAI: 'SELESAI',
+              DRAFT: 'Draft',
+              PENDAFTARAN_DIBUKA: 'Pendaftaran Buka',
+              BERLANGSUNG: 'Sedang Berlangsung',
+              SELESAI: 'Selesai',
             };
 
             return {
@@ -170,23 +170,23 @@ export const TournamentSliderSection: React.FC<TournamentSliderSectionProps> = (
     <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-10">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-surface-container border border-surface-container-high text-xs font-bold text-surface-tint uppercase tracking-wider font-display mb-1.5">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container border border-surface-container-high text-xs font-semibold text-surface-tint mb-2">
             <span>Kompetisi Klub</span>
           </div>
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-primary font-display">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-primary tracking-tight">
             Seri Turnamen Tyrannosaurus
           </h2>
-          <p className="text-xs sm:text-sm text-on-surface-variant mt-1 font-medium">
-            Daftar turnamen terkini dan kejuaraan resmi Tyrannosaurus Tennis Club
+          <p className="text-xs sm:text-sm text-on-surface-variant mt-1">
+            Daftar turnamen resmi dan kejuaraan terbuka Tyrannosaurus Tennis Club
           </p>
         </div>
 
-        <div className="flex items-center gap-2 self-end sm:self-auto">
+        <div className="flex items-center gap-2 self-start sm:self-auto">
           <button
             onClick={() => onNavigate('tournament-bracket')}
-            className="text-xs font-bold text-primary hover:text-surface-tint transition-colors px-3.5 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high flex items-center gap-1.5 cursor-pointer font-display shadow-2xs"
+            className="text-xs font-semibold text-primary hover:text-surface-tint transition-all px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high flex items-center gap-1.5 cursor-pointer shadow-2xs"
           >
-            <span>Semua Bagan</span>
+            <span>Semua Bagan &amp; Hasil</span>
             <span>→</span>
           </button>
         </div>
@@ -205,7 +205,7 @@ export const TournamentSliderSection: React.FC<TournamentSliderSectionProps> = (
           type="button"
           onClick={() => scrollTournaments('left')}
           aria-label="Geser turnamen ke kiri"
-          className="absolute -left-2 sm:-left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-primary text-primary hover:text-on-primary border border-surface-container-high shadow-xl hover:shadow-2xl hover:scale-110 active:scale-95 transition-all duration-200 flex items-center justify-center cursor-pointer backdrop-blur-md"
+          className="absolute -left-2 sm:-left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white hover:bg-primary text-primary hover:text-on-primary border border-surface-container-high shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 flex items-center justify-center cursor-pointer"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -217,7 +217,7 @@ export const TournamentSliderSection: React.FC<TournamentSliderSectionProps> = (
           type="button"
           onClick={() => scrollTournaments('right')}
           aria-label="Geser turnamen ke kanan"
-          className="absolute -right-2 sm:-right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-primary text-primary hover:text-on-primary border border-surface-container-high shadow-xl hover:shadow-2xl hover:scale-110 active:scale-95 transition-all duration-200 flex items-center justify-center cursor-pointer backdrop-blur-md"
+          className="absolute -right-2 sm:-right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white hover:bg-primary text-primary hover:text-on-primary border border-surface-container-high shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 flex items-center justify-center cursor-pointer"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -236,101 +236,96 @@ export const TournamentSliderSection: React.FC<TournamentSliderSectionProps> = (
             return (
               <div
                 key={t.id}
-                className="w-[88vw] sm:w-[350px] lg:w-[calc((100%-2.5rem)/3)] shrink-0 snap-start bg-surface-container-lowest rounded-3xl border border-surface-container-high/90 overflow-hidden shadow-2xs hover:border-primary/40 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group"
+                className="w-[85vw] sm:w-[340px] lg:w-[calc((100%-2.5rem)/3)] shrink-0 snap-start bg-surface-container-lowest rounded-2xl border border-surface-container-high/80 overflow-hidden shadow-xs hover:shadow-md hover:border-surface-tint/40 transition-all duration-300 flex flex-col justify-between group"
               >
                 <div>
-                  {/* Header Foto Turnamen */}
-                  <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-surface-container">
+                  {/* Foto Turnamen Bersih & Minimalis */}
+                  <div className="relative h-44 w-full overflow-hidden bg-surface-container">
                     <img
                       src={t.imageUrl || '/hero-tennis-bg.jpg'}
                       alt={t.name}
-                      className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/25" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                    {/* Lencana Seri & Status di Atas Foto */}
+                    {/* Badge Status & Format di Atas Foto */}
                     <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10">
-                      <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[11px] font-bold border border-white/20 font-display shadow-sm">
+                      <span className="px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-md text-white/95 text-[11px] font-medium border border-white/15">
                         {t.series}
                       </span>
                       <span
-                        className={`px-3 py-1 rounded-full text-[11px] font-bold backdrop-blur-md border shadow-sm ${
+                        className={`px-3 py-1 rounded-full text-[11px] font-semibold backdrop-blur-md shadow-xs flex items-center gap-1.5 ${
                           t.isOpen
-                            ? 'bg-[#bef264]/95 text-[#00261b] border-[#bef264]'
-                            : 'bg-black/60 text-white/90 border-white/20'
+                            ? 'bg-emerald-500/90 text-white'
+                            : t.statusBadge.includes('Berlangsung')
+                            ? 'bg-blue-600/90 text-white'
+                            : 'bg-black/60 text-white/90 border border-white/15'
                         }`}
                       >
-                        {t.statusBadge}
-                      </span>
-                    </div>
-
-                    {/* Kategori di Bawah Foto */}
-                    <div className="absolute bottom-3 left-3 right-3 z-10">
-                      <span className="text-[11px] font-bold text-[#bef264] uppercase tracking-wider block drop-shadow-sm font-display">
-                        {t.category}
+                        {t.isOpen && <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />}
+                        <span>{t.statusBadge}</span>
                       </span>
                     </div>
                   </div>
 
-                  {/* Konten Kartu */}
+                  {/* Konten Kartu Bersih & Bernafas */}
                   <div className="p-5">
-                    <h3 className="font-black text-primary text-base sm:text-lg line-clamp-1 font-display group-hover:text-surface-tint transition-colors">
+                    {/* Judul Turnamen */}
+                    <h3 className="font-bold text-primary text-base sm:text-lg line-clamp-1 capitalize tracking-tight group-hover:text-surface-tint transition-colors">
                       {t.name}
                     </h3>
 
-                    <div className="mt-4 pt-3 border-t border-surface-container-high/70 space-y-2.5 text-xs text-on-surface-variant">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[11px] text-on-surface-variant/80">Format:</span>
-                        <span className="font-semibold text-on-surface">{t.formatText}</span>
+                    {/* Info Jadwal & Lokasi dengan Ikon Minimalis */}
+                    <div className="mt-3 flex flex-col gap-1.5 text-xs text-on-surface-variant">
+                      <div className="flex items-center gap-2">
+                        <svg className="w-3.5 h-3.5 text-surface-tint shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                          <line x1="16" y1="2" x2="16" y2="6" />
+                          <line x1="8" y1="2" x2="8" y2="6" />
+                          <line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+                        <span className="font-medium text-on-surface truncate">{t.date}</span>
                       </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-[11px] text-on-surface-variant/80">Jadwal:</span>
-                        <span className="font-semibold text-on-surface">{t.date}</span>
+                      <div className="flex items-center gap-2">
+                        <svg className="w-3.5 h-3.5 text-surface-tint shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                          <circle cx="12" cy="9" r="2.5" />
+                        </svg>
+                        <span className="truncate text-on-surface-variant">{t.venue}</span>
                       </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-[11px] text-on-surface-variant/80">Lokasi:</span>
-                        <span className="font-semibold text-on-surface truncate max-w-[170px]">{t.venue}</span>
+                    </div>
+
+                    {/* Kuota Peserta Bersih */}
+                    <div className="mt-4 pt-3 border-t border-surface-container-high/60">
+                      <div className="flex items-center justify-between text-xs mb-1.5">
+                        <span className="text-on-surface-variant text-[11px]">Kapasitas Peserta</span>
+                        <span className="text-[11px] font-semibold text-primary tabular-nums">
+                          {t.registeredCount} / {t.quota} Atlet
+                        </span>
                       </div>
-                      <div>
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-[11px] text-on-surface-variant/80">Kuota Peserta:</span>
-                          <span className="font-bold text-primary font-display tabular-nums">
-                            {t.registeredCount} / {t.quota} Atlet ({percentFilled}%)
-                          </span>
-                        </div>
-                        <div className="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
-                          <div
-                            className={`h-full transition-all duration-500 ${
-                              percentFilled >= 100 ? 'bg-red-500' : 'bg-surface-tint'
-                            }`}
-                            style={{ width: `${percentFilled}%` }}
-                          />
-                        </div>
+                      <div className="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-surface-tint transition-all duration-300"
+                          style={{ width: `${percentFilled}%` }}
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Footer Kartu */}
+                {/* Tombol Aksi Bersih & Full Width */}
                 <div className="p-5 pt-0">
-                  <div className="pt-3 border-t border-surface-container-high flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] text-on-surface-variant block font-medium">Status</span>
-                      <span className="text-xs font-bold text-primary font-display">
-                        {t.statusBadge}
-                      </span>
-                    </div>
-                    <button
-                      onClick={() => onNavigate(t.isOpen ? 'registration' : 'tournament-bracket')}
-                      className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer font-display shadow-2xs ${
-                        t.isOpen
-                          ? 'bg-primary text-on-primary hover:bg-surface-tint shadow-xs'
-                          : 'bg-surface-container hover:bg-primary hover:text-on-primary text-primary'
-                      }`}
-                    >
-                      {t.isOpen ? 'Daftar Turnamen →' : 'Lihat Bagan & Hasil'}
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => onNavigate(t.isOpen ? 'registration' : 'tournament-bracket')}
+                    className={`w-full py-2.5 px-4 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-[0.99] ${
+                      t.isOpen
+                        ? 'bg-primary text-on-primary hover:bg-surface-tint shadow-xs'
+                        : 'bg-surface-container hover:bg-surface-container-high text-primary'
+                    }`}
+                  >
+                    <span>{t.isOpen ? 'Daftar Turnamen' : 'Lihat Bagan & Hasil'}</span>
+                    <span className="text-xs">→</span>
+                  </button>
                 </div>
               </div>
             );

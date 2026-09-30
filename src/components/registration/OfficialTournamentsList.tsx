@@ -214,7 +214,7 @@ export const OfficialTournamentsList: React.FC<OfficialTournamentsListProps> = (
                   </div>
 
                   {/* Tournament Title & Info */}
-                  <h3 className="text-lg font-extrabold text-primary mb-1 tracking-tight">
+                  <h3 className="text-base sm:text-lg font-bold text-primary mb-1 tracking-tight capitalize">
                     {t.nama}
                   </h3>
                   {t.deskripsi && (
@@ -223,34 +223,43 @@ export const OfficialTournamentsList: React.FC<OfficialTournamentsListProps> = (
                     </p>
                   )}
 
-                  {/* Details Grid */}
-                  <div className="space-y-2 text-xs py-3 border-y border-surface-container-high/60 my-3">
-                    <div className="flex items-center justify-between text-on-surface-variant">
-                      <span>Jadwal Main:</span>
-                      <span className="font-semibold text-primary">{t.tanggal}</span>
+                  {/* Clean Metadata Rows with Minimal Icons */}
+                  <div className="mt-3 space-y-2 text-xs text-on-surface-variant py-3 border-y border-surface-container-high/60">
+                    <div className="flex items-center gap-2">
+                      <svg className="w-3.5 h-3.5 text-surface-tint shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                      </svg>
+                      <span className="font-medium text-on-surface">{t.tanggal}</span>
                     </div>
-                    <div className="flex items-center justify-between text-on-surface-variant">
-                      <span>Lokasi Lapangan:</span>
-                      <span className="font-semibold text-primary truncate max-w-[200px]">{t.lokasi}</span>
+                    <div className="flex items-center gap-2">
+                      <svg className="w-3.5 h-3.5 text-surface-tint shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                        <circle cx="12" cy="9" r="2.5" />
+                      </svg>
+                      <span className="truncate">{t.lokasi}</span>
                     </div>
-                    <div className="flex items-center justify-between text-on-surface-variant">
-                      <span>Batas Pendaftaran:</span>
-                      <span className="font-semibold text-primary">{t.batasDaftar}</span>
+                    <div className="flex items-center gap-2 text-[11px] text-on-surface-variant/80">
+                      <svg className="w-3.5 h-3.5 text-surface-tint shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                      </svg>
+                      <span>Batas Daftar: {t.batasDaftar}</span>
                     </div>
 
                     {/* Quota Meter */}
                     <div className="pt-2">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-on-surface-variant">Peserta Diterima:</span>
-                        <span className="font-bold text-primary font-mono">
-                          {t.acceptedCount} / {t.kuota} ({percentFilled}%)
+                      <div className="flex items-center justify-between mb-1 text-[11px]">
+                        <span className="text-on-surface-variant">Slot Peserta:</span>
+                        <span className="font-semibold text-primary tabular-nums">
+                          {t.acceptedCount} / {t.kuota} Atlet ({percentFilled}%)
                         </span>
                       </div>
-                      <div className="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                      <div className="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
                         <div
-                          className={`h-full transition-all duration-500 ${
-                            isFull ? 'bg-red-500' : 'bg-primary'
-                          }`}
+                          className="h-full bg-surface-tint transition-all duration-300"
                           style={{ width: `${percentFilled}%` }}
                         />
                       </div>
