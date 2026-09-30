@@ -12,6 +12,7 @@ export interface TournamentEntityProps {
   aturan?: string | null;
   format: TournamentFormat;
   status: TournamentStatus;
+  imageUrl?: string | null;
   juaraId?: string | null;
   createdAt?: Date;
   updatedAt?: Date;
@@ -33,6 +34,7 @@ export class TournamentModel {
   private _aturan?: string | null;
   private _format: TournamentFormat;
   private _status: TournamentStatus;
+  private _imageUrl?: string | null;
   private _juaraId?: string | null;
   private readonly _createdAt: Date;
   private _updatedAt: Date;
@@ -50,6 +52,7 @@ export class TournamentModel {
     this._aturan = props.aturan ?? null;
     this._format = props.format;
     this._status = props.status;
+    this._imageUrl = props.imageUrl ?? null;
     this._juaraId = props.juaraId ?? null;
     this._createdAt = props.createdAt ?? new Date();
     this._updatedAt = props.updatedAt ?? new Date();
@@ -68,6 +71,7 @@ export class TournamentModel {
   public get aturan(): string | null | undefined { return this._aturan; }
   public get format(): TournamentFormat { return this._format; }
   public get status(): TournamentStatus { return this._status; }
+  public get imageUrl(): string | null | undefined { return this._imageUrl; }
   public get juaraId(): string | null | undefined { return this._juaraId; }
   public get createdAt(): Date { return this._createdAt; }
   public get updatedAt(): Date { return this._updatedAt; }
@@ -123,6 +127,7 @@ export class TournamentModel {
     batasDaftar?: string;
     aturan?: string | null;
     format?: TournamentFormat;
+    imageUrl?: string | null;
   }): void {
     if (!this.canBeEdited()) {
       throw new Error('Turnamen yang sudah Berlangsung atau Selesai tidak dapat diedit');
@@ -135,6 +140,7 @@ export class TournamentModel {
     if (data.batasDaftar) this._batasDaftar = data.batasDaftar.trim();
     if (data.aturan !== undefined) this._aturan = data.aturan;
     if (data.format) this._format = data.format;
+    if (data.imageUrl !== undefined) this._imageUrl = data.imageUrl;
     this._updatedAt = new Date();
   }
 
@@ -160,6 +166,7 @@ export class TournamentModel {
       aturan: this._aturan,
       format: this._format,
       status: this._status,
+      imageUrl: this._imageUrl,
       juaraId: this._juaraId,
       acceptedCount: this._acceptedCount,
       totalRegistrationsCount: this._totalRegistrationsCount,

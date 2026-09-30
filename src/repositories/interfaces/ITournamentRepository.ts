@@ -10,6 +10,7 @@ export interface CreateTournamentData {
   aturan?: string | null;
   format: TournamentFormat;
   status?: TournamentStatus;
+  imageUrl?: string | null;
 }
 
 export interface UpdateTournamentData {
@@ -22,6 +23,7 @@ export interface UpdateTournamentData {
   aturan?: string | null;
   format?: TournamentFormat;
   status?: TournamentStatus;
+  imageUrl?: string | null;
   juaraId?: string | null;
 }
 

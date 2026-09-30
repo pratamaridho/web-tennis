@@ -17,6 +17,7 @@ export interface CreateTournamentDTO {
   aturan?: string | null;
   format: TournamentFormat;
   status?: TournamentStatus;
+  imageUrl?: string | null;
 }
 
 export interface UpdateTournamentDTO {
@@ -29,6 +30,7 @@ export interface UpdateTournamentDTO {
   aturan?: string | null;
   format?: TournamentFormat;
   status?: TournamentStatus;
+  imageUrl?: string | null;
 }
 
 export class TournamentService {
@@ -92,6 +94,7 @@ export class TournamentService {
       aturan: dto.aturan,
       format: dto.format || 'KNOCKOUT',
       status: dto.status || 'DRAFT',
+      imageUrl: dto.imageUrl,
     });
 
     return {

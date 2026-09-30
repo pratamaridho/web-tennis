@@ -21,7 +21,16 @@ interface ApiTournament {
   status: 'DRAFT' | 'PENDAFTARAN_DIBUKA' | 'BERLANGSUNG' | 'SELESAI';
   acceptedCount: number;
   canRegister: boolean;
+  imageUrl?: string | null;
 }
+
+const DEFAULT_TOURNAMENT_IMAGES = [
+  '/tennis-action-smash.jpg',
+  '/tennis-court-aerial.jpg',
+  '/tennis-racket-ball.jpg',
+  '/hero-tennis-grass.jpg',
+  '/hero-tennis-bg.jpg',
+];
 
 interface SliderCardItem {
   id: string;
@@ -73,7 +82,7 @@ export const TournamentSliderSection: React.FC<TournamentSliderSectionProps> = (
         const apiList: ApiTournament[] = data.tournaments || [];
 
         if (apiList.length > 0) {
-          const mapped: SliderCardItem[] = apiList.map((t) => {
+          const mapped: SliderCardItem[] = apiList.map((t, index) => {
             const statusLabelMap: Record<string, string> = {
               DRAFT: 'Draft',
               PENDAFTARAN_DIBUKA: 'Pendaftaran Buka',
@@ -93,7 +102,7 @@ export const TournamentSliderSection: React.FC<TournamentSliderSectionProps> = (
               isOpen: t.status === 'PENDAFTARAN_DIBUKA',
               quota: t.kuota,
               registeredCount: t.acceptedCount,
-              imageUrl: '/hero-tennis-bg.jpg',
+              imageUrl: t.imageUrl || DEFAULT_TOURNAMENT_IMAGES[index % DEFAULT_TOURNAMENT_IMAGES.length],
             };
           });
           setItems(mapped);

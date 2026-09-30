@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -19,7 +20,16 @@ interface TournamentItem {
   totalRegistrationsCount: number;
   isQuotaFull: boolean;
   canRegister: boolean;
+  imageUrl?: string | null;
 }
+
+const DEFAULT_TOURNAMENT_IMAGES = [
+  '/tennis-action-smash.jpg',
+  '/tennis-court-aerial.jpg',
+  '/tennis-racket-ball.jpg',
+  '/hero-tennis-grass.jpg',
+  '/hero-tennis-bg.jpg',
+];
 
 interface OfficialTournamentsListProps {
   onNavigate: (view: ScreenView) => void;
@@ -177,7 +187,7 @@ export const OfficialTournamentsList: React.FC<OfficialTournamentsListProps> = (
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {filteredTournaments.map((t) => {
+          {filteredTournaments.map((t, idx) => {
             const percentFilled = Math.min(Math.round((t.acceptedCount / Math.max(t.kuota, 1)) * 100), 100);
             const isOpen = t.status === 'PENDAFTARAN_DIBUKA';
             const isOngoing = t.status === 'BERLANGSUNG';
@@ -185,43 +195,53 @@ export const OfficialTournamentsList: React.FC<OfficialTournamentsListProps> = (
             const isFull = t.acceptedCount >= t.kuota;
 
             const cardFeedback = feedback && feedback.id === t.id ? feedback : null;
+            const bannerSrc = t.imageUrl || DEFAULT_TOURNAMENT_IMAGES[idx % DEFAULT_TOURNAMENT_IMAGES.length];
 
             return (
               <div
                 key={t.id}
-                className="bg-surface-container-lowest border border-surface-container-high/90 hover:border-primary/40 rounded-3xl p-6 shadow-xs hover:shadow-lg transition-all flex flex-col justify-between"
+                className="group bg-surface-container-lowest border border-surface-container-high/90 hover:border-primary/40 rounded-3xl overflow-hidden shadow-xs hover:shadow-lg transition-all flex flex-col justify-between"
               >
                 <div>
-                  {/* Top Bar: Format & Status */}
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="px-2.5 py-1 rounded-lg bg-surface-container text-surface-tint text-[10px] font-bold uppercase tracking-wider">
-                      {t.format === 'KNOCKOUT' ? 'Sistem Gugur (Knockout)' : 'Round-Robin'}
-                    </span>
+                  {/* Photo Banner Header */}
+                  <div className="relative h-36 w-full overflow-hidden bg-black/40">
+                    <img
+                      src={bannerSrc}
+                      alt={t.nama}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-black/40" />
+                    <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
+                      <span className="px-2.5 py-1 rounded-lg bg-surface-container-lowest/90 backdrop-blur-md text-surface-tint text-[10px] font-bold uppercase tracking-wider shadow-xs border border-white/10">
+                        {t.format === 'KNOCKOUT' ? 'Sistem Gugur' : 'Round-Robin'}
+                      </span>
 
-                    <span
-                      className={`px-3 py-0.5 rounded-full text-[11px] font-bold ${
-                        isOpen
-                          ? 'bg-emerald-500/15 text-emerald-700 border border-emerald-500/30'
-                          : isOngoing
-                          ? 'bg-blue-500/15 text-blue-700 border border-blue-500/30'
-                          : isFinished
-                          ? 'bg-amber-500/15 text-amber-800 border border-amber-500/30'
-                          : 'bg-surface-container text-on-surface-variant'
-                      }`}
-                    >
-                      {t.status.replace(/_/g, ' ')}
-                    </span>
+                      <span
+                        className={`px-3 py-0.5 rounded-full text-[11px] font-bold backdrop-blur-md shadow-xs ${
+                          isOpen
+                            ? 'bg-emerald-500/20 text-emerald-800 border border-emerald-500/30'
+                            : isOngoing
+                            ? 'bg-blue-500/20 text-blue-800 border border-blue-500/30'
+                            : isFinished
+                            ? 'bg-amber-500/20 text-amber-900 border border-amber-500/30'
+                            : 'bg-surface-container/80 text-on-surface-variant'
+                        }`}
+                      >
+                        {t.status.replace(/_/g, ' ')}
+                      </span>
+                    </div>
                   </div>
 
-                  {/* Tournament Title & Info */}
-                  <h3 className="text-base sm:text-lg font-bold text-primary mb-1 tracking-tight capitalize">
-                    {t.nama}
-                  </h3>
-                  {t.deskripsi && (
-                    <p className="text-xs text-on-surface-variant line-clamp-2 mb-3">
-                      {t.deskripsi}
-                    </p>
-                  )}
+                  <div className="p-6 pt-3">
+                    {/* Tournament Title & Info */}
+                    <h3 className="text-base sm:text-lg font-bold text-primary mb-1 tracking-tight capitalize">
+                      {t.nama}
+                    </h3>
+                    {t.deskripsi && (
+                      <p className="text-xs text-on-surface-variant line-clamp-2 mb-3">
+                        {t.deskripsi}
+                      </p>
+                    )}
 
                   {/* Clean Metadata Rows with Minimal Icons */}
                   <div className="mt-3 space-y-2 text-xs text-on-surface-variant py-3 border-y border-surface-container-high/60">
@@ -279,9 +299,10 @@ export const OfficialTournamentsList: React.FC<OfficialTournamentsListProps> = (
                     </div>
                   )}
                 </div>
+              </div>
 
-                {/* Card Actions */}
-                <div className="pt-3 border-t border-surface-container-high/60 flex items-center justify-between gap-3">
+              {/* Card Actions */}
+                <div className="px-6 pb-6 pt-3 border-t border-surface-container-high/60 flex items-center justify-between gap-3">
                   <div className="text-[11px] text-on-surface-variant">
                     {isOpen ? (
                       isFull ? (

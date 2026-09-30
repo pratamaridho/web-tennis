@@ -75,6 +75,7 @@ model Tournament {
   aturan      String?
   format      TournamentFormat @default(KNOCKOUT)
   status      TournamentStatus @default(DRAFT)
+  imageUrl    String?
   juaraId     String?
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt

@@ -38,6 +38,7 @@ export class PrismaTournamentRepository implements ITournamentRepository {
       aturan: record.aturan,
       format: record.format as TournamentFormat,
       status: record.status as TournamentStatus,
+      imageUrl: record.imageUrl,
       juaraId: record.juaraId,
       createdAt: record.createdAt,
       updatedAt: record.updatedAt,
@@ -72,6 +73,7 @@ export class PrismaTournamentRepository implements ITournamentRepository {
         aturan: record.aturan,
         format: record.format as TournamentFormat,
         status: record.status as TournamentStatus,
+        imageUrl: record.imageUrl,
         juaraId: record.juaraId,
         createdAt: record.createdAt,
         updatedAt: record.updatedAt,
@@ -93,6 +95,7 @@ export class PrismaTournamentRepository implements ITournamentRepository {
         aturan: data.aturan ?? null,
         format: data.format as PrismaFormat,
         status: (data.status ?? 'DRAFT') as PrismaStatus,
+        imageUrl: data.imageUrl ?? null,
       },
     });
 
@@ -107,6 +110,7 @@ export class PrismaTournamentRepository implements ITournamentRepository {
       aturan: record.aturan,
       format: record.format as TournamentFormat,
       status: record.status as TournamentStatus,
+      imageUrl: record.imageUrl,
       juaraId: record.juaraId,
       createdAt: record.createdAt,
       updatedAt: record.updatedAt,
@@ -126,6 +130,7 @@ export class PrismaTournamentRepository implements ITournamentRepository {
     if (data.aturan !== undefined) updatePayload.aturan = data.aturan;
     if (data.format !== undefined) updatePayload.format = data.format as PrismaFormat;
     if (data.status !== undefined) updatePayload.status = data.status as PrismaStatus;
+    if (data.imageUrl !== undefined) updatePayload.imageUrl = data.imageUrl;
     if (data.juaraId !== undefined) updatePayload.juaraId = data.juaraId;
 
     const record = await prisma.tournament.update({
@@ -152,6 +157,7 @@ export class PrismaTournamentRepository implements ITournamentRepository {
       aturan: record.aturan,
       format: record.format as TournamentFormat,
       status: record.status as TournamentStatus,
+      imageUrl: record.imageUrl,
       juaraId: record.juaraId,
       createdAt: record.createdAt,
       updatedAt: record.updatedAt,

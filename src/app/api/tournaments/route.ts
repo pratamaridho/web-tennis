@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { nama, deskripsi, tanggal, lokasi, kuota, batasDaftar, aturan, format, status } = body;
+    const { nama, deskripsi, tanggal, lokasi, kuota, batasDaftar, aturan, format, status, imageUrl } = body;
 
     const result = await tournamentService.createTournament(
       {
@@ -43,6 +43,7 @@ export async function POST(request: Request) {
         aturan,
         format,
         status,
+        imageUrl,
       },
       currentUser.role as UserRole
     );
