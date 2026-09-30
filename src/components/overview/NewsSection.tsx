@@ -111,62 +111,93 @@ export const NewsSection: React.FC = () => {
         </div>
       )}
 
-      {/* Pop-up dengan Latar Belakang Transparan Warna Hitam & Proporsi 1:2 (Ke Atas : Ke Samping) */}
+      {/* Modal Detail Berita - Desain Showcase Terinspirasi Referensi Astra Honda */}
       {selectedArticle && (
         <div
           onClick={() => setSelectedArticle(null)}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fadeIn"
+          className="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-xl flex flex-col justify-start md:justify-center items-center p-4 sm:p-8 lg:p-12 animate-fadeIn"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-3xl bg-black/80 backdrop-blur-2xl border border-white/15 rounded-3xl p-4 sm:p-5 shadow-2xl text-white overflow-hidden animate-scaleUp flex flex-col md:flex-row gap-5 items-stretch min-h-[320px] md:h-[350px]"
+            className="relative w-full max-w-5xl mx-auto my-auto animate-scaleUp"
           >
-            {/* Sisi Kiri: Foto Thumbnail Berita (Mengisi 50% lebar / proporsi landscape 1:2) */}
-            <div className="relative w-full md:w-1/2 h-48 md:h-full shrink-0 rounded-2xl overflow-hidden bg-black/50 border border-white/10">
-              <img
-                src={selectedArticle.imageUrl || DEFAULT_NEWS_IMAGES[0]}
-                alt={selectedArticle.judul}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent md:hidden" />
+            {/* Tombol Kembali / Back Arrow (Khas Referensi Gambar) */}
+            <div className="flex items-center mb-4 sm:mb-6">
+              <button
+                type="button"
+                onClick={() => setSelectedArticle(null)}
+                aria-label="Kembali"
+                className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors cursor-pointer group"
+              >
+                <span className="text-2xl sm:text-3xl font-bold group-hover:-translate-x-1.5 transition-transform duration-200">
+                  ←
+                </span>
+                <span className="text-xs uppercase tracking-wider font-semibold text-gray-400 group-hover:text-white transition-colors">
+                  Kembali
+                </span>
+              </button>
             </div>
 
-            {/* Sisi Kanan: Konten Berita (Header, Judul, Isi, Tombol Tutup) */}
-            <div className="flex-1 flex flex-col justify-between overflow-y-auto pr-1">
-              <div>
-                {/* Header: Tanggal & Penulis + Tombol Silang */}
-                <div className="flex items-center justify-between gap-2 mb-2.5">
-                  <span className="text-[10px] font-bold text-[#ccff00] uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/10 border border-white/15">
-                    {selectedArticle.tanggal} • {selectedArticle.penulisNama || 'Admin Klub'}
-                  </span>
-                  <button
-                    onClick={() => setSelectedArticle(null)}
-                    aria-label="Tutup modal"
-                    className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white flex items-center justify-center text-xs cursor-pointer transition-colors border border-white/10"
-                  >
-                    ✕
-                  </button>
-                </div>
+            {/* Konten Utama 2 Kolom (Landscape Widescreen) */}
+            <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-start w-full">
+              {/* Sisi Kiri: Foto / Banner Poster */}
+              <div className="w-full lg:w-1/2 shrink-0 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black/40">
+                <img
+                  src={selectedArticle.imageUrl || DEFAULT_NEWS_IMAGES[0]}
+                  alt={selectedArticle.judul}
+                  className="w-full h-auto object-cover max-h-[460px]"
+                />
+              </div>
 
-                {/* Judul Berita */}
-                <h2 className="text-lg sm:text-xl font-extrabold text-white mb-2 leading-snug line-clamp-2">
+              {/* Sisi Kanan: Judul, Subjudul, Deskripsi, dan Spesifikasi Tabel */}
+              <div className="flex-1 flex flex-col text-left w-full">
+                {/* 1. Judul Utama (Besar & Tegas) */}
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight mb-2">
                   {selectedArticle.judul}
                 </h2>
 
-                {/* Isi Berita dalam Kotak Transparan Hitam */}
-                <div className="text-xs text-gray-300 leading-relaxed whitespace-pre-line bg-white/5 p-3.5 rounded-2xl border border-white/10 max-h-36 md:max-h-44 overflow-y-auto">
+                {/* 2. Subjudul / Kategori Status */}
+                <p className="text-base sm:text-lg font-bold text-gray-200 mb-4">
+                  Kabar Resmi Klub & Komunitas
+                </p>
+
+                {/* 3. Paragraf Isi Berita Lengkap (Bersih, Nyaman Dibaca) */}
+                <div className="text-sm sm:text-base text-gray-300 leading-relaxed whitespace-pre-line mb-6 font-normal">
                   {selectedArticle.isi}
                 </div>
-              </div>
 
-              {/* Tombol Tutup di Bawah */}
-              <div className="pt-3 mt-2 border-t border-white/10 flex justify-end">
-                <button
-                  onClick={() => setSelectedArticle(null)}
-                  className="px-6 py-2 bg-[#ccff00] hover:bg-[#b8e600] text-black font-bold text-xs rounded-xl cursor-pointer transition-all shadow-lg shadow-[#ccff00]/20"
-                >
-                  Tutup
-                </button>
+                {/* 4. Tabel Metadata / Spesifikasi Khas Referensi Astra Honda */}
+                <div className="space-y-2.5 w-full text-xs sm:text-sm">
+                  {/* Row 1: Waktu */}
+                  <div className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 flex items-center justify-between">
+                    <span className="text-[11px] font-bold tracking-widest text-gray-400 uppercase">
+                      WAKTU
+                    </span>
+                    <span className="text-gray-200 font-medium">
+                      {selectedArticle.tanggal}
+                    </span>
+                  </div>
+
+                  {/* Row 2: Penulis */}
+                  <div className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 flex items-center justify-between">
+                    <span className="text-[11px] font-bold tracking-widest text-gray-400 uppercase">
+                      PENULIS
+                    </span>
+                    <span className="text-gray-200 font-medium">
+                      {selectedArticle.penulisNama || 'Admin Klub Tyrannosaurus'}
+                    </span>
+                  </div>
+
+                  {/* Row 3: Klub */}
+                  <div className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 flex items-center justify-between">
+                    <span className="text-[11px] font-bold tracking-widest text-gray-400 uppercase">
+                      KOMUNITAS
+                    </span>
+                    <span className="text-[#ccff00] font-semibold">
+                      Tyrannosaurus Tennis Club Gading Serpong
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
