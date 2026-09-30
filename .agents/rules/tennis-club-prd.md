@@ -21,11 +21,20 @@ Seluruh pengembangan fitur, komponen UI, modul logika, dan validasi data harus m
 - **P2:** Integrasi payment gateway online, reservasi lapangan, notifikasi email/WhatsApp.
 - **Out of Scope:** Mobile app native, live streaming realtime scoring point-by-point, marketplace merchandise.
 
-## 3. Invarian Bisnis Turnamen
-- Hanya member yang sudah login yang bisa mendaftar turnamen.
-- Status turnamen berjalan: `Draft` → `Pendaftaran Dibuka` → `Berlangsung` → `Selesai`.
-- Pendaftaran ditutup otomatis setelah batas tanggal atau kuota penuh tercapai.
-- Bracket dikunci otomatis segera setelah skor pertama diinput.
-- Propagasi pemenang babak knockout otomatis mengisi slot babak berikutnya.
-- Turnamen otomatis berstatus 'Selesai' saat semua pertandingan final/putaran memiliki skor dan pemenang.
-- Peserta yang mundur setelah bracket dibuat ditangani lewat walk-over manual oleh admin.
+## 3. Invarian Bisnis Turnamen & Pendaftaran
+- **Pendaftaran Peserta**:
+  - Hanya member yang sudah login yang bisa mendaftar.
+  - Pendaftaran hanya bisa dilakukan jika status turnamen adalah `PENDAFTARAN_DIBUKA`, kuota peserta diterima belum penuh, dan belum melewati tanggal batas daftar.
+  - Satu member hanya bisa mendaftar satu kali per turnamen.
+- **Visibilitas Publik & Status**:
+  - Pengunjung tanpa login dapat melihat semua turnamen non-DRAFT (`PENDAFTARAN_DIBUKA`, `BERLANGSUNG`, `SELESAI`) beserta bracket, skor, dan juara.
+  - Member dapat melihat status pendaftarannya (`MENUNGGU`, `DITERIMA`, `DITOLAK`) di halaman Turnamen Saya (cukup ter-update saat halaman/data dimuat ulang, tanpa overhead WebSocket realtime).
+- **Alur & Kunci Status**:
+  - Status turnamen berjalan: `DRAFT` → `PENDAFTARAN_DIBUKA` → `BERLANGSUNG` → `SELESAI`.
+  - Turnamen hanya bisa diedit selama belum berstatus `BERLANGSUNG`.
+  - Verifikasi pendaftar oleh Admin Komunitas: jumlah peserta dengan status `DITERIMA` tidak boleh melebihi kuota.
+  - Bracket dikunci otomatis segera setelah skor pertama diinput.
+  - Propagasi pemenang babak knockout otomatis mengisi slot babak berikutnya.
+  - Turnamen otomatis berstatus 'SELESAI' saat semua pertandingan final/putaran memiliki skor dan pemenang.
+  - Peserta yang mundur setelah bracket dibuat ditangani lewat walk-over manual oleh admin.
+

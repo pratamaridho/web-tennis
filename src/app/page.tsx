@@ -9,6 +9,8 @@ import { NotificationModal } from '../components/NotificationModal';
 import { OverviewView } from '../views/OverviewView';
 import { BracketView } from '../views/BracketView';
 import { RegistrationView } from '../views/RegistrationView';
+import { ParticipantPortalView } from '../views/ParticipantPortalView';
+import { AdminSuiteView } from '../views/AdminSuiteView';
 import { AuthModal } from '../components/auth/AuthModal';
 import { UserManagementModal } from '../components/admin/UserManagementModal';
 import { ProfileModal } from '../components/profile/ProfileModal';
@@ -87,6 +89,10 @@ export default function Home() {
           <BracketView onNavigate={navigateTo} />
         ) : currentView === 'registration' ? (
           <RegistrationView onNavigate={navigateTo} />
+        ) : currentView === 'participant-portal' ? (
+          <ParticipantPortalView />
+        ) : currentView === 'admin-suite' ? (
+          <AdminSuiteView />
         ) : (
           <div className="max-w-4xl mx-auto px-6 py-16 text-center">
             <div className="p-8 bg-surface-container-low border border-surface-container-high rounded-2xl shadow-sm">
