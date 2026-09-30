@@ -111,55 +111,64 @@ export const NewsSection: React.FC = () => {
         </div>
       )}
 
-      {/* Pop-up Kecil dengan Latar Belakang Transparan & Efek Blur (Glassmorphism) */}
+      {/* Pop-up dengan Latar Belakang Transparan Warna Hitam & Proporsi 1:2 (Ke Atas : Ke Samping) */}
       {selectedArticle && (
         <div
           onClick={() => setSelectedArticle(null)}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-md animate-fadeIn"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fadeIn"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-md bg-white/90 backdrop-blur-2xl border border-white/70 rounded-3xl p-5 sm:p-6 shadow-2xl max-h-[85vh] overflow-y-auto animate-scaleUp"
+            className="relative w-full max-w-3xl bg-black/80 backdrop-blur-2xl border border-white/15 rounded-3xl p-4 sm:p-5 shadow-2xl text-white overflow-hidden animate-scaleUp flex flex-col md:flex-row gap-5 items-stretch min-h-[320px] md:h-[350px]"
           >
-            {/* Header Pop-up: Metadata Ringkas & Tombol Tutup */}
-            <div className="flex items-center justify-between gap-2 mb-3">
-              <span className="text-[10px] font-bold text-surface-tint uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-surface-container/80 border border-surface-container-high/80">
-                {selectedArticle.tanggal} • {selectedArticle.penulisNama || 'Admin Klub'}
-              </span>
-              <button
-                onClick={() => setSelectedArticle(null)}
-                className="w-7 h-7 rounded-full bg-surface-container/80 hover:bg-surface-container text-on-surface-variant hover:text-primary flex items-center justify-center text-xs cursor-pointer transition-colors shadow-2xs"
-              >
-                ✕
-              </button>
-            </div>
-
-            {/* Thumbnail Gambar Pop-up */}
-            <div className="w-full h-44 rounded-2xl overflow-hidden mb-3.5 bg-surface-container shadow-xs">
+            {/* Sisi Kiri: Foto Thumbnail Berita (Mengisi 50% lebar / proporsi landscape 1:2) */}
+            <div className="relative w-full md:w-1/2 h-48 md:h-full shrink-0 rounded-2xl overflow-hidden bg-black/50 border border-white/10">
               <img
                 src={selectedArticle.imageUrl || DEFAULT_NEWS_IMAGES[0]}
                 alt={selectedArticle.judul}
                 className="w-full h-full object-cover"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent md:hidden" />
             </div>
 
-            {/* Judul Berita */}
-            <h2 className="text-lg sm:text-xl font-extrabold text-primary mb-2.5 leading-snug">
-              {selectedArticle.judul}
-            </h2>
+            {/* Sisi Kanan: Konten Berita (Header, Judul, Isi, Tombol Tutup) */}
+            <div className="flex-1 flex flex-col justify-between overflow-y-auto pr-1">
+              <div>
+                {/* Header: Tanggal & Penulis + Tombol Silang */}
+                <div className="flex items-center justify-between gap-2 mb-2.5">
+                  <span className="text-[10px] font-bold text-[#ccff00] uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/10 border border-white/15">
+                    {selectedArticle.tanggal} • {selectedArticle.penulisNama || 'Admin Klub'}
+                  </span>
+                  <button
+                    onClick={() => setSelectedArticle(null)}
+                    aria-label="Tutup modal"
+                    className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white flex items-center justify-center text-xs cursor-pointer transition-colors border border-white/10"
+                  >
+                    ✕
+                  </button>
+                </div>
 
-            {/* Isi Lengkap Berita dalam Kotak Transparan */}
-            <div className="text-xs sm:text-sm text-on-surface-variant leading-relaxed whitespace-pre-line bg-surface-container/50 p-4 rounded-2xl border border-surface-container-high/60 mb-4 max-h-56 overflow-y-auto">
-              {selectedArticle.isi}
+                {/* Judul Berita */}
+                <h2 className="text-lg sm:text-xl font-extrabold text-white mb-2 leading-snug line-clamp-2">
+                  {selectedArticle.judul}
+                </h2>
+
+                {/* Isi Berita dalam Kotak Transparan Hitam */}
+                <div className="text-xs text-gray-300 leading-relaxed whitespace-pre-line bg-white/5 p-3.5 rounded-2xl border border-white/10 max-h-36 md:max-h-44 overflow-y-auto">
+                  {selectedArticle.isi}
+                </div>
+              </div>
+
+              {/* Tombol Tutup di Bawah */}
+              <div className="pt-3 mt-2 border-t border-white/10 flex justify-end">
+                <button
+                  onClick={() => setSelectedArticle(null)}
+                  className="px-6 py-2 bg-[#ccff00] hover:bg-[#b8e600] text-black font-bold text-xs rounded-xl cursor-pointer transition-all shadow-lg shadow-[#ccff00]/20"
+                >
+                  Tutup
+                </button>
+              </div>
             </div>
-
-            {/* Tombol Tutup */}
-            <button
-              onClick={() => setSelectedArticle(null)}
-              className="w-full py-2.5 bg-primary hover:bg-surface-tint text-on-primary font-bold text-xs rounded-xl cursor-pointer transition-colors shadow-xs"
-            >
-              Tutup
-            </button>
           </div>
         </div>
       )}
