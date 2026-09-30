@@ -2,97 +2,95 @@ import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth';
 import { adminUserService } from '@/services/AdminUserService';
 
-export async function GET() {
+// GET /api/admin/users - Mengambil daftar pengguna (Admin Komunitas / Admin Web)
+export async function GET(request: Request) {
   try {
     const currentUser = await getCurrentUser();
-    if (!currentUser || currentUser.role !== 'ADMIN_WEB') {
-      return NextResponse.json({ error: 'Akses ditolak. Khusus Admin Web.' }, { status: 403 });
+    if (!currentUser || !currentUser.canManageTournaments()) {
+      return NextResponse.json({ error: 'Akses ditolak. Khusus Admin.' }, { status: 403 });
     }
 
-    const users = await adminUserService.getAllUsers();
+    const { searchParams } = new URL(request.url);
+    const roleParam = searchParams.get('role') as 'MEMBER' | 'ADMIN_KOMUNITAS' | 'ADMIN_WEB' | null;
+
+    const result = await adminUserService.getUsersList(currentUser, roleParam || undefined);
+    if (!result.success) {
+      return NextResponse.json({ error: result.error }, { status: result.statusCode });
+    }
+
     return NextResponse.json({
-      users: users.map((u) => u.toSafeObject()),
+      users: (result.data || []).map((u) => u.toSafeObject()),
     });
   } catch (error: unknown) {
-    console.error('Admin users fetch error:', error);
-    return NextResponse.json({ error: 'Gagal mengambil data pengguna' }, { status: 500 });
+    console.error('Fetch users error:', error);
+    return NextResponse.json({ error: 'Gagal mengambil daftar pengguna' }, { status: 500 });
   }
 }
 
-// User Story A2: Admin Web creates new Admin Komunitas
+// POST /api/admin/users - Khusus Admin Web membuat akun Admin Komunitas (PRD A2)
 export async function POST(request: Request) {
   try {
     const currentUser = await getCurrentUser();
-    if (!currentUser || currentUser.role !== 'ADMIN_WEB') {
-      return NextResponse.json({ error: 'Akses ditolak. Khusus Admin Web.' }, { status: 403 });
+    if (!currentUser || !currentUser.isAdminWeb()) {
+      return NextResponse.json(
+        { error: 'Akses ditolak: Hanya Admin Web yang dapat membuat akun Admin Komunitas (PRD A2)' },
+        { status: 403 }
+      );
     }
 
     const body = await request.json();
-    const { nama, email, password, phone, club } = body;
-
-    const result = await adminUserService.createAdminKomunitas({
-      nama,
-      email,
-      password,
-      phone,
-      club,
+    const result = await adminUserService.createAdminKomunitas(currentUser, {
+      nama: body.nama,
+      email: body.email,
+      password: body.password,
+      phone: body.phone,
+      club: body.club,
     });
 
-    if (!result.success || !result.user) {
-      return NextResponse.json(
-        { error: result.error || 'Gagal membuat akun' },
-        { status: result.statusCode }
-      );
+    if (!result.success) {
+      return NextResponse.json({ error: result.error }, { status: result.statusCode });
     }
 
     return NextResponse.json(
-      {
-        message: 'Akun Admin Komunitas berhasil dibuat.',
-        user: result.user.toSafeObject(),
-      },
-      { status: 201 }
+      { message: result.message, user: result.data?.toSafeObject() },
+      { status: result.statusCode }
     );
   } catch (error: unknown) {
-    console.error('Admin create user error:', error);
-    return NextResponse.json({ error: 'Gagal membuat akun Admin Komunitas' }, { status: 500 });
+    console.error('Create admin error:', error);
+    return NextResponse.json({ error: 'Gagal membuat akun admin' }, { status: 500 });
   }
 }
 
-// User Story A2: Admin Web updates user role or toggles active status
+// PATCH /api/admin/users - Khusus Admin Web untuk aktifkan / nonaktifkan akun atau ubah peran (PRD A2)
 export async function PATCH(request: Request) {
   try {
     const currentUser = await getCurrentUser();
-    if (!currentUser || currentUser.role !== 'ADMIN_WEB') {
-      return NextResponse.json({ error: 'Akses ditolak. Khusus Admin Web.' }, { status: 403 });
-    }
-
-    const body = await request.json();
-    const { userId, role, aktif } = body;
-
-    if (!userId) {
-      return NextResponse.json({ error: 'User ID wajib disertakan' }, { status: 400 });
-    }
-
-    const result = await adminUserService.updateUserStatusOrRole({
-      adminUserId: currentUser.id,
-      targetUserId: userId,
-      role,
-      aktif,
-    });
-
-    if (!result.success || !result.user) {
+    if (!currentUser || !currentUser.isAdminWeb()) {
       return NextResponse.json(
-        { error: result.error || 'Gagal memperbarui pengguna' },
-        { status: result.statusCode }
+        { error: 'Akses ditolak: Hanya Admin Web yang berhak mengelola akun pengguna (PRD A2)' },
+        { status: 403 }
       );
     }
 
-    return NextResponse.json({
-      message: 'Status/Peran pengguna berhasil diperbarui.',
-      user: result.user.toSafeObject(),
-    });
+    const body = await request.json();
+    const { userId, aktif } = body;
+
+    if (!userId) {
+      return NextResponse.json({ error: 'userId wajib disertakan' }, { status: 400 });
+    }
+
+    if (typeof aktif === 'boolean') {
+      const result = await adminUserService.toggleUserStatus(currentUser, userId, aktif);
+      if (!result.success) {
+        return NextResponse.json({ error: result.error }, { status: result.statusCode });
+      }
+      return NextResponse.json({ message: result.message, user: result.data?.toSafeObject() });
+    }
+
+    return NextResponse.json({ error: 'Operasi tidak didukung' }, { status: 400 });
   } catch (error: unknown) {
-    console.error('Admin update user error:', error);
-    return NextResponse.json({ error: 'Gagal memperbarui pengguna' }, { status: 500 });
+    console.error('Update user admin error:', error);
+    return NextResponse.json({ error: 'Gagal memperbarui data pengguna' }, { status: 500 });
   }
 }
+

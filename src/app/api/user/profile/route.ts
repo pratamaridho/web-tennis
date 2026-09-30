@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth';
 import { adminUserService } from '@/services/AdminUserService';
 
-// GET /api/profile - Mengambil profil user yang sedang login
+// GET /api/user/profile - Mengambil profil user yang sedang login
 export async function GET() {
   try {
     const currentUser = await getCurrentUser();
@@ -17,7 +17,7 @@ export async function GET() {
   }
 }
 
-// PUT /api/profile - Mengubah profil user yang sedang login
+// PUT /api/user/profile - Mengubah profil user yang sedang login
 export async function PUT(request: Request) {
   try {
     const currentUser = await getCurrentUser();

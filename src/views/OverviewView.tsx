@@ -9,6 +9,7 @@ import { MabarScheduleSection } from '../components/overview/MabarScheduleSectio
 import { HallOfFameSection } from '../components/overview/HallOfFameSection';
 import { MemberProfileModal } from '../components/overview/MemberProfileModal';
 import { SponsorsSection } from '../components/overview/SponsorsSection';
+import { NewsSection } from '../components/overview/NewsSection';
 
 interface OverviewViewProps {
   onNavigate: (view: ScreenView) => void;
@@ -96,7 +97,10 @@ export const OverviewView: React.FC<OverviewViewProps> = ({ onNavigate }) => {
         onSelectChampion={setSelectedChampionModal}
       />
 
-      {/* 6. Partner & Mitra Resmi */}
+      {/* 6. Kabar & Berita Resmi Komunitas (PRD F1) */}
+      <NewsSection />
+
+      {/* 7. Partner & Mitra Resmi */}
       <SponsorsSection />
 
       {/* 7. Modal Profil Member & Galeri Foto Kemenangan */}

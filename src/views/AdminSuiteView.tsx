@@ -5,6 +5,9 @@ import { useAuth } from '@/context/AuthContext';
 import { TournamentFormat, TournamentStatus } from '@/models/TournamentModel';
 import { RegistrationStatus } from '@/models/RegistrationModel';
 import { AdminBracketModal } from '@/components/bracket/AdminBracketModal';
+import { AdminNewsTab } from '@/components/admin/AdminNewsTab';
+import { AdminMembersTab } from '@/components/admin/AdminMembersTab';
+import { AdminAccountsTab } from '@/components/admin/AdminAccountsTab';
 
 interface TournamentItem {
   id: string;
@@ -40,8 +43,11 @@ interface ApplicantItem {
   } | null;
 }
 
+type AdminTab = 'tournaments' | 'news' | 'members' | 'accounts';
+
 export const AdminSuiteView: React.FC = () => {
   const { role, openAuthModal } = useAuth();
+  const [activeTab, setActiveTab] = useState<AdminTab>('tournaments');
   const [tournaments, setTournaments] = useState<TournamentItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedTournament, setSelectedTournament] = useState<TournamentItem | null>(null);
@@ -281,34 +287,87 @@ export const AdminSuiteView: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 animate-fadeIn">
       {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-8 border-b border-white/10">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
         <div>
           <div className="flex items-center gap-2">
             <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-[#ccff00]/15 text-[#ccff00] border border-[#ccff00]/30">
-              PRD TAHAP 2
+              PRD P0 PROTOYPE
             </span>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-              Admin Suite: Manajemen Turnamen & Pendaftaran
+              Admin Suite: Manajemen Klub & Turnamen
             </h1>
           </div>
           <p className="text-gray-400 text-sm mt-1">
-            Kelola turnamen (B1, B2) dan verifikasi penerimaan peserta dengan batas kuota ketat (C3).
+            Pusat operasional klub tenis: turnamen (B1, B2), verifikasi peserta (C3), berita (F1), direktori member, dan hak akses admin (A2).
           </p>
         </div>
 
-        <button
-          onClick={openCreateForm}
-          className="px-5 py-2.5 bg-[#ccff00] hover:bg-[#b8e600] text-black font-bold text-sm rounded-xl transition-all shadow-lg shadow-[#ccff00]/20 flex items-center gap-2 self-start md:self-auto"
-        >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          <span>Buat Turnamen Baru</span>
-        </button>
+        {activeTab === 'tournaments' && (
+          <button
+            onClick={openCreateForm}
+            className="px-5 py-2.5 bg-[#ccff00] hover:bg-[#b8e600] text-black font-bold text-sm rounded-xl transition-all shadow-lg shadow-[#ccff00]/20 flex items-center gap-2 self-start md:self-auto cursor-pointer"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            <span>Buat Turnamen Baru</span>
+          </button>
+        )}
       </div>
 
-      {/* Tournaments Grid */}
-      <div className="py-8">
+      {/* Admin Suite Navigation Tabs */}
+      <div className="flex items-center gap-2 mt-6 p-1.5 bg-[#12161f] border border-white/10 rounded-2xl w-fit overflow-x-auto max-w-full">
+        <button
+          onClick={() => setActiveTab('tournaments')}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
+            activeTab === 'tournaments'
+              ? 'bg-[#ccff00] text-black shadow-md shadow-[#ccff00]/20'
+              : 'text-gray-400 hover:text-white'
+          }`}
+        >
+          <span>🏆</span>
+          <span>Turnamen & Pendaftaran</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('news')}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
+            activeTab === 'news'
+              ? 'bg-[#ccff00] text-black shadow-md shadow-[#ccff00]/20'
+              : 'text-gray-400 hover:text-white'
+          }`}
+        >
+          <span>📰</span>
+          <span>Berita & Pengumuman (PRD F1)</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('members')}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
+            activeTab === 'members'
+              ? 'bg-[#ccff00] text-black shadow-md shadow-[#ccff00]/20'
+              : 'text-gray-400 hover:text-white'
+          }`}
+        >
+          <span>👥</span>
+          <span>Kelola Member (PRD F1)</span>
+        </button>
+        {role === 'ADMIN_WEB' && (
+          <button
+            onClick={() => setActiveTab('accounts')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
+              activeTab === 'accounts'
+                ? 'bg-purple-500 text-white shadow-md shadow-purple-500/20'
+                : 'text-purple-400 hover:text-purple-300'
+            }`}
+          >
+            <span>⚙️</span>
+            <span>Kelola Admin & Akun (PRD A2)</span>
+          </button>
+        )}
+      </div>
+
+      {/* Tournaments Grid (Tab: tournaments) */}
+      {activeTab === 'tournaments' && (
+        <div className="py-6">
         {isLoading ? (
           <div className="text-center py-16 text-gray-400">
             <div className="inline-block w-8 h-8 border-3 border-[#ccff00] border-t-transparent rounded-full animate-spin mb-3" />
@@ -455,6 +514,28 @@ export const AdminSuiteView: React.FC = () => {
           </div>
         )}
       </div>
+      )}
+
+      {/* Tab: Berita & Pengumuman (PRD F1) */}
+      {activeTab === 'news' && (
+        <div className="py-6">
+          <AdminNewsTab />
+        </div>
+      )}
+
+      {/* Tab: Kelola Member (PRD F1) */}
+      {activeTab === 'members' && (
+        <div className="py-6">
+          <AdminMembersTab />
+        </div>
+      )}
+
+      {/* Tab: Kelola Admin & Akun (PRD A2) */}
+      {activeTab === 'accounts' && role === 'ADMIN_WEB' && (
+        <div className="py-6">
+          <AdminAccountsTab />
+        </div>
+      )}
 
       {/* Form Modal (Create / Edit) */}
       {isFormOpen && (

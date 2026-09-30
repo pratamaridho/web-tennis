@@ -58,7 +58,9 @@ export function verifyToken(token: string): SessionPayload | null {
   }
 }
 
-export async function getCurrentUser() {
+import { UserModel, UserRole } from '@/models/UserModel';
+
+export async function getCurrentUser(): Promise<UserModel | null> {
   const cookieStore = await cookies();
   const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
   if (!token) return null;
@@ -84,7 +86,20 @@ export async function getCurrentUser() {
   });
 
   if (!user || !user.aktif) return null;
-  return user;
+  return new UserModel({
+    id: user.id,
+    nama: user.nama,
+    email: user.email,
+    role: user.role as UserRole,
+    aktif: user.aktif,
+    avatarUrl: user.avatarUrl,
+    phone: user.phone,
+    ntrpRating: user.ntrpRating,
+    club: user.club,
+    racket: user.racket,
+    hand: user.hand,
+  });
 }
 
 export { SESSION_COOKIE_NAME };
+
