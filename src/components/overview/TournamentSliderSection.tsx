@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { ScreenView } from '../../types';
-import { CLUB_TOURNAMENTS, ASSETS } from '../../data/mockData';
+import { CLUB_TOURNAMENTS } from '../../data/mockData';
 
 interface TournamentSliderSectionProps {
   onNavigate: (view: ScreenView) => void;
@@ -45,7 +45,7 @@ export const TournamentSliderSection: React.FC<TournamentSliderSectionProps> = (
   const tournamentSliderRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
   const [items, setItems] = useState<SliderCardItem[]>([]);
-  const [isInView, setIsInView] = useState(false);
+  const [isInView, setIsInView] = useState(true);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -57,7 +57,7 @@ export const TournamentSliderSection: React.FC<TournamentSliderSectionProps> = (
           setIsInView(true);
         }
       },
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.05, rootMargin: '0px 0px 50px 0px' }
     );
 
     observer.observe(el);
@@ -188,45 +188,40 @@ export const TournamentSliderSection: React.FC<TournamentSliderSectionProps> = (
   return (
     <section ref={sectionRef} className="relative w-full py-12 lg:py-16 overflow-hidden">
       {/* Living Photo Atmosphere Background dengan Deep Shadows & Micro-Floating Animations */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10 select-none">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 select-none">
         {/* Soft Ambient Court Spotlights */}
-        <div className="absolute -top-24 left-1/4 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-3xl animate-pulse-glow" />
-        <div className="absolute top-1/2 -right-20 w-[450px] h-[450px] bg-amber-500/10 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '3s' }} />
-        <div className="absolute -bottom-24 left-10 w-[550px] h-[450px] bg-surface-tint/10 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '5s' }} />
+        <div className="absolute -top-24 left-1/4 w-[500px] h-[500px] bg-emerald-500/15 rounded-full blur-3xl animate-pulse-glow" />
+        <div className="absolute top-1/2 -right-20 w-[450px] h-[450px] bg-amber-500/15 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '3s' }} />
+        <div className="absolute -bottom-24 left-10 w-[550px] h-[450px] bg-surface-tint/15 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '5s' }} />
 
         {/* Kumpulan Foto Mengambang dengan Deep Soft Shadows (Living Web Atmosphere) */}
-        {/* Foto 1: Kiri Atas - Center Court Stadium */}
-        <div className="absolute -top-6 -left-10 sm:left-6 w-44 sm:w-60 h-32 sm:h-40 rounded-2xl overflow-hidden shadow-2xl shadow-black/25 -rotate-6 border-2 border-white/80 opacity-30 sm:opacity-40 animate-float-slow transition-all duration-700">
-          <img src={ASSETS.centerCourtStadium} alt="" className="w-full h-full object-cover filter saturate-110" />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
+        {/* Foto 1: Kiri Atas - Aksi Smash Atlet */}
+        <div className="absolute -top-4 -left-10 sm:left-4 w-48 sm:w-64 h-36 sm:h-44 bg-white/95 p-2 rounded-2xl shadow-2xl shadow-black/25 -rotate-6 border border-white/80 opacity-80 sm:opacity-90 animate-float-slow transition-all duration-700">
+          <img src="/tennis-action-smash.jpg" alt="" className="w-full h-full object-cover rounded-xl" />
         </div>
 
-        {/* Foto 2: Kanan Atas - Aksi Servis Atlet */}
-        <div className="absolute top-4 -right-10 sm:right-8 w-48 sm:w-64 h-36 sm:h-44 rounded-2xl overflow-hidden shadow-2xl shadow-black/25 rotate-6 border-2 border-white/80 opacity-25 sm:opacity-35 animate-float-reverse transition-all duration-700">
-          <img src={ASSETS.heroAction} alt="" className="w-full h-full object-cover filter saturate-110" />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
+        {/* Foto 2: Kanan Atas - Lapangan Aerial Championship */}
+        <div className="absolute top-2 -right-10 sm:right-6 w-52 sm:w-72 h-38 sm:h-48 bg-white/95 p-2 rounded-2xl shadow-2xl shadow-black/25 rotate-6 border border-white/80 opacity-80 sm:opacity-90 animate-float-reverse transition-all duration-700">
+          <img src="/tennis-court-aerial.jpg" alt="" className="w-full h-full object-cover rounded-xl" />
         </div>
 
-        {/* Foto 3: Tengah Kiri - Lapangan Outdoor */}
-        <div className="absolute top-1/2 -left-12 sm:left-14 -translate-y-1/2 w-40 sm:w-56 h-28 sm:h-36 rounded-2xl overflow-hidden shadow-2xl shadow-black/25 rotate-3 border-2 border-white/80 opacity-20 sm:opacity-30 animate-drift transition-all duration-700">
-          <img src={ASSETS.wideStadium} alt="" className="w-full h-full object-cover filter saturate-110" />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
+        {/* Foto 3: Tengah Kiri - Raket & Bola Tenis Neon */}
+        <div className="absolute top-1/2 -left-12 sm:left-8 -translate-y-1/2 w-44 sm:w-60 h-32 sm:h-42 bg-white/95 p-2 rounded-2xl shadow-2xl shadow-black/25 rotate-3 border border-white/80 opacity-75 sm:opacity-85 animate-drift transition-all duration-700">
+          <img src="/tennis-racket-ball.jpg" alt="" className="w-full h-full object-cover rounded-xl" />
         </div>
 
-        {/* Foto 4: Tengah Kanan - Athlete Lounge & Rest */}
-        <div className="absolute top-2/3 -right-12 sm:right-16 -translate-y-1/2 w-44 sm:w-60 h-32 sm:h-40 rounded-2xl overflow-hidden shadow-2xl shadow-black/25 -rotate-3 border-2 border-white/80 opacity-20 sm:opacity-30 animate-float-slow transition-all duration-700">
-          <img src={ASSETS.athleteLounge} alt="" className="w-full h-full object-cover filter saturate-110" />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
+        {/* Foto 4: Tengah Kanan - Lapangan Rumput Championship */}
+        <div className="absolute top-2/3 -right-12 sm:right-10 -translate-y-1/2 w-48 sm:w-64 h-34 sm:h-44 bg-white/95 p-2 rounded-2xl shadow-2xl shadow-black/25 -rotate-3 border border-white/80 opacity-75 sm:opacity-85 animate-float-slow transition-all duration-700">
+          <img src="/hero-tennis-grass.jpg" alt="" className="w-full h-full object-cover rounded-xl" />
         </div>
 
-        {/* Foto 5: Bawah Tengah - Court Grass/Clay Action */}
-        <div className="absolute -bottom-8 left-1/3 w-52 sm:w-68 h-32 sm:h-40 rounded-2xl overflow-hidden shadow-2xl shadow-black/25 rotate-2 border-2 border-white/80 opacity-20 sm:opacity-25 animate-float-reverse transition-all duration-700">
-          <img src="https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?q=80&w=800&auto=format&fit=crop" alt="" className="w-full h-full object-cover filter saturate-110" />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
+        {/* Foto 5: Bawah Tengah - Suasana Turnamen Lapangan */}
+        <div className="absolute -bottom-6 left-1/3 w-52 sm:w-68 h-34 sm:h-44 bg-white/95 p-2 rounded-2xl shadow-2xl shadow-black/25 rotate-2 border border-white/80 opacity-70 sm:opacity-80 animate-float-reverse transition-all duration-700">
+          <img src="/hero-tennis-bg.jpg" alt="" className="w-full h-full object-cover rounded-xl" />
         </div>
 
         {/* Subtle Tennis Court Texture Grid */}
-        <div className="absolute inset-0 bg-[radial-gradient(#396756_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.035]" />
+        <div className="absolute inset-0 bg-[radial-gradient(#396756_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.04]" />
       </div>
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
