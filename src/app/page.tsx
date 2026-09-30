@@ -9,11 +9,16 @@ import { NotificationModal } from '../components/NotificationModal';
 import { OverviewView } from '../views/OverviewView';
 import { BracketView } from '../views/BracketView';
 import { RegistrationView } from '../views/RegistrationView';
+import { AuthModal } from '../components/auth/AuthModal';
+import { UserManagementModal } from '../components/admin/UserManagementModal';
+import { ProfileModal } from '../components/profile/ProfileModal';
 
 export default function Home() {
   const [currentView, setCurrentView] = useState<ScreenView>('overview-and-schedule');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isAdminUsersOpen, setIsAdminUsersOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   // Scroll to top on navigation
   const navigateTo = (view: ScreenView) => {
@@ -48,6 +53,19 @@ export default function Home() {
         onNavigate={navigateTo}
       />
 
+      {/* Auth & Role Modals */}
+      <AuthModal />
+
+      <UserManagementModal
+        isOpen={isAdminUsersOpen}
+        onClose={() => setIsAdminUsersOpen(false)}
+      />
+
+      <ProfileModal
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+      />
+
       {/* Main Navbar */}
       <Navbar
         currentView={currentView}
@@ -55,6 +73,8 @@ export default function Home() {
         onOpenSearch={() => setIsSearchOpen(true)}
         onOpenNotifications={() => setIsNotificationsOpen(true)}
         unreadNotificationsCount={3}
+        onOpenProfile={() => setIsProfileOpen(true)}
+        onOpenAdminUsers={() => setIsAdminUsersOpen(true)}
       />
 
       {/* Main Content Area */}
@@ -77,7 +97,7 @@ export default function Home() {
                 Fitur Berikutnya: {currentView.replace(/-/g, ' ').toUpperCase()}
               </h2>
               <p className="text-on-surface-variant max-w-lg mx-auto mb-6">
-                Tahap 1 (Overview &amp; Jadwal Pertandingan) sudah aktif! Fitur ini siap diintegrasikan pada langkah berikutnya sesuai permintaan bertahap.
+                Tahap 1 (Autentikasi &amp; 4 Role Pengguna + PostgreSQL) sudah aktif!
               </p>
               <button
                 onClick={() => navigateTo('overview-and-schedule')}
@@ -95,3 +115,4 @@ export default function Home() {
     </div>
   );
 }
+

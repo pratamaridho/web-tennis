@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  PENGUNJUNG
+  MEMBER
+  ADMIN_KOMUNITAS
+  ADMIN_WEB
+}
+
+enum TournamentFormat {
+  KNOCKOUT
+  ROUND_ROBIN
+}
+
+enum TournamentStatus {
+  DRAFT
+  PENDAFTARAN_DIBUKA
+  BERLANGSUNG
+  SELESAI
+}
+
+enum RegistrationStatus {
+  MENUNGGU
+  DITERIMA
+  DITOLAK
+}
+
+enum MatchStatus {
+  SCHEDULED
+  LIVE
+  COMPLETED
+  WALK_OVER
+}
+
+model User {
+  id          String   @id @default(cuid())
+  nama        String
+  email       String   @unique
+  password    String
+  role        Role     @default(MEMBER)
+  aktif       Boolean  @default(true)
+  avatarUrl   String?
+  phone       String?
+  ntrpRating  String?
+  club        String?
+  racket      String?
+  hand        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  registrations     Registration[]
+  matchesAsPlayer1  Match[]        @relation("Player1Matches")
+  matchesAsPlayer2  Match[]        @relation("Player2Matches")
+  matchesWon        Match[]        @relation("WonMatches")
+  news              News[]         @relation("AuthorNews")
+
+  @@map("users")
+}
+
+model Tournament {
+  id          String           @id @default(cuid())
+  nama        String
+  deskripsi   String?
+  tanggal     String
+  lokasi      String
+  kuota       Int
+  batasDaftar String
+  aturan      String?
+  format      TournamentFormat @default(KNOCKOUT)
+  status      TournamentStatus @default(DRAFT)
+  juaraId     String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  registrations Registration[]
+  matches       Match[]
+
+  @@map("tournaments")
+}
+
+model Registration {
+  id           String             @id @default(cuid())
+  tournamentId String
+  userId       String
+  status       RegistrationStatus @default(MENUNGGU)
+  createdAt    DateTime           @default(now())
+
+  tournament   Tournament         @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([tournamentId, userId])
+  @@map("registrations")
+}
+
+model Match {
+  id           String      @id @default(cuid())
+  tournamentId String
+  ronde        Int
+  urutan       Int
+  player1Id    String?
+  player2Id    String?
+  skor         String?
+  winnerId     String?
+  court        String?
+  time         String?
+  status       MatchStatus @default(SCHEDULED)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  tournament   Tournament  @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  player1      User?       @relation("Player1Matches", fields: [player1Id], references: [id])
+  player2      User?       @relation("Player2Matches", fields: [player2Id], references: [id])
+  winner       User?       @relation("WonMatches", fields: [winnerId], references: [id])
+
+  @@map("matches")
+}
+
+model News {
+  id        String   @id @default(cuid())
+  judul     String
+  isi       String
+  tanggal   String
+  penulisId String
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  penulis   User     @relation("AuthorNews", fields: [penulisId], references: [id])
+
+  @@map("news")
+}

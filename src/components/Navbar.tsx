@@ -1,9 +1,8 @@
 'use client';
 
-/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import { ScreenView } from '../types';
-import { ASSETS } from '../data/mockData';
+import { useAuth } from '@/context/AuthContext';
 
 interface NavbarProps {
   currentView: ScreenView;
@@ -11,6 +10,8 @@ interface NavbarProps {
   onOpenSearch: () => void;
   onOpenNotifications: () => void;
   unreadNotificationsCount?: number;
+  onOpenProfile?: () => void;
+  onOpenAdminUsers?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -19,17 +20,26 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenSearch,
   onOpenNotifications,
   unreadNotificationsCount = 3,
+  onOpenProfile,
+  onOpenAdminUsers,
 }) => {
+  const { user, role, openAuthModal, logout } = useAuth();
   const [profileOpen, setProfileOpen] = React.useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   const navLinks: { label: string; view: ScreenView }[] = [
     { label: 'Beranda', view: 'overview-and-schedule' },
     { label: 'Bagan Turnamen', view: 'tournament-bracket' },
-    { label: 'Daftar Tim', view: 'registration' },
-    { label: 'Portal Member', view: 'participant-portal' },
-    { label: 'Admin', view: 'admin-suite' },
+    { label: 'Pendaftaran', view: 'registration' },
   ];
+
+  if (role === 'MEMBER' || role === 'ADMIN_KOMUNITAS' || role === 'ADMIN_WEB') {
+    navLinks.push({ label: 'Portal Member', view: 'participant-portal' });
+  }
+
+  if (role === 'ADMIN_KOMUNITAS' || role === 'ADMIN_WEB') {
+    navLinks.push({ label: 'Admin Suite', view: 'admin-suite' });
+  }
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-md border-b border-surface-container-high/80">
@@ -78,24 +88,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Right Tools */}
         <div className="flex items-center gap-2">
-          {/* Quick Search Button */}
-          <button
-            onClick={onOpenSearch}
-            className="hidden sm:flex items-center gap-1.5 bg-surface-container px-2.5 py-1.5 rounded-lg text-xs text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer"
-          >
-            <svg className="w-4 h-4 text-outline" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <span>Cari</span>
-            <kbd className="bg-surface-container-highest px-1 rounded text-[10px] font-mono">⌘K</kbd>
-          </button>
-
-          {/* Member Count Pill */}
-          <div className="flex items-center gap-1.5 bg-primary/10 text-primary px-2.5 py-1 rounded-full text-xs font-bold">
-            <span className="w-1.5 h-1.5 rounded-full bg-surface-tint animate-pulse"></span>
-            <span>199 Member</span>
-          </div>
-
           {/* Notification Button */}
           <button 
             onClick={onOpenNotifications}
@@ -113,55 +105,140 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </button>
 
-          {/* CTA Daftar */}
-          <button 
-            onClick={() => onNavigate('registration')}
-            className="hidden lg:inline-flex items-center bg-primary text-on-primary text-xs font-semibold px-3 py-1.5 rounded-lg hover:bg-surface-tint transition-all shadow-xs cursor-pointer"
-          >
-            Daftar
-          </button>
-
-          {/* User Profile */}
-          <div className="relative">
-            <button 
-              onClick={() => setProfileOpen(!profileOpen)}
-              className="flex items-center focus:outline-none"
-            >
-              <img 
-                alt="Avatar" 
-                className="w-7 h-7 rounded-full object-cover border border-surface-container-high" 
-                src={ASSETS.userAvatar} 
-              />
-            </button>
-
-            {profileOpen && (
-              <div 
-                className="absolute right-0 top-10 w-56 bg-surface-container-lowest rounded-xl shadow-lg border border-surface-container-high p-2 z-50"
-                onMouseLeave={() => setProfileOpen(false)}
+          {/* User Auth Controls per PRD */}
+          {role === 'PENGUNJUNG' ? (
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => openAuthModal('login')}
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold text-on-surface hover:bg-surface-container transition-colors"
               >
-                <div className="p-2 border-b border-surface-container-high mb-1">
-                  <div className="font-bold text-sm text-primary">Alex Morgan</div>
-                  <div className="text-xs text-on-surface-variant">Unggulan #3 • Tunggal Putra</div>
+                Masuk
+              </button>
+              <button
+                onClick={() => openAuthModal('register')}
+                className="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#ccff00] text-black hover:bg-[#b8e600] transition-colors shadow-xs"
+              >
+                Daftar Member
+              </button>
+            </div>
+          ) : (
+            <div className="relative">
+              <button 
+                onClick={() => setProfileOpen(!profileOpen)}
+                className="flex items-center gap-2 focus:outline-none p-1 rounded-xl hover:bg-surface-container transition-colors"
+              >
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#ccff00] to-emerald-500 flex items-center justify-center text-black font-extrabold text-xs shadow-xs">
+                  {user?.nama ? user.nama.charAt(0) : 'U'}
                 </div>
-                <div className="text-xs space-y-1">
-                  <button 
-                    onClick={() => { onNavigate('participant-portal'); setProfileOpen(false); }}
-                    className="w-full text-left px-2 py-1.5 rounded hover:bg-surface-container text-on-surface flex items-center gap-2"
-                  >
-                    <span className="material-symbols-outlined text-base">badge</span>
-                    <span>Kartu Atlet</span>
-                  </button>
-                  <button 
-                    onClick={() => { onNavigate('admin-suite'); setProfileOpen(false); }}
-                    className="w-full text-left px-2 py-1.5 rounded hover:bg-surface-container text-on-surface flex items-center gap-2"
-                  >
-                    <span className="material-symbols-outlined text-base">admin_panel_settings</span>
-                    <span>Admin Suite</span>
-                  </button>
+                <div className="hidden lg:flex flex-col text-left">
+                  <span className="text-xs font-bold text-primary leading-tight">
+                    {user?.nama?.split(' ')[0] || 'Member'}
+                  </span>
+                  <span className="text-[10px] text-surface-tint font-semibold">
+                    {role === 'ADMIN_WEB' ? 'Admin Web' : role === 'ADMIN_KOMUNITAS' ? 'Admin Komunitas' : 'Member'}
+                  </span>
                 </div>
-              </div>
-            )}
-          </div>
+                <svg className="w-4 h-4 text-on-surface-variant hidden lg:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {profileOpen && (
+                <div 
+                  className="absolute right-0 top-12 w-64 bg-surface-container-lowest rounded-2xl shadow-xl border border-surface-container-high p-2.5 z-50 animate-fadeIn"
+                  onMouseLeave={() => setProfileOpen(false)}
+                >
+                  <div className="p-2.5 border-b border-surface-container-high mb-1.5">
+                    <div className="font-bold text-sm text-primary">{user?.nama}</div>
+                    <div className="text-xs text-on-surface-variant">{user?.email}</div>
+                    <div className="mt-1 flex items-center gap-1.5">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#ccff00]/15 text-[#ccff00]">
+                        {role}
+                      </span>
+                      {user?.club && (
+                        <span className="text-[10px] text-gray-400 truncate max-w-[130px]">
+                          • {user.club}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="text-xs space-y-1">
+                    <button 
+                      onClick={() => { 
+                        if (onOpenProfile) onOpenProfile();
+                        setProfileOpen(false); 
+                      }}
+                      className="w-full text-left px-2.5 py-2 rounded-lg hover:bg-surface-container text-on-surface flex items-center gap-2 font-medium"
+                    >
+                      <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                      <span>Profil & Pengaturan</span>
+                    </button>
+
+                    <button 
+                      onClick={() => { 
+                        onNavigate('participant-portal'); 
+                        setProfileOpen(false); 
+                      }}
+                      className="w-full text-left px-2.5 py-2 rounded-lg hover:bg-surface-container text-on-surface flex items-center gap-2 font-medium"
+                    >
+                      <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+                      </svg>
+                      <span>Kartu Atlet & Turnamen</span>
+                    </button>
+
+                    {role === 'ADMIN_WEB' && (
+                      <button 
+                        onClick={() => { 
+                          if (onOpenAdminUsers) onOpenAdminUsers();
+                          setProfileOpen(false); 
+                        }}
+                        className="w-full text-left px-2.5 py-2 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 flex items-center gap-2 font-semibold"
+                      >
+                        <svg className="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <span>Kelola Pengguna (Admin Web)</span>
+                      </button>
+                    )}
+
+                    {(role === 'ADMIN_KOMUNITAS' || role === 'ADMIN_WEB') && (
+                      <button 
+                        onClick={() => { 
+                          onNavigate('admin-suite'); 
+                          setProfileOpen(false); 
+                        }}
+                        className="w-full text-left px-2.5 py-2 rounded-lg hover:bg-surface-container text-on-surface flex items-center gap-2 font-medium"
+                      >
+                        <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span>Admin Suite</span>
+                      </button>
+                    )}
+
+                    <div className="pt-1 border-t border-surface-container-high mt-1">
+                      <button 
+                        onClick={() => {
+                          logout();
+                          setProfileOpen(false);
+                        }}
+                        className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-red-500/10 text-red-400 flex items-center gap-2 font-medium"
+                      >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        <span>Keluar Akun</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Mobile Menu Hamburger Button */}
           <button
