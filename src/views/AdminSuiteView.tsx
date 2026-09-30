@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { TournamentFormat, TournamentStatus } from '@/models/TournamentModel';
 import { RegistrationStatus } from '@/models/RegistrationModel';
+import { AdminBracketModal } from '@/components/bracket/AdminBracketModal';
 
 interface TournamentItem {
   id: string;
@@ -66,6 +67,15 @@ export const AdminSuiteView: React.FC = () => {
   // Applicants Drawer / Modal
   const [isApplicantsOpen, setIsApplicantsOpen] = useState(false);
   const [applicantFeedback, setApplicantFeedback] = useState<string | null>(null);
+
+  // Bracket & Scoring Modal
+  const [isBracketModalOpen, setIsBracketModalOpen] = useState(false);
+  const [selectedBracketTournament, setSelectedBracketTournament] = useState<TournamentItem | null>(null);
+
+  const openBracketModal = (t: TournamentItem) => {
+    setSelectedBracketTournament(t);
+    setIsBracketModalOpen(true);
+  };
 
   const fetchTournaments = useCallback(async () => {
     setIsLoading(true);
@@ -400,6 +410,16 @@ export const AdminSuiteView: React.FC = () => {
                         <span>Pendaftar ({t.totalRegistrationsCount})</span>
                       </button>
 
+                      <button
+                        onClick={() => openBracketModal(t)}
+                        className="px-3 py-1.5 bg-blue-500/15 hover:bg-blue-500/25 text-blue-400 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                        </svg>
+                        <span>Bagan & Skor</span>
+                      </button>
+
                       {t.canBeEdited ? (
                         <button
                           onClick={() => openEditForm(t)}
@@ -726,6 +746,20 @@ export const AdminSuiteView: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Admin Bracket & Scoring Modal (PRD D1, D2, D3) */}
+      {isBracketModalOpen && selectedBracketTournament && (
+        <AdminBracketModal
+          isOpen={isBracketModalOpen}
+          onClose={() => setIsBracketModalOpen(false)}
+          tournamentId={selectedBracketTournament.id}
+          tournamentName={selectedBracketTournament.nama}
+          tournamentFormat={selectedBracketTournament.format}
+          tournamentStatus={selectedBracketTournament.status}
+          acceptedCount={selectedBracketTournament.acceptedCount}
+          onTournamentUpdated={fetchTournaments}
+        />
       )}
     </div>
   );

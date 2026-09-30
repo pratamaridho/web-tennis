@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { ScreenView } from '../types';
+import { PublicLiveBracket } from '../components/bracket/PublicLiveBracket';
 
 interface BracketViewProps {
   onNavigate: (view: ScreenView) => void;
@@ -40,6 +41,7 @@ interface BracketMatch {
 type CategoryId = 'ms' | 'ws' | 'md' | 'xd';
 
 export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
+  const [viewMode, setViewMode] = useState<'live' | 'simulation'>('live');
   const [selectedCategory, setSelectedCategory] = useState<CategoryId>('ms');
   const [selectedMatchId, setSelectedMatchId] = useState<string>('QF-2');
   const [searchQuery, setSearchQuery] = useState('');
@@ -209,68 +211,101 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
             </div>
           </div>
 
-          {/* Bar Kontrol Kategori, Pencarian, & Zoom */}
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mt-6 pt-4 border-t border-surface-container-high/60">
-            {/* Tab Kategori */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-              {categories.map((c) => (
-                <button
-                  key={c.id}
-                  onClick={() => setSelectedCategory(c.id)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
-                    selectedCategory === c.id
-                      ? 'bg-primary text-on-primary shadow-xs'
-                      : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
-                  }`}
-                >
-                  {c.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Cari & Zoom Skala */}
-            <div className="flex items-center gap-2.5 shrink-0">
-              <div className="relative">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Cari nama atlet..."
-                  className="bg-surface-container pl-3 pr-3 py-1.5 text-xs rounded-lg text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary w-44 sm:w-52 border border-surface-container-high"
-                />
-              </div>
-
-              {/* Kontrol Zoom Skala */}
-              <div className="flex items-center bg-surface-container p-0.5 rounded-lg text-xs">
-                <button
-                  onClick={() => setZoom((prev) => Math.max(prev - 10, 80))}
-                  className="px-2 py-1 hover:bg-surface-container-highest rounded text-on-surface font-bold cursor-pointer"
-                  title="Perkecil"
-                >
-                  -
-                </button>
-                <span className="px-1.5 font-mono text-[11px] text-on-surface-variant min-w-[38px] text-center">
-                  {zoom}%
-                </span>
-                <button
-                  onClick={() => setZoom((prev) => Math.min(prev + 10, 120))}
-                  className="px-2 py-1 hover:bg-surface-container-highest rounded text-on-surface font-bold cursor-pointer"
-                  title="Perbesar"
-                >
-                  +
-                </button>
-              </div>
-            </div>
+          {/* Mode Switcher: Turnamen Resmi (Database) vs Simulasi Alur */}
+          <div className="flex items-center gap-2 mt-5 p-1 bg-surface-container rounded-2xl w-fit border border-surface-container-high">
+            <button
+              onClick={() => setViewMode('live')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
+                viewMode === 'live'
+                  ? 'bg-primary text-on-primary shadow-sm'
+                  : 'text-on-surface-variant hover:text-on-surface'
+              }`}
+            >
+              <span>🏆</span>
+              <span>Turnamen Resmi (Database)</span>
+            </button>
+            <button
+              onClick={() => setViewMode('simulation')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
+                viewMode === 'simulation'
+                  ? 'bg-primary text-on-primary shadow-sm'
+                  : 'text-on-surface-variant hover:text-on-surface'
+              }`}
+            >
+              <span>📊</span>
+              <span>Simulasi Grand Slam</span>
+            </button>
           </div>
+
+          {/* Bar Kontrol Kategori, Pencarian, & Zoom (Khusus Mode Simulasi) */}
+          {viewMode === 'simulation' && (
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mt-6 pt-4 border-t border-surface-container-high/60">
+              {/* Tab Kategori */}
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                {categories.map((c) => (
+                  <button
+                    key={c.id}
+                    onClick={() => setSelectedCategory(c.id)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                      selectedCategory === c.id
+                        ? 'bg-primary text-on-primary shadow-xs'
+                        : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
+                    }`}
+                  >
+                    {c.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Cari & Zoom Skala */}
+              <div className="flex items-center gap-2.5 shrink-0">
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Cari nama atlet..."
+                    className="bg-surface-container pl-3 pr-3 py-1.5 text-xs rounded-lg text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary w-44 sm:w-52 border border-surface-container-high"
+                  />
+                </div>
+
+                {/* Kontrol Zoom Skala */}
+                <div className="flex items-center bg-surface-container p-0.5 rounded-lg text-xs">
+                  <button
+                    onClick={() => setZoom((prev) => Math.max(prev - 10, 80))}
+                    className="px-2 py-1 hover:bg-surface-container-highest rounded text-on-surface font-bold cursor-pointer"
+                    title="Perkecil"
+                  >
+                    -
+                  </button>
+                  <span className="px-1.5 font-mono text-[11px] text-on-surface-variant min-w-[38px] text-center">
+                    {zoom}%
+                  </span>
+                  <button
+                    onClick={() => setZoom((prev) => Math.min(prev + 10, 120))}
+                    className="px-2 py-1 hover:bg-surface-container-highest rounded text-on-surface font-bold cursor-pointer"
+                    title="Perbesar"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* 2. AREA DIAGRAM ALUR BAGAN (Sequence Flow Structure) */}
-      <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-8">
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
-          {/* KOLOM KIRI (xl:col-span-8): DIAGRAM BAGAN DENGAN KONEKTOR */}
-          <div className="xl:col-span-8 flex flex-col gap-4">
-            {/* Canvas Diagram Sequence */}
+      {/* 2. BODY CONTENT: TAMPILKAN LIVE DATABASE ATAU SIMULASI */}
+      {viewMode === 'live' ? (
+        <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-8">
+          <PublicLiveBracket />
+        </section>
+      ) : (
+        <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-8">
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+            {/* KOLOM KIRI (xl:col-span-8): DIAGRAM BAGAN DENGAN KONEKTOR */}
+            <div className="xl:col-span-8 flex flex-col gap-4">
+              {/* Canvas Diagram Sequence */}
             <div className="overflow-x-auto bg-surface-container-lowest rounded-2xl border border-surface-container-high p-4 sm:p-6 shadow-xs scrollbar-none">
               <div
                 className="min-w-[860px] flex items-start gap-1 transition-transform origin-top-left py-2"
@@ -797,6 +832,7 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
           </div>
         </div>
       </section>
+      )}
     </div>
   );
 };
