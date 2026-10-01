@@ -178,40 +178,33 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
   return (
     <div className="flex flex-col w-full pb-16">
       {/* 1. Header Kontrol & Navigasi Bagan */}
-      <section className="relative w-full bg-surface-container-low border-b border-surface-container-high/60 py-6 sm:py-10 overflow-hidden">
-        {/* Ambient subtle glow like Overview */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none -z-0 select-none">
-          <div className="absolute top-1/2 -left-24 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl" />
-          <div className="absolute -top-12 -right-24 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl" />
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <section className="w-full bg-surface-container-low border-b border-surface-container-high/60 py-6 sm:py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container border border-surface-container-high text-xs font-semibold text-surface-tint mb-2 shadow-2xs">
-                <span>Alur Eliminasi Tunggal</span>
+              <div className="flex items-center gap-2 mb-1 text-xs">
+                <span className="font-bold uppercase tracking-wider text-surface-tint">
+                  Alur Eliminasi Tunggal
+                </span>
                 <span className="text-on-surface-variant">•</span>
-                <span>GBK Senayan</span>
+                <span className="text-on-surface-variant">GBK Senayan</span>
               </div>
-              <h1 className="text-2xl sm:text-4xl font-black text-primary tracking-tight font-display">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-primary tracking-tight">
                 Bagan Turnamen
               </h1>
-              <p className="text-xs sm:text-sm text-on-surface-variant mt-1 max-w-xl">
-                Pantau perkembangan jadwal pertandingan resmi, skor langsung, dan bagan kejuaraan Tyrannosaurus Tennis Club.
-              </p>
             </div>
 
             {/* Aksi Cepat */}
-            <div className="flex items-center gap-2.5 shrink-0 self-start md:self-auto">
+            <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={() => onNavigate('overview-and-schedule')}
-                className="px-4 py-2.5 rounded-xl bg-surface-container text-primary text-xs sm:text-sm font-semibold hover:bg-surface-container-high border border-surface-container-high transition-colors cursor-pointer font-display shadow-2xs"
+                className="px-3.5 py-1.5 rounded-lg bg-surface-container text-primary text-xs font-semibold hover:bg-surface-container-high transition-colors cursor-pointer"
               >
                 Jadwal Hari Ini
               </button>
               <button
                 onClick={() => onNavigate('registration')}
-                className="px-5 py-2.5 rounded-xl bg-primary text-on-primary text-xs sm:text-sm font-bold hover:bg-surface-tint transition-all shadow-xs cursor-pointer font-display"
+                className="px-3.5 py-1.5 rounded-lg bg-primary text-on-primary text-xs font-semibold hover:bg-surface-tint transition-all shadow-xs cursor-pointer"
               >
                 Daftar Turnamen
               </button>
@@ -219,52 +212,42 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
           </div>
 
           {/* Mode Switcher: Turnamen Resmi (Database) vs Simulasi Alur */}
-          <div className="flex items-center gap-2 mt-6 p-1.5 bg-surface-container rounded-2xl w-fit border border-surface-container-high shadow-2xs">
+          <div className="flex items-center gap-2 mt-5 p-1 bg-surface-container rounded-2xl w-fit border border-surface-container-high">
             <button
               onClick={() => setViewMode('live')}
-              className={`min-h-[44px] px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-2.5 font-display focus-visible:ring-2 focus-visible:ring-primary focus:outline-none ${
-                viewMode === 'live'
-                  ? 'bg-primary text-on-primary shadow-xs'
-                  : 'text-on-surface-variant hover:text-primary'
-              }`}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${viewMode === 'live'
+                  ? 'bg-primary text-on-primary shadow-sm'
+                  : 'text-on-surface-variant hover:text-on-surface'
+                }`}
             >
-              <svg className="w-4 h-4 shrink-0 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8 21h8m-4-4v4m-5-8h10a4 4 0 004-4V5H3v4a4 4 0 004 4zm-4-4H2v2a3 3 0 003 3m14-5h1a3 3 0 013 3" />
-              </svg>
+              <span>🏆</span>
               <span>Turnamen Resmi (Database)</span>
             </button>
             <button
               onClick={() => setViewMode('simulation')}
-              className={`min-h-[44px] px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-2.5 font-display focus-visible:ring-2 focus-visible:ring-primary focus:outline-none ${
-                viewMode === 'simulation'
-                  ? 'bg-primary text-on-primary shadow-xs'
-                  : 'text-on-surface-variant hover:text-primary'
-              }`}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${viewMode === 'simulation'
+                  ? 'bg-primary text-on-primary shadow-sm'
+                  : 'text-on-surface-variant hover:text-on-surface'
+                }`}
             >
-              <svg className="w-4 h-4 shrink-0 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <rect x="3" y="4" width="7" height="6" rx="1.5" />
-                <rect x="3" y="14" width="7" height="6" rx="1.5" />
-                <rect x="14" y="9" width="7" height="6" rx="1.5" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10 7h2a2 2 0 012 2v1m-4 7h2a2 2 0 002-2v-1" />
-              </svg>
+              <span>📊</span>
               <span>Simulasi Grand Slam</span>
             </button>
           </div>
 
           {/* Bar Kontrol Kategori, Pencarian, & Zoom (Khusus Mode Simulasi) */}
           {viewMode === 'simulation' && (
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mt-6 pt-5 border-t border-surface-container-high/60">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mt-6 pt-4 border-t border-surface-container-high/60">
               {/* Tab Kategori */}
-              <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
                 {categories.map((c) => (
                   <button
                     key={c.id}
                     onClick={() => setSelectedCategory(c.id)}
-                    className={`min-h-[40px] px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer font-display focus-visible:ring-2 focus-visible:ring-primary focus:outline-none ${
-                      selectedCategory === c.id
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${selectedCategory === c.id
                         ? 'bg-primary text-on-primary shadow-xs'
-                        : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high border border-surface-container-high'
-                    }`}
+                        : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
+                      }`}
                   >
                     {c.label}
                   </button>
@@ -279,28 +262,26 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Cari nama atlet..."
-                    className="min-h-[40px] bg-surface-container-lowest pl-3.5 pr-3.5 py-2 text-xs rounded-xl text-primary placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20 w-44 sm:w-52 border border-surface-container-high shadow-2xs"
+                    className="bg-surface-container pl-3 pr-3 py-1.5 text-xs rounded-lg text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary w-44 sm:w-52 border border-surface-container-high"
                   />
                 </div>
 
                 {/* Kontrol Zoom Skala */}
-                <div className="flex items-center bg-surface-container-lowest p-1 rounded-xl text-xs border border-surface-container-high shadow-2xs min-h-[40px]">
+                <div className="flex items-center bg-surface-container p-0.5 rounded-lg text-xs">
                   <button
                     onClick={() => setZoom((prev) => Math.max(prev - 10, 80))}
-                    className="min-w-[32px] min-h-[32px] flex items-center justify-center hover:bg-surface-container rounded-lg text-primary font-bold cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus:outline-none"
+                    className="px-2 py-1 hover:bg-surface-container-highest rounded text-on-surface font-bold cursor-pointer"
                     title="Perkecil"
-                    aria-label="Perkecil skala bagan"
                   >
                     -
                   </button>
-                  <span className="px-2 font-mono text-[11px] text-on-surface-variant min-w-[38px] text-center font-medium">
+                  <span className="px-1.5 font-mono text-[11px] text-on-surface-variant min-w-[38px] text-center">
                     {zoom}%
                   </span>
                   <button
                     onClick={() => setZoom((prev) => Math.min(prev + 10, 120))}
-                    className="min-w-[32px] min-h-[32px] flex items-center justify-center hover:bg-surface-container rounded-lg text-primary font-bold cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus:outline-none"
+                    className="px-2 py-1 hover:bg-surface-container-highest rounded text-on-surface font-bold cursor-pointer"
                     title="Perbesar"
-                    aria-label="Perbesar skala bagan"
                   >
                     +
                   </button>
@@ -318,589 +299,528 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
         </section>
       ) : (
         <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-8">
-          {/* Hint Affordance untuk Mobile (Finding #5) */}
-          <div className="flex items-center gap-1.5 text-xs text-on-surface-variant mb-3 lg:hidden px-1">
-            <svg className="w-4 h-4 animate-pulse text-surface-tint shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-            <span>Geser ke samping untuk menjelajahi babak eliminasi</span>
-          </div>
-
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
             {/* KOLOM KIRI (xl:col-span-8): DIAGRAM BAGAN DENGAN KONEKTOR */}
             <div className="xl:col-span-8 flex flex-col gap-4">
               {/* Canvas Diagram Sequence */}
-            <div className="overflow-x-auto bg-surface-container-lowest rounded-3xl border border-surface-container-high/90 p-5 sm:p-7 shadow-xs scrollbar-none">
-              <div
-                className="min-w-[860px] flex items-start gap-1 transition-transform origin-top-left py-2"
-                style={{ transform: `scale(${zoom / 100})` }}
-              >
-                {/* ========================================================================= */}
-                {/* KOLOM 1: BABAK 16 (Header + Garis ke Bawah + Tabel Pertandingan) */}
-                {/* ========================================================================= */}
-                <div className="w-[195px] shrink-0 relative flex flex-col items-center">
-                  {/* Keterangan Babak 16 */}
-                  <div className="w-full py-2 px-2.5 rounded-xl bg-surface-container-low border border-surface-container-high text-center font-bold text-xs text-primary flex items-center justify-center gap-1.5 shadow-2xs z-20">
-                    <span className="w-4 h-4 rounded-full bg-primary/10 text-primary text-[10px] flex items-center justify-center font-bold">1</span>
-                    <span>Babak 16</span>
+              <div className="overflow-x-auto bg-surface-container-lowest rounded-2xl border border-surface-container-high p-4 sm:p-6 shadow-xs scrollbar-none">
+                <div
+                  className="min-w-[860px] flex items-start gap-1 transition-transform origin-top-left py-2"
+                  style={{ transform: `scale(${zoom / 100})` }}
+                >
+                  {/* ========================================================================= */}
+                  {/* KOLOM 1: BABAK 16 (Header + Garis ke Bawah + Tabel Pertandingan) */}
+                  {/* ========================================================================= */}
+                  <div className="w-[195px] shrink-0 relative flex flex-col items-center">
+                    {/* Keterangan Babak 16 */}
+                    <div className="w-full py-2 px-2.5 rounded-xl bg-surface-container-low border border-surface-container-high text-center font-bold text-xs text-primary flex items-center justify-center gap-1.5 shadow-2xs z-20">
+                      <span className="w-4 h-4 rounded-full bg-primary/10 text-primary text-[10px] flex items-center justify-center font-bold">1</span>
+                      <span>Babak 16</span>
+                    </div>
+
+                    {/* Garis Vertikal ke Bawah (Lifeline) */}
+                    <div className="absolute top-9 bottom-0 left-1/2 -translate-x-1/2 w-0 border-l-2 border-primary/20 z-0 pointer-events-none" />
+
+                    {/* Wadah Tabel Pertandingan Babak 16 */}
+                    <div className="relative z-10 w-full h-[460px] flex flex-col justify-between mt-3">
+                      {matches.slice(0, 4).map((m) => (
+                        <div
+                          key={m.id}
+                          onClick={() => setSelectedMatchId(m.id)}
+                          className={`w-full rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none ${selectedMatchId === m.id
+                              ? 'border-primary ring-2 ring-primary/20 bg-surface-container-low'
+                              : 'border-surface-container-high bg-surface-container-lowest hover:border-primary/40'
+                            } ${!isMatchVisible(m) ? 'opacity-30' : ''}`}
+                        >
+                          {/* Header Tabel Match */}
+                          <div className="flex items-center justify-between px-2 py-1 bg-surface-container-low/60 border-b border-surface-container-high text-[10px] font-mono">
+                            <span className="font-bold text-primary">{m.nodeCode}</span>
+                            <span className="text-on-surface-variant text-[9px]">{m.court}</span>
+                            <span className="text-primary font-semibold text-[9px]">{m.statusBadge}</span>
+                          </div>
+
+                          {/* Tabel Atlet */}
+                          <table className="w-full border-collapse">
+                            <tbody>
+                              <tr className={`border-b border-surface-container-high/40 ${m.player1.winner ? 'bg-primary-fixed/20 font-bold text-primary' : 'text-on-surface'}`}>
+                                <td className="py-1 px-2 text-left truncate">
+                                  <div className="flex items-center gap-1 truncate">
+                                    {m.player1.seed && (
+                                      <span className="w-3.5 h-3.5 rounded text-[8px] bg-primary/10 flex items-center justify-center font-bold shrink-0">
+                                        {m.player1.seed}
+                                      </span>
+                                    )}
+                                    <span className="text-[9px] text-on-surface-variant font-mono shrink-0">{m.player1.country}</span>
+                                    <span className="text-[11px] truncate">{m.player1.name}</span>
+                                  </div>
+                                </td>
+                                <td className="py-1 px-2 text-right font-mono text-[11px] font-bold shrink-0 whitespace-nowrap">
+                                  <span>{m.player1.score.join(' ')}</span>
+                                </td>
+                              </tr>
+                              <tr className={`${m.player2.winner ? 'bg-primary-fixed/20 font-bold text-primary' : 'text-on-surface'}`}>
+                                <td className="py-1 px-2 text-left truncate">
+                                  <div className="flex items-center gap-1 truncate">
+                                    {m.player2.seed && (
+                                      <span className="w-3.5 h-3.5 rounded text-[8px] bg-primary/10 flex items-center justify-center font-bold shrink-0">
+                                        {m.player2.seed}
+                                      </span>
+                                    )}
+                                    <span className="text-[9px] text-on-surface-variant font-mono shrink-0">{m.player2.country}</span>
+                                    <span className="text-[11px] truncate">{m.player2.name}</span>
+                                  </div>
+                                </td>
+                                <td className="py-1 px-2 text-right font-mono text-[11px] font-bold shrink-0 whitespace-nowrap">
+                                  <span>{m.player2.score.join(' ')}</span>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
-                  {/* Garis Vertikal ke Bawah (Lifeline) */}
-                  <div className="absolute top-9 bottom-0 left-1/2 -translate-x-1/2 w-0 border-l-2 border-primary/20 z-0 pointer-events-none" />
+                  {/* ========================================================================= */}
+                  {/* KONEKTOR 1: BABAK 16 -> PEREMPAT FINAL (Solid) */}
+                  {/* ========================================================================= */}
+                  <div className="w-8 shrink-0 flex flex-col justify-between pt-11">
+                    <svg className="w-full h-[460px] text-outline-variant" viewBox="0 0 32 460" fill="none">
+                      <path d="M 0 37 L 16 37 L 16 166 L 0 166" stroke="currentColor" strokeWidth="1.5" />
+                      <path d="M 16 101 L 32 101" stroke="currentColor" strokeWidth="1.5" />
+                      <path d="M 0 294 L 16 294 L 16 423 L 0 423" stroke="currentColor" strokeWidth="1.5" />
+                      <path d="M 16 359 L 32 359" stroke="currentColor" strokeWidth="1.5" />
+                    </svg>
+                  </div>
 
-                  {/* Wadah Tabel Pertandingan Babak 16 */}
-                  <div className="relative z-10 w-full h-[460px] flex flex-col justify-between mt-3">
-                    {matches.slice(0, 4).map((m) => (
+                  {/* ========================================================================= */}
+                  {/* KOLOM 2: PEREMPAT FINAL (Header + Garis ke Bawah + Tabel Pertandingan) */}
+                  {/* ========================================================================= */}
+                  <div className="w-[200px] shrink-0 relative flex flex-col items-center">
+                    {/* Keterangan Perempat Final */}
+                    <div className="w-full py-2 px-2.5 rounded-xl bg-surface-container-low border border-surface-container-high text-center font-bold text-xs text-primary flex items-center justify-center gap-1.5 shadow-2xs z-20">
+                      <span className="w-4 h-4 rounded-full bg-primary/10 text-primary text-[10px] flex items-center justify-center font-bold">2</span>
+                      <span>Perempat Final</span>
+                    </div>
+
+                    {/* Garis Vertikal ke Bawah (Lifeline) */}
+                    <div className="absolute top-9 bottom-0 left-1/2 -translate-x-1/2 w-0 border-l-2 border-primary/20 z-0 pointer-events-none" />
+
+                    {/* Wadah Tabel Pertandingan Perempat Final */}
+                    <div className="relative z-10 w-full h-[460px] mt-3">
+                      {/* Match QF-1 */}
                       <div
-                        key={m.id}
-                        role="button"
-                        tabIndex={0}
-                        onClick={() => setSelectedMatchId(m.id)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            setSelectedMatchId(m.id);
-                            e.preventDefault();
-                          }
-                        }}
-                        aria-label={`Pilih pertandingan ${m.nodeCode} ${m.player1.name} melawan ${m.player2.name}`}
-                        className={`w-full rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
-                          selectedMatchId === m.id
+                        style={{ top: '64px' }}
+                        onClick={() => setSelectedMatchId('QF-1')}
+                        className={`absolute left-0 right-0 rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none ${selectedMatchId === 'QF-1'
                             ? 'border-primary ring-2 ring-primary/20 bg-surface-container-low'
                             : 'border-surface-container-high bg-surface-container-lowest hover:border-primary/40'
-                        } ${!isMatchVisible(m) ? 'opacity-30' : ''}`}
+                          } ${!isMatchVisible(matches[4]) ? 'opacity-30' : ''}`}
                       >
-                        {/* Header Tabel Match */}
                         <div className="flex items-center justify-between px-2 py-1 bg-surface-container-low/60 border-b border-surface-container-high text-[10px] font-mono">
-                          <span className="font-bold text-primary">{m.nodeCode}</span>
-                          <span className="text-on-surface-variant text-[9px]">{m.court}</span>
-                          <span className="text-primary font-semibold text-[9px]">{m.statusBadge}</span>
+                          <span className="font-bold text-primary">{matches[4].nodeCode}</span>
+                          <span className="text-on-surface-variant text-[9px] truncate max-w-[70px]">{matches[4].court}</span>
+                          <span className="text-primary font-semibold text-[9px]">{matches[4].statusBadge}</span>
                         </div>
-
-                        {/* Tabel Atlet */}
                         <table className="w-full border-collapse">
                           <tbody>
-                            <tr className={`border-b border-surface-container-high/40 ${m.player1.winner ? 'bg-primary-fixed/20 font-bold text-primary' : 'text-on-surface'}`}>
+                            <tr className={`border-b border-surface-container-high/40 ${matches[4].player1.winner ? 'bg-primary-fixed/20 font-bold text-primary' : 'text-on-surface'}`}>
                               <td className="py-1 px-2 text-left truncate">
                                 <div className="flex items-center gap-1 truncate">
-                                  {m.player1.seed && (
+                                  {matches[4].player1.seed && (
                                     <span className="w-3.5 h-3.5 rounded text-[8px] bg-primary/10 flex items-center justify-center font-bold shrink-0">
-                                      {m.player1.seed}
+                                      {matches[4].player1.seed}
                                     </span>
                                   )}
-                                  <span className="text-[9px] text-on-surface-variant font-mono shrink-0">{m.player1.country}</span>
-                                  <span className="text-[11px] truncate">{m.player1.name}</span>
+                                  <span className="text-[9px] text-on-surface-variant font-mono shrink-0">{matches[4].player1.country}</span>
+                                  <span className="text-[11px] truncate">{matches[4].player1.name}</span>
                                 </div>
                               </td>
                               <td className="py-1 px-2 text-right font-mono text-[11px] font-bold shrink-0 whitespace-nowrap">
-                                <span>{m.player1.score.join(' ')}</span>
+                                <span>{matches[4].player1.score.join(' ')}</span>
                               </td>
                             </tr>
-                            <tr className={`${m.player2.winner ? 'bg-primary-fixed/20 font-bold text-primary' : 'text-on-surface'}`}>
+                            <tr className={`${matches[4].player2.winner ? 'bg-primary-fixed/20 font-bold text-primary' : 'text-on-surface'}`}>
                               <td className="py-1 px-2 text-left truncate">
                                 <div className="flex items-center gap-1 truncate">
-                                  {m.player2.seed && (
+                                  {matches[4].player2.seed && (
                                     <span className="w-3.5 h-3.5 rounded text-[8px] bg-primary/10 flex items-center justify-center font-bold shrink-0">
-                                      {m.player2.seed}
+                                      {matches[4].player2.seed}
                                     </span>
                                   )}
-                                  <span className="text-[9px] text-on-surface-variant font-mono shrink-0">{m.player2.country}</span>
-                                  <span className="text-[11px] truncate">{m.player2.name}</span>
+                                  <span className="text-[9px] text-on-surface-variant font-mono shrink-0">{matches[4].player2.country}</span>
+                                  <span className="text-[11px] truncate">{matches[4].player2.name}</span>
                                 </div>
                               </td>
                               <td className="py-1 px-2 text-right font-mono text-[11px] font-bold shrink-0 whitespace-nowrap">
-                                <span>{m.player2.score.join(' ')}</span>
+                                <span>{matches[4].player2.score.join(' ')}</span>
                               </td>
                             </tr>
                           </tbody>
                         </table>
                       </div>
-                    ))}
-                  </div>
-                </div>
 
-                {/* ========================================================================= */}
-                {/* KONEKTOR 1: BABAK 16 -> PEREMPAT FINAL (Solid) */}
-                {/* ========================================================================= */}
-                <div className="w-8 shrink-0 flex flex-col justify-between pt-11">
-                  <svg className="w-full h-[460px] text-outline-variant" viewBox="0 0 32 460" fill="none">
-                    <path d="M 0 37 L 16 37 L 16 166 L 0 166" stroke="currentColor" strokeWidth="1.5" />
-                    <path d="M 16 101 L 32 101" stroke="currentColor" strokeWidth="1.5" />
-                    <path d="M 0 294 L 16 294 L 16 423 L 0 423" stroke="currentColor" strokeWidth="1.5" />
-                    <path d="M 16 359 L 32 359" stroke="currentColor" strokeWidth="1.5" />
-                  </svg>
-                </div>
-
-                {/* ========================================================================= */}
-                {/* KOLOM 2: PEREMPAT FINAL (Header + Garis ke Bawah + Tabel Pertandingan) */}
-                {/* ========================================================================= */}
-                <div className="w-[200px] shrink-0 relative flex flex-col items-center">
-                  {/* Keterangan Perempat Final */}
-                  <div className="w-full py-2 px-2.5 rounded-xl bg-surface-container-low border border-surface-container-high text-center font-bold text-xs text-primary flex items-center justify-center gap-1.5 shadow-2xs z-20">
-                    <span className="w-4 h-4 rounded-full bg-primary/10 text-primary text-[10px] flex items-center justify-center font-bold">2</span>
-                    <span>Perempat Final</span>
-                  </div>
-
-                  {/* Garis Vertikal ke Bawah (Lifeline) */}
-                  <div className="absolute top-9 bottom-0 left-1/2 -translate-x-1/2 w-0 border-l-2 border-primary/20 z-0 pointer-events-none" />
-
-                  {/* Wadah Tabel Pertandingan Perempat Final */}
-                  <div className="relative z-10 w-full h-[460px] mt-3">
-                    {/* Match QF-1 */}
-                    <div
-                      style={{ top: '64px' }}
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => setSelectedMatchId('QF-1')}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          setSelectedMatchId('QF-1');
-                          e.preventDefault();
-                        }
-                      }}
-                      aria-label={`Pilih pertandingan ${matches[4].nodeCode} ${matches[4].player1.name} melawan ${matches[4].player2.name}`}
-                      className={`absolute left-0 right-0 rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
-                        selectedMatchId === 'QF-1'
-                          ? 'border-primary ring-2 ring-primary/20 bg-surface-container-low'
-                          : 'border-surface-container-high bg-surface-container-lowest hover:border-primary/40'
-                      } ${!isMatchVisible(matches[4]) ? 'opacity-30' : ''}`}
-                    >
-                      <div className="flex items-center justify-between px-2 py-1 bg-surface-container-low/60 border-b border-surface-container-high text-[10px] font-mono">
-                        <span className="font-bold text-primary">{matches[4].nodeCode}</span>
-                        <span className="text-on-surface-variant text-[9px] truncate max-w-[70px]">{matches[4].court}</span>
-                        <span className="text-primary font-semibold text-[9px]">{matches[4].statusBadge}</span>
+                      {/* Match QF-2 (Live) */}
+                      <div
+                        style={{ top: '322px' }}
+                        onClick={() => setSelectedMatchId('QF-2')}
+                        className={`absolute left-0 right-0 rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none ${selectedMatchId === 'QF-2'
+                            ? 'border-primary ring-2 ring-primary/20 bg-surface-container-low'
+                            : 'border-error/50 bg-surface-container-lowest hover:border-error'
+                          } ${!isMatchVisible(matches[5]) ? 'opacity-30' : ''}`}
+                      >
+                        <div className="flex items-center justify-between px-2 py-1 bg-surface-container-low/60 border-b border-surface-container-high text-[10px] font-mono">
+                          <span className="font-bold text-primary">{matches[5].nodeCode}</span>
+                          <span className="text-on-surface-variant text-[9px] truncate max-w-[70px]">{matches[5].court}</span>
+                          <span className="font-bold px-1 rounded text-[9px] bg-error-container text-on-error-container animate-pulse">
+                            {matches[5].statusBadge}
+                          </span>
+                        </div>
+                        <table className="w-full border-collapse">
+                          <tbody>
+                            <tr className={`border-b border-surface-container-high/40 text-on-surface`}>
+                              <td className="py-1 px-2 text-left truncate">
+                                <div className="flex items-center gap-1 truncate">
+                                  {matches[5].player1.seed && (
+                                    <span className="w-3.5 h-3.5 rounded text-[8px] bg-primary/10 flex items-center justify-center font-bold shrink-0">
+                                      {matches[5].player1.seed}
+                                    </span>
+                                  )}
+                                  <span className="text-[9px] text-on-surface-variant font-mono shrink-0">{matches[5].player1.country}</span>
+                                  <span className="text-[11px] truncate font-semibold">{matches[5].player1.name}</span>
+                                  {matches[5].player1.serving && <span className="w-1.5 h-1.5 rounded-full bg-surface-tint shrink-0"></span>}
+                                </div>
+                              </td>
+                              <td className="py-1 px-2 text-right font-mono text-[11px] font-bold shrink-0 whitespace-nowrap">
+                                <span className="flex items-center justify-end gap-1">
+                                  {matches[5].player1.score.map((s, idx) => (
+                                    <span key={idx} className={idx === matches[5].player1.score.length - 1 ? 'text-surface-tint' : ''}>{s}</span>
+                                  ))}
+                                  <span className="text-[9px] text-surface-tint font-normal">({matches[5].player1.points})</span>
+                                </span>
+                              </td>
+                            </tr>
+                            <tr className="text-on-surface">
+                              <td className="py-1 px-2 text-left truncate">
+                                <div className="flex items-center gap-1 truncate">
+                                  {matches[5].player2.seed && (
+                                    <span className="w-3.5 h-3.5 rounded text-[8px] bg-primary/10 flex items-center justify-center font-bold shrink-0">
+                                      {matches[5].player2.seed}
+                                    </span>
+                                  )}
+                                  <span className="text-[9px] text-on-surface-variant font-mono shrink-0">{matches[5].player2.country}</span>
+                                  <span className="text-[11px] truncate font-semibold">{matches[5].player2.name}</span>
+                                </div>
+                              </td>
+                              <td className="py-1 px-2 text-right font-mono text-[11px] font-bold shrink-0 whitespace-nowrap">
+                                <span className="flex items-center justify-end gap-1">
+                                  {matches[5].player2.score.map((s, idx) => (
+                                    <span key={idx} className={idx === matches[5].player2.score.length - 1 ? 'text-surface-tint' : ''}>{s}</span>
+                                  ))}
+                                  <span className="text-[9px] text-on-surface-variant font-normal">({matches[5].player2.points})</span>
+                                </span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
-                      <table className="w-full border-collapse">
-                        <tbody>
-                          <tr className={`border-b border-surface-container-high/40 ${matches[4].player1.winner ? 'bg-primary-fixed/20 font-bold text-primary' : 'text-on-surface'}`}>
-                            <td className="py-1 px-2 text-left truncate">
-                              <div className="flex items-center gap-1 truncate">
-                                {matches[4].player1.seed && (
-                                  <span className="w-3.5 h-3.5 rounded text-[8px] bg-primary/10 flex items-center justify-center font-bold shrink-0">
-                                    {matches[4].player1.seed}
-                                  </span>
-                                )}
-                                <span className="text-[9px] text-on-surface-variant font-mono shrink-0">{matches[4].player1.country}</span>
-                                <span className="text-[11px] truncate">{matches[4].player1.name}</span>
-                              </div>
-                            </td>
-                            <td className="py-1 px-2 text-right font-mono text-[11px] font-bold shrink-0 whitespace-nowrap">
-                              <span>{matches[4].player1.score.join(' ')}</span>
-                            </td>
-                          </tr>
-                          <tr className={`${matches[4].player2.winner ? 'bg-primary-fixed/20 font-bold text-primary' : 'text-on-surface'}`}>
-                            <td className="py-1 px-2 text-left truncate">
-                              <div className="flex items-center gap-1 truncate">
-                                {matches[4].player2.seed && (
-                                  <span className="w-3.5 h-3.5 rounded text-[8px] bg-primary/10 flex items-center justify-center font-bold shrink-0">
-                                    {matches[4].player2.seed}
-                                  </span>
-                                )}
-                                <span className="text-[9px] text-on-surface-variant font-mono shrink-0">{matches[4].player2.country}</span>
-                                <span className="text-[11px] truncate">{matches[4].player2.name}</span>
-                              </div>
-                            </td>
-                            <td className="py-1 px-2 text-right font-mono text-[11px] font-bold shrink-0 whitespace-nowrap">
-                              <span>{matches[4].player2.score.join(' ')}</span>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-
-                    {/* Match QF-2 (Live) */}
-                    <div
-                      style={{ top: '322px' }}
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => setSelectedMatchId('QF-2')}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          setSelectedMatchId('QF-2');
-                          e.preventDefault();
-                        }
-                      }}
-                      aria-label={`Pilih pertandingan ${matches[5].nodeCode} ${matches[5].player1.name} melawan ${matches[5].player2.name}`}
-                      className={`absolute left-0 right-0 rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
-                        selectedMatchId === 'QF-2'
-                          ? 'border-primary ring-2 ring-primary/20 bg-surface-container-low'
-                          : 'border-error/50 bg-surface-container-lowest hover:border-error'
-                      } ${!isMatchVisible(matches[5]) ? 'opacity-30' : ''}`}
-                    >
-                      <div className="flex items-center justify-between px-2 py-1 bg-surface-container-low/60 border-b border-surface-container-high text-[10px] font-mono">
-                        <span className="font-bold text-primary">{matches[5].nodeCode}</span>
-                        <span className="text-on-surface-variant text-[9px] truncate max-w-[70px]">{matches[5].court}</span>
-                        <span className="font-bold px-1 rounded text-[9px] bg-error-container text-on-error-container animate-pulse">
-                          {matches[5].statusBadge}
-                        </span>
-                      </div>
-                      <table className="w-full border-collapse">
-                        <tbody>
-                          <tr className={`border-b border-surface-container-high/40 text-on-surface`}>
-                            <td className="py-1 px-2 text-left truncate">
-                              <div className="flex items-center gap-1 truncate">
-                                {matches[5].player1.seed && (
-                                  <span className="w-3.5 h-3.5 rounded text-[8px] bg-primary/10 flex items-center justify-center font-bold shrink-0">
-                                    {matches[5].player1.seed}
-                                  </span>
-                                )}
-                                <span className="text-[9px] text-on-surface-variant font-mono shrink-0">{matches[5].player1.country}</span>
-                                <span className="text-[11px] truncate font-semibold">{matches[5].player1.name}</span>
-                                {matches[5].player1.serving && <span className="w-1.5 h-1.5 rounded-full bg-surface-tint shrink-0"></span>}
-                              </div>
-                            </td>
-                            <td className="py-1 px-2 text-right font-mono text-[11px] font-bold shrink-0 whitespace-nowrap">
-                              <span className="flex items-center justify-end gap-1">
-                                {matches[5].player1.score.map((s, idx) => (
-                                  <span key={idx} className={idx === matches[5].player1.score.length - 1 ? 'text-surface-tint' : ''}>{s}</span>
-                                ))}
-                                <span className="text-[9px] text-surface-tint font-normal">({matches[5].player1.points})</span>
-                              </span>
-                            </td>
-                          </tr>
-                          <tr className="text-on-surface">
-                            <td className="py-1 px-2 text-left truncate">
-                              <div className="flex items-center gap-1 truncate">
-                                {matches[5].player2.seed && (
-                                  <span className="w-3.5 h-3.5 rounded text-[8px] bg-primary/10 flex items-center justify-center font-bold shrink-0">
-                                    {matches[5].player2.seed}
-                                  </span>
-                                )}
-                                <span className="text-[9px] text-on-surface-variant font-mono shrink-0">{matches[5].player2.country}</span>
-                                <span className="text-[11px] truncate font-semibold">{matches[5].player2.name}</span>
-                              </div>
-                            </td>
-                            <td className="py-1 px-2 text-right font-mono text-[11px] font-bold shrink-0 whitespace-nowrap">
-                              <span className="flex items-center justify-end gap-1">
-                                {matches[5].player2.score.map((s, idx) => (
-                                  <span key={idx} className={idx === matches[5].player2.score.length - 1 ? 'text-surface-tint' : ''}>{s}</span>
-                                ))}
-                                <span className="text-[9px] text-on-surface-variant font-normal">({matches[5].player2.points})</span>
-                              </span>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
                     </div>
                   </div>
-                </div>
 
-                {/* ========================================================================= */}
-                {/* KONEKTOR 2: PEREMPAT FINAL -> SEMIFINAL (Garis Putus-Putus) */}
-                {/* ========================================================================= */}
-                <div className="w-8 shrink-0 flex flex-col justify-between pt-11">
-                  <svg className="w-full h-[460px] text-outline-variant" viewBox="0 0 32 460" fill="none">
-                    <path d="M 0 101 L 16 101 L 16 359 L 0 359" stroke="currentColor" strokeWidth="1.5" strokeDasharray="4 4" />
-                    <path d="M 16 230 L 32 230" stroke="currentColor" strokeWidth="1.5" strokeDasharray="4 4" />
-                  </svg>
-                </div>
-
-                {/* ========================================================================= */}
-                {/* KOLOM 3: SEMIFINAL (Header + Garis Putus-Putus ke Bawah + Tabel) */}
-                {/* ========================================================================= */}
-                <div className="w-[195px] shrink-0 relative flex flex-col items-center">
-                  {/* Keterangan Semifinal */}
-                  <div className="w-full py-2 px-2.5 rounded-xl bg-surface-container-low border border-surface-container-high text-center font-bold text-xs text-primary flex items-center justify-center gap-1.5 shadow-2xs z-20">
-                    <span className="w-4 h-4 rounded-full bg-primary/10 text-primary text-[10px] flex items-center justify-center font-bold">3</span>
-                    <span>Semifinal</span>
-                  </div>
-
-                  {/* Garis Vertikal ke Bawah (Garis Putus-Putus) */}
-                  <div className="absolute top-9 bottom-0 left-1/2 -translate-x-1/2 w-0 border-l-2 border-dashed border-primary/25 z-0 pointer-events-none" />
-
-                  {/* Wadah Tabel Pertandingan Semifinal */}
-                  <div className="relative z-10 w-full h-[460px] mt-3">
-                    <div
-                      style={{ top: '193px' }}
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => setSelectedMatchId('SF-1')}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          setSelectedMatchId('SF-1');
-                          e.preventDefault();
-                        }
-                      }}
-                      aria-label={`Pilih pertandingan ${matches[6].nodeCode} ${matches[6].player1.name} melawan ${matches[6].player2.name}`}
-                      className={`absolute left-0 right-0 rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
-                        selectedMatchId === 'SF-1'
-                          ? 'border-primary ring-2 ring-primary/20 bg-surface-container-low'
-                          : 'border-surface-container-high bg-surface-container-lowest hover:border-primary/40'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between px-2 py-1 bg-surface-container-low/60 border-b border-surface-container-high text-[10px] font-mono">
-                        <span className="font-bold text-primary">{matches[6].nodeCode}</span>
-                        <span className="text-on-surface-variant text-[9px] truncate max-w-[70px]">{matches[6].court}</span>
-                        <span className="text-on-surface-variant font-semibold text-[9px]">{matches[6].statusBadge}</span>
-                      </div>
-                      <table className="w-full border-collapse">
-                        <tbody>
-                          <tr className="border-b border-surface-container-high/40 text-on-surface">
-                            <td className="py-1 px-2 text-left truncate">
-                              <div className="flex items-center gap-1 truncate">
-                                {matches[6].player1.seed && (
-                                  <span className="w-3.5 h-3.5 rounded text-[8px] bg-primary/10 flex items-center justify-center font-bold shrink-0">
-                                    {matches[6].player1.seed}
-                                  </span>
-                                )}
-                                <span className="text-[9px] text-on-surface-variant font-mono shrink-0">{matches[6].player1.country}</span>
-                                <span className="text-[11px] truncate">{matches[6].player1.name}</span>
-                              </div>
-                            </td>
-                            <td className="py-1 px-2 text-right font-mono text-[11px] text-on-surface-variant shrink-0 whitespace-nowrap">
-                              <span>-</span>
-                            </td>
-                          </tr>
-                          <tr className="text-on-surface">
-                            <td className="py-1 px-2 text-left truncate">
-                              <div className="flex items-center gap-1 truncate">
-                                <span className="text-[9px] text-on-surface-variant font-mono shrink-0">{matches[6].player2.country}</span>
-                                <span className="text-[11px] truncate text-on-surface-variant">{matches[6].player2.name}</span>
-                              </div>
-                            </td>
-                            <td className="py-1 px-2 text-right font-mono text-[11px] text-on-surface-variant shrink-0 whitespace-nowrap">
-                              <span>-</span>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-
-                {/* ========================================================================= */}
-                {/* KONEKTOR 3: SEMIFINAL -> FINAL (Garis Putus-Putus) */}
-                {/* ========================================================================= */}
-                <div className="w-8 shrink-0 flex flex-col justify-between pt-11">
-                  <svg className="w-full h-[460px] text-outline-variant" viewBox="0 0 32 460" fill="none">
-                    <path d="M 0 230 L 32 230" stroke="currentColor" strokeWidth="1.5" strokeDasharray="4 4" />
-                  </svg>
-                </div>
-
-                {/* ========================================================================= */}
-                {/* KOLOM 4: FINAL (Header + Garis Putus-Putus ke Bawah + Tabel) */}
-                {/* ========================================================================= */}
-                <div className="w-[200px] shrink-0 relative flex flex-col items-center">
-                  {/* Keterangan Final */}
-                  <div className="w-full py-2 px-2.5 rounded-xl bg-surface-container-low border border-surface-tint/30 text-center font-bold text-xs text-surface-tint flex items-center justify-center gap-1.5 shadow-2xs z-20">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 21h8m-4-4v4m-5-8h10a4 4 0 004-4V5H3v4a4 4 0 004 4zm-4-4H2v2a3 3 0 003 3m14-5h1a3 3 0 013 3" />
+                  {/* ========================================================================= */}
+                  {/* KONEKTOR 2: PEREMPAT FINAL -> SEMIFINAL (Garis Putus-Putus) */}
+                  {/* ========================================================================= */}
+                  <div className="w-8 shrink-0 flex flex-col justify-between pt-11">
+                    <svg className="w-full h-[460px] text-outline-variant" viewBox="0 0 32 460" fill="none">
+                      <path d="M 0 101 L 16 101 L 16 359 L 0 359" stroke="currentColor" strokeWidth="1.5" strokeDasharray="4 4" />
+                      <path d="M 16 230 L 32 230" stroke="currentColor" strokeWidth="1.5" strokeDasharray="4 4" />
                     </svg>
-                    <span>Final</span>
                   </div>
 
-                  {/* Garis Vertikal ke Bawah (Garis Putus-Putus) */}
-                  <div className="absolute top-9 bottom-0 left-1/2 -translate-x-1/2 w-0 border-l-2 border-dashed border-surface-tint/35 z-0 pointer-events-none" />
+                  {/* ========================================================================= */}
+                  {/* KOLOM 3: SEMIFINAL (Header + Garis Putus-Putus ke Bawah + Tabel) */}
+                  {/* ========================================================================= */}
+                  <div className="w-[195px] shrink-0 relative flex flex-col items-center">
+                    {/* Keterangan Semifinal */}
+                    <div className="w-full py-2 px-2.5 rounded-xl bg-surface-container-low border border-surface-container-high text-center font-bold text-xs text-primary flex items-center justify-center gap-1.5 shadow-2xs z-20">
+                      <span className="w-4 h-4 rounded-full bg-primary/10 text-primary text-[10px] flex items-center justify-center font-bold">3</span>
+                      <span>Semifinal</span>
+                    </div>
 
-                  {/* Wadah Tabel Pertandingan Final */}
-                  <div className="relative z-10 w-full h-[460px] mt-3">
-                    <div
-                      style={{ top: '193px' }}
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => setSelectedMatchId('FINAL')}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          setSelectedMatchId('FINAL');
-                          e.preventDefault();
-                        }
-                      }}
-                      aria-label={`Pilih pertandingan Final ${matches[7].nodeCode}`}
-                      className={`absolute left-0 right-0 rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-surface-tint ${
-                        selectedMatchId === 'FINAL'
-                          ? 'border-surface-tint ring-2 ring-surface-tint/20 bg-primary-fixed/20'
-                          : 'border-surface-tint/40 bg-surface-container-lowest hover:border-surface-tint'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between px-2 py-1 bg-surface-container-low/60 border-b border-surface-container-high text-[10px] font-mono">
-                        <span className="font-bold text-surface-tint flex items-center gap-1">
-                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M8 21h8m-4-4v4m-5-8h10a4 4 0 004-4V5H3v4a4 4 0 004 4zm-4-4H2v2a3 3 0 003 3m14-5h1a3 3 0 013 3" />
-                          </svg>
-                          <span>{matches[7].nodeCode}</span>
-                        </span>
-                        <span className="bg-surface-tint text-on-primary px-1.5 py-0.2 rounded font-bold text-[9px]">
-                          {matches[7].statusBadge}
-                        </span>
+                    {/* Garis Vertikal ke Bawah (Garis Putus-Putus) */}
+                    <div className="absolute top-9 bottom-0 left-1/2 -translate-x-1/2 w-0 border-l-2 border-dashed border-primary/25 z-0 pointer-events-none" />
+
+                    {/* Wadah Tabel Pertandingan Semifinal */}
+                    <div className="relative z-10 w-full h-[460px] mt-3">
+                      <div
+                        style={{ top: '193px' }}
+                        onClick={() => setSelectedMatchId('SF-1')}
+                        className={`absolute left-0 right-0 rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none ${selectedMatchId === 'SF-1'
+                            ? 'border-primary ring-2 ring-primary/20 bg-surface-container-low'
+                            : 'border-surface-container-high bg-surface-container-lowest hover:border-primary/40'
+                          }`}
+                      >
+                        <div className="flex items-center justify-between px-2 py-1 bg-surface-container-low/60 border-b border-surface-container-high text-[10px] font-mono">
+                          <span className="font-bold text-primary">{matches[6].nodeCode}</span>
+                          <span className="text-on-surface-variant text-[9px] truncate max-w-[70px]">{matches[6].court}</span>
+                          <span className="text-on-surface-variant font-semibold text-[9px]">{matches[6].statusBadge}</span>
+                        </div>
+                        <table className="w-full border-collapse">
+                          <tbody>
+                            <tr className="border-b border-surface-container-high/40 text-on-surface">
+                              <td className="py-1 px-2 text-left truncate">
+                                <div className="flex items-center gap-1 truncate">
+                                  {matches[6].player1.seed && (
+                                    <span className="w-3.5 h-3.5 rounded text-[8px] bg-primary/10 flex items-center justify-center font-bold shrink-0">
+                                      {matches[6].player1.seed}
+                                    </span>
+                                  )}
+                                  <span className="text-[9px] text-on-surface-variant font-mono shrink-0">{matches[6].player1.country}</span>
+                                  <span className="text-[11px] truncate">{matches[6].player1.name}</span>
+                                </div>
+                              </td>
+                              <td className="py-1 px-2 text-right font-mono text-[11px] text-on-surface-variant shrink-0 whitespace-nowrap">
+                                <span>-</span>
+                              </td>
+                            </tr>
+                            <tr className="text-on-surface">
+                              <td className="py-1 px-2 text-left truncate">
+                                <div className="flex items-center gap-1 truncate">
+                                  <span className="text-[9px] text-on-surface-variant font-mono shrink-0">{matches[6].player2.country}</span>
+                                  <span className="text-[11px] truncate text-on-surface-variant">{matches[6].player2.name}</span>
+                                </div>
+                              </td>
+                              <td className="py-1 px-2 text-right font-mono text-[11px] text-on-surface-variant shrink-0 whitespace-nowrap">
+                                <span>-</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
-                      <table className="w-full border-collapse">
-                        <tbody>
-                          <tr className="border-b border-surface-container-high/40 text-on-surface">
-                            <td className="py-1 px-2 text-left truncate">
-                              <span className="text-on-surface-variant italic text-[11px]">{matches[7].player1.name}</span>
-                            </td>
-                            <td className="py-1 px-2 text-right font-mono text-[11px] text-on-surface-variant shrink-0 whitespace-nowrap">
-                              <span>-</span>
-                            </td>
-                          </tr>
-                          <tr className="text-on-surface">
-                            <td className="py-1 px-2 text-left truncate">
-                              <span className="text-on-surface-variant italic text-[11px]">{matches[7].player2.name}</span>
-                            </td>
-                            <td className="py-1 px-2 text-right font-mono text-[11px] text-on-surface-variant shrink-0 whitespace-nowrap">
-                              <span>-</span>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                    </div>
+                  </div>
+
+                  {/* ========================================================================= */}
+                  {/* KONEKTOR 3: SEMIFINAL -> FINAL (Garis Putus-Putus) */}
+                  {/* ========================================================================= */}
+                  <div className="w-8 shrink-0 flex flex-col justify-between pt-11">
+                    <svg className="w-full h-[460px] text-outline-variant" viewBox="0 0 32 460" fill="none">
+                      <path d="M 0 230 L 32 230" stroke="currentColor" strokeWidth="1.5" strokeDasharray="4 4" />
+                    </svg>
+                  </div>
+
+                  {/* ========================================================================= */}
+                  {/* KOLOM 4: FINAL (Header + Garis Putus-Putus ke Bawah + Tabel) */}
+                  {/* ========================================================================= */}
+                  <div className="w-[200px] shrink-0 relative flex flex-col items-center">
+                    {/* Keterangan Final */}
+                    <div className="w-full py-2 px-2.5 rounded-xl bg-surface-container-low border border-surface-tint/30 text-center font-bold text-xs text-surface-tint flex items-center justify-center gap-1.5 shadow-2xs z-20">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8 21h8m-4-4v4m-5-8h10a4 4 0 004-4V5H3v4a4 4 0 004 4zm-4-4H2v2a3 3 0 003 3m14-5h1a3 3 0 013 3" />
+                      </svg>
+                      <span>Final</span>
+                    </div>
+
+                    {/* Garis Vertikal ke Bawah (Garis Putus-Putus) */}
+                    <div className="absolute top-9 bottom-0 left-1/2 -translate-x-1/2 w-0 border-l-2 border-dashed border-surface-tint/35 z-0 pointer-events-none" />
+
+                    {/* Wadah Tabel Pertandingan Final */}
+                    <div className="relative z-10 w-full h-[460px] mt-3">
+                      <div
+                        style={{ top: '193px' }}
+                        onClick={() => setSelectedMatchId('FINAL')}
+                        className={`absolute left-0 right-0 rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none ${selectedMatchId === 'FINAL'
+                            ? 'border-surface-tint ring-2 ring-surface-tint/20 bg-primary-fixed/20'
+                            : 'border-surface-tint/40 bg-surface-container-lowest hover:border-surface-tint'
+                          }`}
+                      >
+                        <div className="flex items-center justify-between px-2 py-1 bg-surface-container-low/60 border-b border-surface-container-high text-[10px] font-mono">
+                          <span className="font-bold text-surface-tint flex items-center gap-1">
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M8 21h8m-4-4v4m-5-8h10a4 4 0 004-4V5H3v4a4 4 0 004 4zm-4-4H2v2a3 3 0 003 3m14-5h1a3 3 0 013 3" />
+                            </svg>
+                            <span>{matches[7].nodeCode}</span>
+                          </span>
+                          <span className="bg-surface-tint text-on-primary px-1.5 py-0.2 rounded font-bold text-[9px]">
+                            {matches[7].statusBadge}
+                          </span>
+                        </div>
+                        <table className="w-full border-collapse">
+                          <tbody>
+                            <tr className="border-b border-surface-container-high/40 text-on-surface">
+                              <td className="py-1 px-2 text-left truncate">
+                                <span className="text-on-surface-variant italic text-[11px]">{matches[7].player1.name}</span>
+                              </td>
+                              <td className="py-1 px-2 text-right font-mono text-[11px] text-on-surface-variant shrink-0 whitespace-nowrap">
+                                <span>-</span>
+                              </td>
+                            </tr>
+                            <tr className="text-on-surface">
+                              <td className="py-1 px-2 text-left truncate">
+                                <span className="text-on-surface-variant italic text-[11px]">{matches[7].player2.name}</span>
+                              </td>
+                              <td className="py-1 px-2 text-right font-mono text-[11px] text-on-surface-variant shrink-0 whitespace-nowrap">
+                                <span>-</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* KOLOM KANAN (xl:col-span-4): PANEL INSPEKSI DETAIL PERTANDINGAN */}
-          <div className="xl:col-span-4 bg-surface-container-lowest rounded-3xl border border-surface-container-high/90 p-6 shadow-xs flex flex-col gap-4">
-            <div className="flex items-center justify-between border-b border-surface-container-high pb-3">
-              <div>
-                <span className="text-[11px] font-bold text-surface-tint uppercase tracking-wider font-mono">
-                  {activeMatch.nodeCode} • {activeMatch.roundName}
-                </span>
-                <h3 className="font-bold text-primary text-base mt-0.5">Detail Pertandingan</h3>
-              </div>
-              <span
-                className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                  activeMatch.status === 'live'
-                    ? 'bg-error-container text-on-error-container animate-pulse'
-                    : 'bg-surface-container text-on-surface-variant'
-                }`}
-              >
-                {activeMatch.statusBadge}
-              </span>
-            </div>
-
-            {/* Lapangan & Waktu */}
-            <div className="flex items-center justify-between text-xs text-on-surface-variant bg-surface-container-low p-2.5 rounded-xl">
-              <div className="flex items-center gap-1.5">
-                <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <rect x="3" y="4" width="18" height="16" rx="2" />
-                  <path d="M3 12h18M12 4v16" />
-                </svg>
-                <span>{activeMatch.court}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="9" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" />
-                </svg>
-                <span>{activeMatch.stats?.duration || activeMatch.time}</span>
-              </div>
-            </div>
-
-            {/* Skor Dua Pemain */}
-            <div className="flex flex-col gap-2">
-              {/* Pemain 1 */}
-              <div
-                className={`p-3 rounded-xl border flex items-center justify-between ${
-                  activeMatch.player1.winner
-                    ? 'bg-primary-fixed/30 border-primary/30 font-bold'
-                    : 'bg-surface-container-low/50 border-surface-container-high'
-                }`}
-              >
+            {/* KOLOM KANAN (xl:col-span-4): PANEL INSPEKSI DETAIL PERTANDINGAN */}
+            <div className="xl:col-span-4 bg-surface-container-lowest rounded-2xl border border-surface-container-high p-5 shadow-xs flex flex-col gap-4">
+              <div className="flex items-center justify-between border-b border-surface-container-high pb-3">
                 <div>
-                  <div className="flex items-center gap-1.5">
-                    {activeMatch.player1.seed && (
-                      <span className="text-[10px] font-bold bg-primary text-on-primary px-1.5 rounded">
-                        #{activeMatch.player1.seed}
-                      </span>
-                    )}
-                    <span className="text-sm font-bold text-primary">{activeMatch.player1.name}</span>
-                    {activeMatch.player1.serving && (
-                      <span className="w-2 h-2 rounded-full bg-surface-tint" title="Sedang Servis"></span>
-                    )}
-                  </div>
-                  <span className="text-xs text-on-surface-variant">{activeMatch.player1.country}</span>
+                  <span className="text-[11px] font-bold text-surface-tint uppercase tracking-wider font-mono">
+                    {activeMatch.nodeCode} • {activeMatch.roundName}
+                  </span>
+                  <h3 className="font-bold text-primary text-base mt-0.5">Detail Pertandingan</h3>
                 </div>
-                <div className="flex items-center gap-1.5 font-mono text-sm font-bold text-primary">
-                  {activeMatch.player1.score.map((s, i) => (
-                    <span key={i} className="w-6 text-center bg-surface-container rounded py-0.5">
-                      {s}
-                    </span>
-                  ))}
-                  {activeMatch.player1.points && (
-                    <span className="text-surface-tint ml-1">{activeMatch.player1.points}</span>
-                  )}
-                </div>
-              </div>
-
-              {/* Pemain 2 */}
-              <div
-                className={`p-3 rounded-xl border flex items-center justify-between ${
-                  activeMatch.player2.winner
-                    ? 'bg-primary-fixed/30 border-primary/30 font-bold'
-                    : 'bg-surface-container-low/50 border-surface-container-high'
-                }`}
-              >
-                <div>
-                  <div className="flex items-center gap-1.5">
-                    {activeMatch.player2.seed && (
-                      <span className="text-[10px] font-bold bg-primary text-on-primary px-1.5 rounded">
-                        #{activeMatch.player2.seed}
-                      </span>
-                    )}
-                    <span className="text-sm font-bold text-on-surface">{activeMatch.player2.name}</span>
-                    {activeMatch.player2.serving && (
-                      <span className="w-2 h-2 rounded-full bg-surface-tint" title="Sedang Servis"></span>
-                    )}
-                  </div>
-                  <span className="text-xs text-on-surface-variant">{activeMatch.player2.country}</span>
-                </div>
-                <div className="flex items-center gap-1.5 font-mono text-sm font-bold text-on-surface">
-                  {activeMatch.player2.score.map((s, i) => (
-                    <span key={i} className="w-6 text-center bg-surface-container rounded py-0.5">
-                      {s}
-                    </span>
-                  ))}
-                  {activeMatch.player2.points && (
-                    <span className="text-on-surface-variant ml-1">{activeMatch.player2.points}</span>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Statistik Ringkas */}
-            {activeMatch.stats && (
-              <div className="border-t border-surface-container-high pt-3">
-                <span className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider block mb-2 font-mono">
-                  Statistik Pertandingan
+                <span
+                  className={`text-xs font-bold px-2 py-0.5 rounded-full ${activeMatch.status === 'live'
+                      ? 'bg-error-container text-on-error-container animate-pulse'
+                      : 'bg-surface-container text-on-surface-variant'
+                    }`}
+                >
+                  {activeMatch.statusBadge}
                 </span>
-                <div className="space-y-2 text-xs">
-                  <div className="flex justify-between">
-                    <span className="font-bold text-primary">{activeMatch.stats.aces[0]}</span>
-                    <span className="text-on-surface-variant">Aces</span>
-                    <span className="font-bold text-on-surface">{activeMatch.stats.aces[1]}</span>
+              </div>
+
+              {/* Lapangan & Waktu */}
+              <div className="flex items-center justify-between text-xs text-on-surface-variant bg-surface-container-low p-2.5 rounded-xl">
+                <div className="flex items-center gap-1.5">
+                  <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <rect x="3" y="4" width="18" height="16" rx="2" />
+                    <path d="M3 12h18M12 4v16" />
+                  </svg>
+                  <span>{activeMatch.court}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" />
+                  </svg>
+                  <span>{activeMatch.stats?.duration || activeMatch.time}</span>
+                </div>
+              </div>
+
+              {/* Skor Dua Pemain */}
+              <div className="flex flex-col gap-2">
+                {/* Pemain 1 */}
+                <div
+                  className={`p-3 rounded-xl border flex items-center justify-between ${activeMatch.player1.winner
+                      ? 'bg-primary-fixed/30 border-primary/30 font-bold'
+                      : 'bg-surface-container-low/50 border-surface-container-high'
+                    }`}
+                >
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      {activeMatch.player1.seed && (
+                        <span className="text-[10px] font-bold bg-primary text-on-primary px-1.5 rounded">
+                          #{activeMatch.player1.seed}
+                        </span>
+                      )}
+                      <span className="text-sm font-bold text-primary">{activeMatch.player1.name}</span>
+                      {activeMatch.player1.serving && (
+                        <span className="w-2 h-2 rounded-full bg-surface-tint" title="Sedang Servis"></span>
+                      )}
+                    </div>
+                    <span className="text-xs text-on-surface-variant">{activeMatch.player1.country}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="font-bold text-primary">{activeMatch.stats.doubleFaults[0]}</span>
-                    <span className="text-on-surface-variant">Double Faults</span>
-                    <span className="font-bold text-on-surface">{activeMatch.stats.doubleFaults[1]}</span>
+                  <div className="flex items-center gap-1.5 font-mono text-sm font-bold text-primary">
+                    {activeMatch.player1.score.map((s, i) => (
+                      <span key={i} className="w-6 text-center bg-surface-container rounded py-0.5">
+                        {s}
+                      </span>
+                    ))}
+                    {activeMatch.player1.points && (
+                      <span className="text-surface-tint ml-1">{activeMatch.player1.points}</span>
+                    )}
                   </div>
-                  <div className="flex justify-between">
-                    <span className="font-bold text-primary">{activeMatch.stats.firstServe[0]}</span>
-                    <span className="text-on-surface-variant">Servis Pertama</span>
-                    <span className="font-bold text-on-surface">{activeMatch.stats.firstServe[1]}</span>
+                </div>
+
+                {/* Pemain 2 */}
+                <div
+                  className={`p-3 rounded-xl border flex items-center justify-between ${activeMatch.player2.winner
+                      ? 'bg-primary-fixed/30 border-primary/30 font-bold'
+                      : 'bg-surface-container-low/50 border-surface-container-high'
+                    }`}
+                >
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      {activeMatch.player2.seed && (
+                        <span className="text-[10px] font-bold bg-primary text-on-primary px-1.5 rounded">
+                          #{activeMatch.player2.seed}
+                        </span>
+                      )}
+                      <span className="text-sm font-bold text-on-surface">{activeMatch.player2.name}</span>
+                      {activeMatch.player2.serving && (
+                        <span className="w-2 h-2 rounded-full bg-surface-tint" title="Sedang Servis"></span>
+                      )}
+                    </div>
+                    <span className="text-xs text-on-surface-variant">{activeMatch.player2.country}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="font-bold text-primary">{activeMatch.stats.breakPoints[0]}</span>
-                    <span className="text-on-surface-variant">Break Point</span>
-                    <span className="font-bold text-on-surface">{activeMatch.stats.breakPoints[1]}</span>
+                  <div className="flex items-center gap-1.5 font-mono text-sm font-bold text-on-surface">
+                    {activeMatch.player2.score.map((s, i) => (
+                      <span key={i} className="w-6 text-center bg-surface-container rounded py-0.5">
+                        {s}
+                      </span>
+                    ))}
+                    {activeMatch.player2.points && (
+                      <span className="text-on-surface-variant ml-1">{activeMatch.player2.points}</span>
+                    )}
                   </div>
                 </div>
               </div>
-            )}
 
-            {/* Tombol Aksi Bawah */}
-            <div className="pt-2 border-t border-surface-container-high flex gap-2">
-              <button
-                onClick={() => onNavigate('overview-and-schedule')}
-                className="flex-1 py-2 rounded-lg bg-primary text-on-primary text-xs font-semibold hover:bg-surface-tint transition-all text-center cursor-pointer"
-              >
-                Lihat Jadwal Lengkap
-              </button>
+              {/* Statistik Ringkas */}
+              {activeMatch.stats && (
+                <div className="border-t border-surface-container-high pt-3">
+                  <span className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider block mb-2 font-mono">
+                    Statistik Pertandingan
+                  </span>
+                  <div className="space-y-2 text-xs">
+                    <div className="flex justify-between">
+                      <span className="font-bold text-primary">{activeMatch.stats.aces[0]}</span>
+                      <span className="text-on-surface-variant">Aces</span>
+                      <span className="font-bold text-on-surface">{activeMatch.stats.aces[1]}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-bold text-primary">{activeMatch.stats.doubleFaults[0]}</span>
+                      <span className="text-on-surface-variant">Double Faults</span>
+                      <span className="font-bold text-on-surface">{activeMatch.stats.doubleFaults[1]}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-bold text-primary">{activeMatch.stats.firstServe[0]}</span>
+                      <span className="text-on-surface-variant">Servis Pertama</span>
+                      <span className="font-bold text-on-surface">{activeMatch.stats.firstServe[1]}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-bold text-primary">{activeMatch.stats.breakPoints[0]}</span>
+                      <span className="text-on-surface-variant">Break Point</span>
+                      <span className="font-bold text-on-surface">{activeMatch.stats.breakPoints[1]}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Tombol Aksi Bawah */}
+              <div className="pt-2 border-t border-surface-container-high flex gap-2">
+                <button
+                  onClick={() => onNavigate('overview-and-schedule')}
+                  className="flex-1 py-2 rounded-lg bg-primary text-on-primary text-xs font-semibold hover:bg-surface-tint transition-all text-center cursor-pointer"
+                >
+                  Lihat Jadwal Lengkap
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
       )}
     </div>
   );
