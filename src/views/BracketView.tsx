@@ -222,24 +222,31 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
           <div className="flex items-center gap-2 mt-6 p-1.5 bg-surface-container rounded-2xl w-fit border border-surface-container-high shadow-2xs">
             <button
               onClick={() => setViewMode('live')}
-              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-2 font-display ${
+              className={`min-h-[44px] px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-2.5 font-display focus-visible:ring-2 focus-visible:ring-primary focus:outline-none ${
                 viewMode === 'live'
                   ? 'bg-primary text-on-primary shadow-xs'
                   : 'text-on-surface-variant hover:text-primary'
               }`}
             >
-              <span>🏆</span>
+              <svg className="w-4 h-4 shrink-0 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8 21h8m-4-4v4m-5-8h10a4 4 0 004-4V5H3v4a4 4 0 004 4zm-4-4H2v2a3 3 0 003 3m14-5h1a3 3 0 013 3" />
+              </svg>
               <span>Turnamen Resmi (Database)</span>
             </button>
             <button
               onClick={() => setViewMode('simulation')}
-              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-2 font-display ${
+              className={`min-h-[44px] px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-2.5 font-display focus-visible:ring-2 focus-visible:ring-primary focus:outline-none ${
                 viewMode === 'simulation'
                   ? 'bg-primary text-on-primary shadow-xs'
                   : 'text-on-surface-variant hover:text-primary'
               }`}
             >
-              <span>📊</span>
+              <svg className="w-4 h-4 shrink-0 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <rect x="3" y="4" width="7" height="6" rx="1.5" />
+                <rect x="3" y="14" width="7" height="6" rx="1.5" />
+                <rect x="14" y="9" width="7" height="6" rx="1.5" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 7h2a2 2 0 012 2v1m-4 7h2a2 2 0 002-2v-1" />
+              </svg>
               <span>Simulasi Grand Slam</span>
             </button>
           </div>
@@ -253,7 +260,7 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
                   <button
                     key={c.id}
                     onClick={() => setSelectedCategory(c.id)}
-                    className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer font-display ${
+                    className={`min-h-[40px] px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer font-display focus-visible:ring-2 focus-visible:ring-primary focus:outline-none ${
                       selectedCategory === c.id
                         ? 'bg-primary text-on-primary shadow-xs'
                         : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high border border-surface-container-high'
@@ -272,16 +279,17 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Cari nama atlet..."
-                    className="bg-surface-container-lowest pl-3.5 pr-3.5 py-1.5 text-xs rounded-xl text-primary placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20 w-44 sm:w-52 border border-surface-container-high shadow-2xs"
+                    className="min-h-[40px] bg-surface-container-lowest pl-3.5 pr-3.5 py-2 text-xs rounded-xl text-primary placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20 w-44 sm:w-52 border border-surface-container-high shadow-2xs"
                   />
                 </div>
 
                 {/* Kontrol Zoom Skala */}
-                <div className="flex items-center bg-surface-container-lowest p-1 rounded-xl text-xs border border-surface-container-high shadow-2xs">
+                <div className="flex items-center bg-surface-container-lowest p-1 rounded-xl text-xs border border-surface-container-high shadow-2xs min-h-[40px]">
                   <button
                     onClick={() => setZoom((prev) => Math.max(prev - 10, 80))}
-                    className="px-2 py-0.5 hover:bg-surface-container rounded-lg text-primary font-bold cursor-pointer"
+                    className="min-w-[32px] min-h-[32px] flex items-center justify-center hover:bg-surface-container rounded-lg text-primary font-bold cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus:outline-none"
                     title="Perkecil"
+                    aria-label="Perkecil skala bagan"
                   >
                     -
                   </button>
@@ -290,8 +298,9 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
                   </span>
                   <button
                     onClick={() => setZoom((prev) => Math.min(prev + 10, 120))}
-                    className="px-2 py-0.5 hover:bg-surface-container rounded-lg text-primary font-bold cursor-pointer"
+                    className="min-w-[32px] min-h-[32px] flex items-center justify-center hover:bg-surface-container rounded-lg text-primary font-bold cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus:outline-none"
                     title="Perbesar"
+                    aria-label="Perbesar skala bagan"
                   >
                     +
                   </button>
@@ -309,6 +318,14 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
         </section>
       ) : (
         <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-8">
+          {/* Hint Affordance untuk Mobile (Finding #5) */}
+          <div className="flex items-center gap-1.5 text-xs text-on-surface-variant mb-3 lg:hidden px-1">
+            <svg className="w-4 h-4 animate-pulse text-surface-tint shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+            <span>Geser ke samping untuk menjelajahi babak eliminasi</span>
+          </div>
+
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
             {/* KOLOM KIRI (xl:col-span-8): DIAGRAM BAGAN DENGAN KONEKTOR */}
             <div className="xl:col-span-8 flex flex-col gap-4">
@@ -336,8 +353,17 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
                     {matches.slice(0, 4).map((m) => (
                       <div
                         key={m.id}
+                        role="button"
+                        tabIndex={0}
                         onClick={() => setSelectedMatchId(m.id)}
-                        className={`w-full rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none ${
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            setSelectedMatchId(m.id);
+                            e.preventDefault();
+                          }
+                        }}
+                        aria-label={`Pilih pertandingan ${m.nodeCode} ${m.player1.name} melawan ${m.player2.name}`}
+                        className={`w-full rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                           selectedMatchId === m.id
                             ? 'border-primary ring-2 ring-primary/20 bg-surface-container-low'
                             : 'border-surface-container-high bg-surface-container-lowest hover:border-primary/40'
@@ -422,8 +448,17 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
                     {/* Match QF-1 */}
                     <div
                       style={{ top: '64px' }}
+                      role="button"
+                      tabIndex={0}
                       onClick={() => setSelectedMatchId('QF-1')}
-                      className={`absolute left-0 right-0 rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none ${
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          setSelectedMatchId('QF-1');
+                          e.preventDefault();
+                        }
+                      }}
+                      aria-label={`Pilih pertandingan ${matches[4].nodeCode} ${matches[4].player1.name} melawan ${matches[4].player2.name}`}
+                      className={`absolute left-0 right-0 rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                         selectedMatchId === 'QF-1'
                           ? 'border-primary ring-2 ring-primary/20 bg-surface-container-low'
                           : 'border-surface-container-high bg-surface-container-lowest hover:border-primary/40'
@@ -475,8 +510,17 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
                     {/* Match QF-2 (Live) */}
                     <div
                       style={{ top: '322px' }}
+                      role="button"
+                      tabIndex={0}
                       onClick={() => setSelectedMatchId('QF-2')}
-                      className={`absolute left-0 right-0 rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none ${
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          setSelectedMatchId('QF-2');
+                          e.preventDefault();
+                        }
+                      }}
+                      aria-label={`Pilih pertandingan ${matches[5].nodeCode} ${matches[5].player1.name} melawan ${matches[5].player2.name}`}
+                      className={`absolute left-0 right-0 rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                         selectedMatchId === 'QF-2'
                           ? 'border-primary ring-2 ring-primary/20 bg-surface-container-low'
                           : 'border-error/50 bg-surface-container-lowest hover:border-error'
@@ -567,8 +611,17 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
                   <div className="relative z-10 w-full h-[460px] mt-3">
                     <div
                       style={{ top: '193px' }}
+                      role="button"
+                      tabIndex={0}
                       onClick={() => setSelectedMatchId('SF-1')}
-                      className={`absolute left-0 right-0 rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none ${
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          setSelectedMatchId('SF-1');
+                          e.preventDefault();
+                        }
+                      }}
+                      aria-label={`Pilih pertandingan ${matches[6].nodeCode} ${matches[6].player1.name} melawan ${matches[6].player2.name}`}
+                      className={`absolute left-0 right-0 rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                         selectedMatchId === 'SF-1'
                           ? 'border-primary ring-2 ring-primary/20 bg-surface-container-low'
                           : 'border-surface-container-high bg-surface-container-lowest hover:border-primary/40'
@@ -642,8 +695,17 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
                   <div className="relative z-10 w-full h-[460px] mt-3">
                     <div
                       style={{ top: '193px' }}
+                      role="button"
+                      tabIndex={0}
                       onClick={() => setSelectedMatchId('FINAL')}
-                      className={`absolute left-0 right-0 rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none ${
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          setSelectedMatchId('FINAL');
+                          e.preventDefault();
+                        }
+                      }}
+                      aria-label={`Pilih pertandingan Final ${matches[7].nodeCode}`}
+                      className={`absolute left-0 right-0 rounded-xl border text-xs cursor-pointer transition-all shadow-2xs overflow-hidden select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-surface-tint ${
                         selectedMatchId === 'FINAL'
                           ? 'border-surface-tint ring-2 ring-surface-tint/20 bg-primary-fixed/20'
                           : 'border-surface-tint/40 bg-surface-container-lowest hover:border-surface-tint'

@@ -54,12 +54,23 @@ export const PublicLiveBracket: React.FC = () => {
   const [selectedTournamentId, setSelectedTournamentId] = useState<string>('');
   const [bracket, setBracket] = useState<BracketPayload | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+
+  const handleRetry = () => {
+    setErrorMessage(null);
+    setIsLoading(true);
+    setRetryCount((prev) => prev + 1);
+  };
 
   // 1. Fetch available non-DRAFT tournaments
   useEffect(() => {
     let active = true;
     fetch('/api/tournaments')
-      .then((res) => (res.ok ? res.json() : { tournaments: [] }))
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
         if (active) {
           const list: TournamentSummary[] = data.tournaments || [];
@@ -71,13 +82,16 @@ export const PublicLiveBracket: React.FC = () => {
           }
         }
       })
-      .catch(() => {
-        if (active) setIsLoading(false);
+      .catch((err) => {
+        if (active) {
+          setIsLoading(false);
+          setErrorMessage(err.message || 'Gagal memuat daftar turnamen dari server');
+        }
       });
     return () => {
       active = false;
     };
-  }, []);
+  }, [retryCount]);
 
   // 2. Fetch bracket for selected tournament
   useEffect(() => {
@@ -85,27 +99,34 @@ export const PublicLiveBracket: React.FC = () => {
 
     let active = true;
     Promise.resolve().then(() => {
-      if (active) setIsLoading(true);
+      if (active) {
+        setErrorMessage(null);
+        setIsLoading(true);
+      }
     });
     fetch(`/api/tournaments/${selectedTournamentId}/bracket`)
-      .then((res) => (res.ok ? res.json() : { bracket: null }))
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
         if (active) {
           setBracket(data.bracket);
           setIsLoading(false);
         }
       })
-      .catch(() => {
+      .catch((err) => {
         if (active) {
           setBracket(null);
           setIsLoading(false);
+          setErrorMessage(err.message || 'Gagal memuat detail bagan pertandingan dari server');
         }
       });
 
     return () => {
       active = false;
     };
-  }, [selectedTournamentId]);
+  }, [selectedTournamentId, retryCount]);
 
   const activeTournament = tournaments.find((t) => t.id === selectedTournamentId);
   const hasMatches = bracket && Object.values(bracket.matchesByRound).some((arr) => arr.length > 0);
@@ -167,7 +188,35 @@ export const PublicLiveBracket: React.FC = () => {
       </div>
 
       {/* Bracket Body */}
-      {isLoading ? (
+      {errorMessage ? (
+        <div className="p-10 sm:p-14 text-center bg-surface-container-lowest border border-error/30 rounded-3xl shadow-xs">
+          <div className="w-14 h-14 rounded-2xl bg-error/10 text-error mx-auto flex items-center justify-center text-2xl mb-4 shadow-2xs border border-error/20">
+            <svg className="w-7 h-7 text-error" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+          </div>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-error/10 border border-error/20 text-[11px] font-bold text-error mb-2 shadow-2xs">
+            <span>Kendala Jaringan / Server</span>
+          </div>
+          <h3 className="text-base sm:text-lg font-extrabold text-primary font-display mb-1.5">
+            Gagal Memuat Bagan
+          </h3>
+          <p className="text-xs text-on-surface-variant max-w-md mx-auto leading-relaxed mb-5">
+            {errorMessage}. Silakan periksa koneksi Anda dan coba kembali.
+          </p>
+          <button
+            onClick={handleRetry}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-on-primary text-xs sm:text-sm font-bold hover:bg-surface-tint transition-all shadow-xs cursor-pointer font-display"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span>Coba Muat Ulang</span>
+          </button>
+        </div>
+      ) : isLoading ? (
         <div className="p-12 sm:p-16 text-center text-on-surface-variant text-xs bg-surface-container-lowest border border-surface-container-high/90 rounded-3xl shadow-xs">
           <div className="inline-block w-7 h-7 border-2 border-primary border-t-transparent rounded-full animate-spin mb-3" />
           <p className="font-medium text-primary">Memuat bagan pertandingan dari database...</p>
