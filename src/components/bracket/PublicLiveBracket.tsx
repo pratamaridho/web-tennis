@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { TournamentFormat, TournamentStatus } from '@/models/TournamentModel';
+import { ScreenView } from '../../types';
 
 interface MatchItem {
   id: string;
@@ -49,7 +50,11 @@ interface TournamentSummary {
   format: TournamentFormat;
 }
 
-export const PublicLiveBracket: React.FC = () => {
+interface PublicLiveBracketProps {
+  onNavigate?: (view: ScreenView) => void;
+}
+
+export const PublicLiveBracket: React.FC<PublicLiveBracketProps> = ({ onNavigate }) => {
   const [tournaments, setTournaments] = useState<TournamentSummary[]>([]);
   const [selectedTournamentId, setSelectedTournamentId] = useState<string>('');
   const [bracket, setBracket] = useState<BracketPayload | null>(null);
@@ -128,31 +133,52 @@ export const PublicLiveBracket: React.FC = () => {
     };
   }, [selectedTournamentId, retryCount]);
 
+  const toTitleCase = (str: string) => {
+    return str
+      .toLowerCase()
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
   const activeTournament = tournaments.find((t) => t.id === selectedTournamentId);
   const hasMatches = bracket && Object.values(bracket.matchesByRound).some((arr) => arr.length > 0);
 
   return (
     <div className="space-y-6">
       {/* Tournament Selector Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-7 bg-surface-container-lowest border border-surface-container-high/90 rounded-3xl shadow-xs">
-        <div>
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 p-5 sm:p-7 bg-surface-container-lowest border border-surface-container-high/90 rounded-3xl shadow-xs">
+        <div className="flex-1">
           <div className="flex items-center gap-2 mb-1.5">
             <span className="w-2 h-2 rounded-full bg-surface-tint animate-pulse" />
             <span className="text-[11px] font-bold text-surface-tint uppercase tracking-wider">
               Hasil Publik &amp; Bagan Resmi
             </span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-extrabold text-primary tracking-tight font-display">
-            {activeTournament ? activeTournament.nama : 'Bagan Kejuaraan'}
+          <h2 className="text-xl sm:text-2xl font-black text-primary tracking-tight font-display">
+            {activeTournament ? toTitleCase(activeTournament.nama) : 'Bagan Kejuaraan'}
           </h2>
           {activeTournament && (
-            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs text-on-surface-variant mt-1.5">
-              <span>{activeTournament.tanggal}</span>
-              <span>•</span>
-              <span>{activeTournament.lokasi}</span>
-              <span>•</span>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-surface-container border border-surface-container-high text-[11px] font-bold text-primary">
-                {activeTournament.status.replace(/_/g, ' ')}
+            <div className="flex flex-wrap items-center gap-2 text-xs text-on-surface-variant mt-2.5">
+              <span className="inline-flex items-center gap-1.5 font-medium text-primary bg-surface-container px-2.5 py-1 rounded-lg border border-surface-container-high">
+                <svg className="w-3.5 h-3.5 text-surface-tint shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                <span>{activeTournament.tanggal.replace(/[–—]/g, '-')}</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 font-medium text-primary bg-surface-container px-2.5 py-1 rounded-lg border border-surface-container-high">
+                <svg className="w-3.5 h-3.5 text-surface-tint shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>{activeTournament.lokasi}</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-800 border border-emerald-500/25 text-[11px] font-bold uppercase tracking-wider">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                <span>{activeTournament.status.replace(/_/g, ' ')}</span>
               </span>
             </div>
           )}
@@ -160,8 +186,8 @@ export const PublicLiveBracket: React.FC = () => {
 
         {/* Dropdown Tournament Switcher */}
         {tournaments.length > 1 && (
-          <div className="flex items-center gap-2.5 self-start sm:self-auto shrink-0">
-            <label htmlFor="tournament-select" className="text-xs font-semibold text-on-surface-variant hidden md:inline">
+          <div className="flex items-center gap-2.5 self-start lg:self-center shrink-0 pt-2 lg:pt-0 border-t lg:border-t-0 border-surface-container-high/60 w-full lg:w-auto justify-between lg:justify-end">
+            <label htmlFor="tournament-select" className="text-xs font-semibold text-on-surface-variant">
               Pilih Turnamen:
             </label>
             <div className="relative">
@@ -169,11 +195,11 @@ export const PublicLiveBracket: React.FC = () => {
                 id="tournament-select"
                 value={selectedTournamentId}
                 onChange={(e) => setSelectedTournamentId(e.target.value)}
-                className="appearance-none bg-surface-container border border-surface-container-high text-primary rounded-xl pl-3.5 pr-8 py-2 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer shadow-2xs"
+                className="appearance-none bg-surface-container border border-surface-container-high text-primary rounded-xl pl-3.5 pr-8 py-2 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer shadow-2xs max-w-[240px] sm:max-w-[280px] truncate"
               >
                 {tournaments.map((t) => (
                   <option key={t.id} value={t.id}>
-                    {t.nama} ({t.status.replace(/_/g, ' ')})
+                    {toTitleCase(t.nama)} ({t.status.replace(/_/g, ' ')})
                   </option>
                 ))}
               </select>
@@ -222,23 +248,111 @@ export const PublicLiveBracket: React.FC = () => {
           <p className="font-medium text-primary">Memuat bagan pertandingan dari database...</p>
         </div>
       ) : !hasMatches ? (
-        <div className="p-10 sm:p-14 text-center bg-surface-container-lowest border border-surface-container-high/90 rounded-3xl shadow-xs">
-          <div className="w-14 h-14 rounded-2xl bg-surface-container text-primary mx-auto flex items-center justify-center text-2xl mb-4 shadow-2xs border border-surface-container-high">
-            <svg className="w-7 h-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M4.93 4.93c4.29 4.29 4.29 11.25 0 15.54" />
-              <path d="M19.07 4.93c-4.29 4.29-4.29 11.25 0 15.54" />
-            </svg>
+        <div className="p-8 sm:p-12 text-center bg-surface-container-lowest border border-surface-container-high/90 rounded-3xl shadow-xs overflow-hidden relative">
+          {/* Subtle Ambient Glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none -z-0" />
+
+          <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
+            {/* Tyrannosaurus Tennis Club Ball Icon */}
+            <div className="relative mb-3 flex items-center justify-center">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-surface-container border border-surface-container-high flex items-center justify-center shadow-xs">
+                <svg className="w-9 h-9 sm:w-10 sm:h-10 drop-shadow-xs" viewBox="0 0 36 36" fill="none" aria-label="Bola Tenis Klub">
+                  <circle cx="18" cy="18" r="16" fill="url(#bracketBallGrad)" stroke="#003927" strokeWidth="1.5" />
+                  <path d="M 4 18 A 14 14 0 0 1 18 4" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round" fill="none" opacity="0.9" />
+                  <path d="M 32 18 A 14 14 0 0 1 18 32" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round" fill="none" opacity="0.9" />
+                  <defs>
+                    <linearGradient id="bracketBallGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#bef264" />
+                      <stop offset="100%" stopColor="#65a30d" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+            </div>
+
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container border border-surface-container-high text-[11px] font-bold text-surface-tint mb-2 shadow-2xs">
+              <span>Status Kejuaraan</span>
+            </div>
+            <h3 className="text-lg sm:text-xl font-black text-primary font-display mb-1.5 tracking-tight">
+              Bagan Pertandingan Belum Dibuat
+            </h3>
+            <p className="text-xs sm:text-sm text-on-surface-variant max-w-lg mx-auto leading-relaxed mb-6">
+              Pendaftaran peserta masih dibuka. Bagan pertandingan akan digenerate oleh Tim Admin Turnamen setelah masa registrasi dan technical meeting selesai.
+            </p>
+
+            {/* Visual Timeline Tahapan Turnamen (Memecahkan Sterility / Void) */}
+            <div className="w-full bg-surface-container-low/70 border border-surface-container-high/80 rounded-2xl p-4 sm:p-5 mb-6 text-left">
+              <span className="text-[11px] font-bold text-surface-tint uppercase tracking-wider block mb-3 font-display">
+                Alur Tahapan Turnamen
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 relative">
+                {/* Step 1: Pendaftaran (Active) */}
+                <div className="p-3 rounded-xl bg-surface-container-lowest border-2 border-primary shadow-xs relative">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[10px] font-bold font-mono px-1.5 py-0.2 rounded bg-primary text-on-primary">1</span>
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-500/15 px-1.5 py-0.5 rounded">Aktif</span>
+                  </div>
+                  <h4 className="text-xs font-bold text-primary font-display">Pendaftaran</h4>
+                  <p className="text-[10px] text-on-surface-variant mt-0.5 leading-snug">Registrasi peserta &amp; verifikasi data tim</p>
+                </div>
+
+                {/* Step 2: Drawing */}
+                <div className="p-3 rounded-xl bg-surface-container-lowest/60 border border-surface-container-high opacity-85">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[10px] font-bold font-mono px-1.5 py-0.2 rounded bg-surface-container text-on-surface-variant">2</span>
+                    <span className="text-[9px] font-medium text-on-surface-variant">Berikutnya</span>
+                  </div>
+                  <h4 className="text-xs font-bold text-on-surface font-display">Drawing &amp; TM</h4>
+                  <p className="text-[10px] text-on-surface-variant mt-0.5 leading-snug">Penentuan seed &amp; undian bagan resmi</p>
+                </div>
+
+                {/* Step 3: Penyisihan */}
+                <div className="p-3 rounded-xl bg-surface-container-lowest/60 border border-surface-container-high opacity-70">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[10px] font-bold font-mono px-1.5 py-0.2 rounded bg-surface-container text-on-surface-variant">3</span>
+                    <span className="text-[9px] text-on-surface-variant">Jadwal</span>
+                  </div>
+                  <h4 className="text-xs font-bold text-on-surface font-display">Penyisihan</h4>
+                  <p className="text-[10px] text-on-surface-variant mt-0.5 leading-snug">Pertandingan babak grup atau eliminasi</p>
+                </div>
+
+                {/* Step 4: Final */}
+                <div className="p-3 rounded-xl bg-surface-container-lowest/60 border border-surface-container-high opacity-70">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[10px] font-bold font-mono px-1.5 py-0.2 rounded bg-surface-container text-on-surface-variant">4</span>
+                    <span className="text-[9px] text-on-surface-variant">Puncak</span>
+                  </div>
+                  <h4 className="text-xs font-bold text-on-surface font-display">Babak Final</h4>
+                  <p className="text-[10px] text-on-surface-variant mt-0.5 leading-snug">Perebutan podium &amp; penetapan juara</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Call To Action Buttons (Memecahkan Dead-End Empty State) */}
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <button
+                onClick={() => onNavigate?.('registration')}
+                className="min-h-[44px] px-6 py-2.5 rounded-xl bg-primary text-on-primary text-xs sm:text-sm font-bold hover:bg-surface-tint transition-all shadow-xs cursor-pointer font-display inline-flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              >
+                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                </svg>
+                <span>Daftar Turnamen Sekarang</span>
+              </button>
+              <button
+                onClick={() => onNavigate?.('overview-and-schedule')}
+                className="min-h-[44px] px-5 py-2.5 rounded-xl bg-surface-container text-primary text-xs sm:text-sm font-semibold hover:bg-surface-container-high border border-surface-container-high transition-colors cursor-pointer font-display inline-flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              >
+                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                <span>Jadwal Mabar Komunitas</span>
+              </button>
+            </div>
           </div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container border border-surface-container-high text-[11px] font-bold text-surface-tint mb-2 shadow-2xs">
-            <span>Status Pertandingan</span>
-          </div>
-          <h3 className="text-base sm:text-lg font-extrabold text-primary font-display mb-1.5">
-            Bagan Belum Dibuat
-          </h3>
-          <p className="text-xs text-on-surface-variant max-w-md mx-auto leading-relaxed">
-            Pendaftaran peserta masih dibuka atau bagan pertandingan belum digenerate oleh Tim Admin Turnamen. Silakan pantau pembaruan jadwal secara berkala.
-          </p>
         </div>
       ) : (
         <div className="space-y-6">
