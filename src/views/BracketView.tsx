@@ -178,33 +178,40 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
   return (
     <div className="flex flex-col w-full pb-16">
       {/* 1. Header Kontrol & Navigasi Bagan */}
-      <section className="w-full bg-surface-container-low border-b border-surface-container-high/60 py-6 sm:py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <section className="relative w-full bg-surface-container-low border-b border-surface-container-high/60 py-6 sm:py-10 overflow-hidden">
+        {/* Ambient subtle glow like Overview */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none -z-0 select-none">
+          <div className="absolute top-1/2 -left-24 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl" />
+          <div className="absolute -top-12 -right-24 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-              <div className="flex items-center gap-2 mb-1 text-xs">
-                <span className="font-bold uppercase tracking-wider text-surface-tint">
-                  Alur Eliminasi Tunggal
-                </span>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container border border-surface-container-high text-xs font-semibold text-surface-tint mb-2 shadow-2xs">
+                <span>Alur Eliminasi Tunggal</span>
                 <span className="text-on-surface-variant">•</span>
-                <span className="text-on-surface-variant">GBK Senayan</span>
+                <span>GBK Senayan</span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-primary tracking-tight">
+              <h1 className="text-2xl sm:text-4xl font-black text-primary tracking-tight font-display">
                 Bagan Turnamen
               </h1>
+              <p className="text-xs sm:text-sm text-on-surface-variant mt-1 max-w-xl">
+                Pantau perkembangan jadwal pertandingan resmi, skor langsung, dan bagan kejuaraan Tyrannosaurus Tennis Club.
+              </p>
             </div>
 
             {/* Aksi Cepat */}
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-2.5 shrink-0 self-start md:self-auto">
               <button
                 onClick={() => onNavigate('overview-and-schedule')}
-                className="px-3.5 py-1.5 rounded-lg bg-surface-container text-primary text-xs font-semibold hover:bg-surface-container-high transition-colors cursor-pointer"
+                className="px-4 py-2.5 rounded-xl bg-surface-container text-primary text-xs sm:text-sm font-semibold hover:bg-surface-container-high border border-surface-container-high transition-colors cursor-pointer font-display shadow-2xs"
               >
                 Jadwal Hari Ini
               </button>
               <button
                 onClick={() => onNavigate('registration')}
-                className="px-3.5 py-1.5 rounded-lg bg-primary text-on-primary text-xs font-semibold hover:bg-surface-tint transition-all shadow-xs cursor-pointer"
+                className="px-5 py-2.5 rounded-xl bg-primary text-on-primary text-xs sm:text-sm font-bold hover:bg-surface-tint transition-all shadow-xs cursor-pointer font-display"
               >
                 Daftar Turnamen
               </button>
@@ -212,13 +219,13 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
           </div>
 
           {/* Mode Switcher: Turnamen Resmi (Database) vs Simulasi Alur */}
-          <div className="flex items-center gap-2 mt-5 p-1 bg-surface-container rounded-2xl w-fit border border-surface-container-high">
+          <div className="flex items-center gap-2 mt-6 p-1.5 bg-surface-container rounded-2xl w-fit border border-surface-container-high shadow-2xs">
             <button
               onClick={() => setViewMode('live')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
+              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-2 font-display ${
                 viewMode === 'live'
-                  ? 'bg-primary text-on-primary shadow-sm'
-                  : 'text-on-surface-variant hover:text-on-surface'
+                  ? 'bg-primary text-on-primary shadow-xs'
+                  : 'text-on-surface-variant hover:text-primary'
               }`}
             >
               <span>🏆</span>
@@ -226,10 +233,10 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
             </button>
             <button
               onClick={() => setViewMode('simulation')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
+              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-2 font-display ${
                 viewMode === 'simulation'
-                  ? 'bg-primary text-on-primary shadow-sm'
-                  : 'text-on-surface-variant hover:text-on-surface'
+                  ? 'bg-primary text-on-primary shadow-xs'
+                  : 'text-on-surface-variant hover:text-primary'
               }`}
             >
               <span>📊</span>
@@ -239,17 +246,17 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
 
           {/* Bar Kontrol Kategori, Pencarian, & Zoom (Khusus Mode Simulasi) */}
           {viewMode === 'simulation' && (
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mt-6 pt-4 border-t border-surface-container-high/60">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mt-6 pt-5 border-t border-surface-container-high/60">
               {/* Tab Kategori */}
-              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+              <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
                 {categories.map((c) => (
                   <button
                     key={c.id}
                     onClick={() => setSelectedCategory(c.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer font-display ${
                       selectedCategory === c.id
                         ? 'bg-primary text-on-primary shadow-xs'
-                        : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
+                        : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high border border-surface-container-high'
                     }`}
                   >
                     {c.label}
@@ -265,25 +272,25 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Cari nama atlet..."
-                    className="bg-surface-container pl-3 pr-3 py-1.5 text-xs rounded-lg text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary w-44 sm:w-52 border border-surface-container-high"
+                    className="bg-surface-container-lowest pl-3.5 pr-3.5 py-1.5 text-xs rounded-xl text-primary placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20 w-44 sm:w-52 border border-surface-container-high shadow-2xs"
                   />
                 </div>
 
                 {/* Kontrol Zoom Skala */}
-                <div className="flex items-center bg-surface-container p-0.5 rounded-lg text-xs">
+                <div className="flex items-center bg-surface-container-lowest p-1 rounded-xl text-xs border border-surface-container-high shadow-2xs">
                   <button
                     onClick={() => setZoom((prev) => Math.max(prev - 10, 80))}
-                    className="px-2 py-1 hover:bg-surface-container-highest rounded text-on-surface font-bold cursor-pointer"
+                    className="px-2 py-0.5 hover:bg-surface-container rounded-lg text-primary font-bold cursor-pointer"
                     title="Perkecil"
                   >
                     -
                   </button>
-                  <span className="px-1.5 font-mono text-[11px] text-on-surface-variant min-w-[38px] text-center">
+                  <span className="px-2 font-mono text-[11px] text-on-surface-variant min-w-[38px] text-center font-medium">
                     {zoom}%
                   </span>
                   <button
                     onClick={() => setZoom((prev) => Math.min(prev + 10, 120))}
-                    className="px-2 py-1 hover:bg-surface-container-highest rounded text-on-surface font-bold cursor-pointer"
+                    className="px-2 py-0.5 hover:bg-surface-container rounded-lg text-primary font-bold cursor-pointer"
                     title="Perbesar"
                   >
                     +
@@ -306,7 +313,7 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
             {/* KOLOM KIRI (xl:col-span-8): DIAGRAM BAGAN DENGAN KONEKTOR */}
             <div className="xl:col-span-8 flex flex-col gap-4">
               {/* Canvas Diagram Sequence */}
-            <div className="overflow-x-auto bg-surface-container-lowest rounded-2xl border border-surface-container-high p-4 sm:p-6 shadow-xs scrollbar-none">
+            <div className="overflow-x-auto bg-surface-container-lowest rounded-3xl border border-surface-container-high/90 p-5 sm:p-7 shadow-xs scrollbar-none">
               <div
                 className="min-w-[860px] flex items-start gap-1 transition-transform origin-top-left py-2"
                 style={{ transform: `scale(${zoom / 100})` }}
@@ -681,7 +688,7 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
           </div>
 
           {/* KOLOM KANAN (xl:col-span-4): PANEL INSPEKSI DETAIL PERTANDINGAN */}
-          <div className="xl:col-span-4 bg-surface-container-lowest rounded-2xl border border-surface-container-high p-5 shadow-xs flex flex-col gap-4">
+          <div className="xl:col-span-4 bg-surface-container-lowest rounded-3xl border border-surface-container-high/90 p-6 shadow-xs flex flex-col gap-4">
             <div className="flex items-center justify-between border-b border-surface-container-high pb-3">
               <div>
                 <span className="text-[11px] font-bold text-surface-tint uppercase tracking-wider font-mono">

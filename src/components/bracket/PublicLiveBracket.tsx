@@ -113,74 +113,98 @@ export const PublicLiveBracket: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Tournament Selector Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 bg-[#141822] border border-white/10 rounded-3xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-7 bg-surface-container-lowest border border-surface-container-high/90 rounded-3xl shadow-xs">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[11px] font-bold text-[#ccff00] uppercase tracking-wider">
-              HASIL PUBLIK & BAGAN RESMI
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="w-2 h-2 rounded-full bg-surface-tint animate-pulse" />
+            <span className="text-[11px] font-bold text-surface-tint uppercase tracking-wider">
+              Hasil Publik &amp; Bagan Resmi
             </span>
           </div>
-          <h2 className="text-xl font-bold text-white tracking-tight">
+          <h2 className="text-xl sm:text-2xl font-extrabold text-primary tracking-tight font-display">
             {activeTournament ? activeTournament.nama : 'Bagan Kejuaraan'}
           </h2>
           {activeTournament && (
-            <p className="text-xs text-gray-400 mt-0.5">
-              {activeTournament.tanggal} • {activeTournament.lokasi} • Status:{' '}
-              <strong className="text-white">{activeTournament.status.replace(/_/g, ' ')}</strong>
-            </p>
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs text-on-surface-variant mt-1.5">
+              <span>{activeTournament.tanggal}</span>
+              <span>•</span>
+              <span>{activeTournament.lokasi}</span>
+              <span>•</span>
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-surface-container border border-surface-container-high text-[11px] font-bold text-primary">
+                {activeTournament.status.replace(/_/g, ' ')}
+              </span>
+            </div>
           )}
         </div>
 
         {/* Dropdown Tournament Switcher */}
         {tournaments.length > 1 && (
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-400 hidden md:inline">Pilih Turnamen:</span>
-            <select
-              value={selectedTournamentId}
-              onChange={(e) => setSelectedTournamentId(e.target.value)}
-              className="bg-[#0b0e14] border border-white/10 text-white rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none focus:border-[#ccff00]"
-            >
-              {tournaments.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.nama} ({t.status.replace(/_/g, ' ')})
-                </option>
-              ))}
-            </select>
+          <div className="flex items-center gap-2.5 self-start sm:self-auto shrink-0">
+            <label htmlFor="tournament-select" className="text-xs font-semibold text-on-surface-variant hidden md:inline">
+              Pilih Turnamen:
+            </label>
+            <div className="relative">
+              <select
+                id="tournament-select"
+                value={selectedTournamentId}
+                onChange={(e) => setSelectedTournamentId(e.target.value)}
+                className="appearance-none bg-surface-container border border-surface-container-high text-primary rounded-xl pl-3.5 pr-8 py-2 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer shadow-2xs"
+              >
+                {tournaments.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.nama} ({t.status.replace(/_/g, ' ')})
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-on-surface-variant">
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
           </div>
         )}
       </div>
 
       {/* Bracket Body */}
       {isLoading ? (
-        <div className="p-12 text-center text-gray-400 text-xs bg-[#12161f] border border-white/5 rounded-3xl">
-          <div className="inline-block w-6 h-6 border-2 border-[#ccff00] border-t-transparent rounded-full animate-spin mb-2" />
-          <p>Memuat bagan pertandingan dari server...</p>
+        <div className="p-12 sm:p-16 text-center text-on-surface-variant text-xs bg-surface-container-lowest border border-surface-container-high/90 rounded-3xl shadow-xs">
+          <div className="inline-block w-7 h-7 border-2 border-primary border-t-transparent rounded-full animate-spin mb-3" />
+          <p className="font-medium text-primary">Memuat bagan pertandingan dari database...</p>
         </div>
       ) : !hasMatches ? (
-        <div className="p-12 text-center text-gray-400 text-xs bg-[#12161f] border border-white/5 rounded-3xl">
-          <div className="w-12 h-12 rounded-2xl bg-white/5 text-gray-400 mx-auto flex items-center justify-center text-xl mb-3">
-            🎾
+        <div className="p-10 sm:p-14 text-center bg-surface-container-lowest border border-surface-container-high/90 rounded-3xl shadow-xs">
+          <div className="w-14 h-14 rounded-2xl bg-surface-container text-primary mx-auto flex items-center justify-center text-2xl mb-4 shadow-2xs border border-surface-container-high">
+            <svg className="w-7 h-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M4.93 4.93c4.29 4.29 4.29 11.25 0 15.54" />
+              <path d="M19.07 4.93c-4.29 4.29-4.29 11.25 0 15.54" />
+            </svg>
           </div>
-          <h3 className="text-sm font-bold text-white mb-1">Bagan Belum Dibuat</h3>
-          <p className="max-w-md mx-auto">
-            Pendaftaran masih dibuka atau bagan pertandingan belum di-generate oleh Admin Komunitas. Silakan pantau secara berkala.
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container border border-surface-container-high text-[11px] font-bold text-surface-tint mb-2 shadow-2xs">
+            <span>Status Pertandingan</span>
+          </div>
+          <h3 className="text-base sm:text-lg font-extrabold text-primary font-display mb-1.5">
+            Bagan Belum Dibuat
+          </h3>
+          <p className="text-xs text-on-surface-variant max-w-md mx-auto leading-relaxed">
+            Pendaftaran peserta masih dibuka atau bagan pertandingan belum digenerate oleh Tim Admin Turnamen. Silakan pantau pembaruan jadwal secara berkala.
           </p>
         </div>
       ) : (
         <div className="space-y-6">
           {/* Champion Banner if completed */}
           {bracket?.championId && (
-            <div className="p-5 bg-gradient-to-r from-amber-500/20 via-yellow-500/15 to-amber-500/20 border border-yellow-500/40 rounded-3xl shadow-xl flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-yellow-400/20 text-yellow-300 flex items-center justify-center text-2xl">
+            <div className="p-5 sm:p-6 bg-gradient-to-r from-amber-500/10 via-amber-400/15 to-amber-500/10 border border-amber-400/40 rounded-3xl shadow-xs flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-700 flex items-center justify-center text-2xl shrink-0 shadow-2xs">
                 🏆
               </div>
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-yellow-400">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800">
                   JUARA TURNAMEN
                 </span>
-                <h3 className="text-lg font-extrabold text-white">
-                  Turnamen Telah Selesai & Juara Resmi Ditetapkan!
+                <h3 className="text-base sm:text-lg font-extrabold text-primary font-display">
+                  Turnamen Telah Selesai &amp; Juara Resmi Ditetapkan!
                 </h3>
               </div>
             </div>
@@ -188,37 +212,44 @@ export const PublicLiveBracket: React.FC = () => {
 
           {/* Round-Robin Standings if format is Round-Robin */}
           {bracket?.format === 'ROUND_ROBIN' && bracket.standings && (
-            <div className="bg-[#12161f] border border-white/10 rounded-3xl p-5">
-              <h3 className="text-xs font-bold text-[#ccff00] uppercase tracking-wider mb-3">
-                Klasemen Round-Robin Terkini
-              </h3>
+            <div className="bg-surface-container-lowest border border-surface-container-high/90 rounded-3xl p-5 sm:p-6 shadow-xs">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <span className="text-[11px] font-bold text-surface-tint uppercase tracking-wider">
+                    Format Round-Robin
+                  </span>
+                  <h3 className="text-base font-extrabold text-primary font-display">
+                    Klasemen Poin Terkini
+                  </h3>
+                </div>
+              </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="text-[10px] text-gray-500 uppercase border-b border-white/5">
+                  <thead className="text-[10px] text-on-surface-variant uppercase border-b border-surface-container-high font-semibold">
                     <tr>
-                      <th className="py-2 px-3">Peringkat & Pemain</th>
-                      <th className="py-2 px-3 text-center">Main</th>
-                      <th className="py-2 px-3 text-center">Menang</th>
-                      <th className="py-2 px-3 text-center">Kalah</th>
-                      <th className="py-2 px-3 text-right">Poin</th>
+                      <th className="py-2.5 px-3">Peringkat &amp; Pemain</th>
+                      <th className="py-2.5 px-3 text-center">Main</th>
+                      <th className="py-2.5 px-3 text-center">Menang</th>
+                      <th className="py-2.5 px-3 text-center">Kalah</th>
+                      <th className="py-2.5 px-3 text-right">Poin</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/5">
+                  <tbody className="divide-y divide-surface-container-high/60">
                     {bracket.standings.map((row, idx) => (
-                      <tr key={row.userId} className={idx === 0 ? 'bg-[#ccff00]/5 font-bold' : ''}>
-                        <td className="py-2.5 px-3 text-white flex items-center gap-2">
-                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${
-                            idx === 0 ? 'bg-yellow-400 text-black font-bold' : 'bg-white/10 text-gray-300'
+                      <tr key={row.userId} className={idx === 0 ? 'bg-primary/5 font-bold' : ''}>
+                        <td className="py-2.5 px-3 text-primary flex items-center gap-2.5">
+                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                            idx === 0 ? 'bg-primary text-on-primary shadow-2xs' : 'bg-surface-container text-on-surface-variant'
                           }`}>
                             {idx + 1}
                           </span>
-                          <span>{row.nama}</span>
-                          {row.club && <span className="text-gray-500 text-[10px]">({row.club})</span>}
+                          <span className="font-medium text-primary">{row.nama}</span>
+                          {row.club && <span className="text-on-surface-variant text-[11px]">({row.club})</span>}
                         </td>
-                        <td className="py-2.5 px-3 text-center text-gray-300">{row.played}</td>
-                        <td className="py-2.5 px-3 text-center text-emerald-400">{row.won}</td>
-                        <td className="py-2.5 px-3 text-center text-red-400">{row.lost}</td>
-                        <td className="py-2.5 px-3 text-right text-[#ccff00] font-bold">{row.points}</td>
+                        <td className="py-2.5 px-3 text-center text-on-surface-variant">{row.played}</td>
+                        <td className="py-2.5 px-3 text-center text-primary font-semibold">{row.won}</td>
+                        <td className="py-2.5 px-3 text-center text-error">{row.lost}</td>
+                        <td className="py-2.5 px-3 text-right text-primary font-mono font-bold text-sm">{row.points}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -231,11 +262,11 @@ export const PublicLiveBracket: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Object.entries(bracket.matchesByRound).map(([roundNum, matches]) => (
               <div key={roundNum} className="space-y-3">
-                <div className="flex items-center justify-between pb-2 border-b border-white/10">
-                  <h4 className="text-xs font-bold text-white uppercase tracking-wider">
+                <div className="flex items-center justify-between pb-2 border-b border-surface-container-high">
+                  <h4 className="text-xs font-bold text-primary uppercase tracking-wider font-display">
                     {matches[0]?.roundLabel || `Babak ${roundNum}`}
                   </h4>
-                  <span className="text-[10px] text-gray-500">{matches.length} Pertandingan</span>
+                  <span className="text-[11px] font-medium text-on-surface-variant">{matches.length} Pertandingan</span>
                 </div>
 
                 <div className="space-y-3">
@@ -245,23 +276,23 @@ export const PublicLiveBracket: React.FC = () => {
                     return (
                       <div
                         key={m.id}
-                        className={`p-4 rounded-2xl border transition-all text-xs ${
+                        className={`p-4 rounded-2xl border transition-all text-xs bg-surface-container-lowest shadow-xs hover:shadow-md ${
                           m.isCompleted
-                            ? 'bg-[#141822] border-white/10 shadow-md'
+                            ? 'border-surface-container-high/90 hover:border-primary/40'
                             : isBothReady
-                            ? 'bg-[#12161f] border-white/15'
-                            : 'bg-[#0d1017] border-white/5 opacity-60'
+                            ? 'border-surface-container-high hover:border-primary/30'
+                            : 'border-surface-container-high/50 opacity-70'
                         }`}
                       >
-                        <div className="flex items-center justify-between text-[10px] text-gray-400 mb-2.5">
-                          <span>Match #{m.urutan}</span>
+                        <div className="flex items-center justify-between text-[11px] text-on-surface-variant mb-2.5">
+                          <span className="font-mono font-medium">Match #{m.urutan}</span>
                           <span
-                            className={`px-2 py-0.5 rounded-full font-bold text-[9px] ${
+                            className={`px-2 py-0.5 rounded-full font-bold text-[9px] uppercase tracking-wide ${
                               m.isCompleted
-                                ? 'bg-emerald-500/20 text-emerald-400'
+                                ? 'bg-primary/10 text-primary border border-primary/20'
                                 : isBothReady
-                                ? 'bg-[#ccff00]/15 text-[#ccff00]'
-                                : 'bg-white/5 text-gray-400'
+                                ? 'bg-surface-tint/15 text-surface-tint border border-surface-tint/25'
+                                : 'bg-surface-container text-on-surface-variant border border-surface-container-high'
                             }`}
                           >
                             {m.isCompleted ? 'SELESAI' : isBothReady ? 'SIAP TANDING' : 'MENUNGGU LAWAN'}
@@ -272,15 +303,15 @@ export const PublicLiveBracket: React.FC = () => {
                         <div
                           className={`flex items-center justify-between p-2 rounded-xl mb-1.5 transition-colors ${
                             m.winnerId === m.player1Id
-                              ? 'bg-[#ccff00]/15 text-white font-bold border border-[#ccff00]/30'
-                              : 'text-gray-300'
+                              ? 'bg-primary/10 text-primary font-bold border border-primary/25'
+                              : 'text-on-surface bg-surface-container-low/50 border border-transparent'
                           }`}
                         >
                           <span className="truncate">
                             {m.player1?.nama || (m.player1Id ? 'Pemain' : 'TBD')}
                           </span>
                           {m.winnerId === m.player1Id && (
-                            <span className="text-[9px] font-bold text-[#ccff00] bg-[#ccff00]/20 px-1.5 py-0.5 rounded">
+                            <span className="text-[9px] font-bold text-primary bg-primary/20 px-1.5 py-0.5 rounded">
                               MENANG
                             </span>
                           )}
@@ -290,24 +321,24 @@ export const PublicLiveBracket: React.FC = () => {
                         <div
                           className={`flex items-center justify-between p-2 rounded-xl mb-2 transition-colors ${
                             m.winnerId === m.player2Id
-                              ? 'bg-[#ccff00]/15 text-white font-bold border border-[#ccff00]/30'
-                              : 'text-gray-300'
+                              ? 'bg-primary/10 text-primary font-bold border border-primary/25'
+                              : 'text-on-surface bg-surface-container-low/50 border border-transparent'
                           }`}
                         >
                           <span className="truncate">
                             {m.isBye ? 'BYE (Lolos Otomatis)' : m.player2?.nama || (m.player2Id ? 'Pemain' : 'TBD')}
                           </span>
                           {m.winnerId === m.player2Id && (
-                            <span className="text-[9px] font-bold text-[#ccff00] bg-[#ccff00]/20 px-1.5 py-0.5 rounded">
+                            <span className="text-[9px] font-bold text-primary bg-primary/20 px-1.5 py-0.5 rounded">
                               MENANG
                             </span>
                           )}
                         </div>
 
                         {/* Match Result Score */}
-                        <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px]">
-                          <span className="text-gray-500">Hasil:</span>
-                          <span className="font-mono font-bold text-[#ccff00]">
+                        <div className="pt-2 border-t border-surface-container-high/60 flex items-center justify-between text-[11px]">
+                          <span className="text-on-surface-variant">Hasil Skor:</span>
+                          <span className="font-mono font-bold text-primary">
                             {m.skor || '-'}
                           </span>
                         </div>
