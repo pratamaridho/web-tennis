@@ -197,7 +197,7 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
                 Bagan Turnamen
               </h1>
               <p className="text-xs sm:text-sm text-on-surface-variant mt-1 max-w-xl">
-                Pantau perkembangan jadwal pertandingan resmi, skor langsung, dan bagan kejuaraan Tyrannosaurus Tennis Club.
+                Jadwal pertandingan dan bagan kejuaraan terkini.
               </p>
             </div>
 
@@ -218,7 +218,7 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
             </div>
           </div>
 
-          {/* Mode Switcher: Turnamen Resmi (Database) vs Simulasi Alur */}
+          {/* Mode Switcher: Turnamen Resmi vs Simulasi */}
           <div className="flex items-center gap-2 mt-6 p-1.5 bg-surface-container rounded-2xl w-fit border border-surface-container-high shadow-2xs">
             <button
               onClick={() => setViewMode('live')}
@@ -231,7 +231,7 @@ export const BracketView: React.FC<BracketViewProps> = ({ onNavigate }) => {
               <svg className="w-4 h-4 shrink-0 text-current" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 21h8m-4-4v4m-5-8h10a4 4 0 004-4V5H3v4a4 4 0 004 4zm-4-4H2v2a3 3 0 003 3m14-5h1a3 3 0 013 3" />
               </svg>
-              <span>Turnamen Resmi (Database)</span>
+              <span>Turnamen Resmi</span>
             </button>
             <button
               onClick={() => setViewMode('simulation')}

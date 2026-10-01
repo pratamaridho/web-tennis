@@ -152,7 +152,7 @@ export const PublicLiveBracket: React.FC<PublicLiveBracketProps> = ({ onNavigate
           <div className="flex items-center gap-2 mb-1.5">
             <span className="w-2 h-2 rounded-full bg-surface-tint animate-pulse" />
             <span className="text-[11px] font-bold text-surface-tint uppercase tracking-wider">
-              Hasil Publik &amp; Bagan Resmi
+              Bagan Resmi
             </span>
           </div>
           <h2 className="text-xl sm:text-2xl font-black text-primary tracking-tight font-display">
@@ -199,7 +199,7 @@ export const PublicLiveBracket: React.FC<PublicLiveBracketProps> = ({ onNavigate
               >
                 {tournaments.map((t) => (
                   <option key={t.id} value={t.id}>
-                    {toTitleCase(t.nama)} ({t.status.replace(/_/g, ' ')})
+                    {toTitleCase(t.nama)}
                   </option>
                 ))}
               </select>
@@ -270,20 +270,17 @@ export const PublicLiveBracket: React.FC<PublicLiveBracketProps> = ({ onNavigate
               </div>
             </div>
 
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container border border-surface-container-high text-[11px] font-bold text-surface-tint mb-2 shadow-2xs">
-              <span>Status Kejuaraan</span>
-            </div>
             <h3 className="text-lg sm:text-xl font-black text-primary font-display mb-1.5 tracking-tight">
-              Bagan Pertandingan Belum Dibuat
+              Bagan Belum Dirilis
             </h3>
             <p className="text-xs sm:text-sm text-on-surface-variant max-w-lg mx-auto leading-relaxed mb-6">
-              Pendaftaran peserta masih dibuka. Bagan pertandingan akan digenerate oleh Tim Admin Turnamen setelah masa registrasi dan technical meeting selesai.
+              Pendaftaran masih dibuka. Bagan pertandingan akan dirilis setelah pendaftaran ditutup.
             </p>
 
-            {/* Visual Timeline Tahapan Turnamen (Memecahkan Sterility / Void) */}
+            {/* Visual Timeline Tahapan Turnamen */}
             <div className="w-full bg-surface-container-low/70 border border-surface-container-high/80 rounded-2xl p-4 sm:p-5 mb-6 text-left">
               <span className="text-[11px] font-bold text-surface-tint uppercase tracking-wider block mb-3 font-display">
-                Alur Tahapan Turnamen
+                Tahapan Turnamen
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 relative">
                 {/* Step 1: Pendaftaran (Active) */}
@@ -293,7 +290,7 @@ export const PublicLiveBracket: React.FC<PublicLiveBracketProps> = ({ onNavigate
                     <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-500/15 px-1.5 py-0.5 rounded">Aktif</span>
                   </div>
                   <h4 className="text-xs font-bold text-primary font-display">Pendaftaran</h4>
-                  <p className="text-[10px] text-on-surface-variant mt-0.5 leading-snug">Registrasi peserta &amp; verifikasi data tim</p>
+                  <p className="text-[10px] text-on-surface-variant mt-0.5 leading-snug">Buka untuk umum</p>
                 </div>
 
                 {/* Step 2: Drawing */}
@@ -302,8 +299,8 @@ export const PublicLiveBracket: React.FC<PublicLiveBracketProps> = ({ onNavigate
                     <span className="text-[10px] font-bold font-mono px-1.5 py-0.2 rounded bg-surface-container text-on-surface-variant">2</span>
                     <span className="text-[9px] font-medium text-on-surface-variant">Berikutnya</span>
                   </div>
-                  <h4 className="text-xs font-bold text-on-surface font-display">Drawing &amp; TM</h4>
-                  <p className="text-[10px] text-on-surface-variant mt-0.5 leading-snug">Penentuan seed &amp; undian bagan resmi</p>
+                  <h4 className="text-xs font-bold text-on-surface font-display">Undian Bagan</h4>
+                  <p className="text-[10px] text-on-surface-variant mt-0.5 leading-snug">Penentuan lawan</p>
                 </div>
 
                 {/* Step 3: Penyisihan */}
@@ -313,7 +310,7 @@ export const PublicLiveBracket: React.FC<PublicLiveBracketProps> = ({ onNavigate
                     <span className="text-[9px] text-on-surface-variant">Jadwal</span>
                   </div>
                   <h4 className="text-xs font-bold text-on-surface font-display">Penyisihan</h4>
-                  <p className="text-[10px] text-on-surface-variant mt-0.5 leading-snug">Pertandingan babak grup atau eliminasi</p>
+                  <p className="text-[10px] text-on-surface-variant mt-0.5 leading-snug">Babak awal tanding</p>
                 </div>
 
                 {/* Step 4: Final */}
@@ -322,13 +319,13 @@ export const PublicLiveBracket: React.FC<PublicLiveBracketProps> = ({ onNavigate
                     <span className="text-[10px] font-bold font-mono px-1.5 py-0.2 rounded bg-surface-container text-on-surface-variant">4</span>
                     <span className="text-[9px] text-on-surface-variant">Puncak</span>
                   </div>
-                  <h4 className="text-xs font-bold text-on-surface font-display">Babak Final</h4>
-                  <p className="text-[10px] text-on-surface-variant mt-0.5 leading-snug">Perebutan podium &amp; penetapan juara</p>
+                  <h4 className="text-xs font-bold text-on-surface font-display">Final</h4>
+                  <p className="text-[10px] text-on-surface-variant mt-0.5 leading-snug">Penentuan juara</p>
                 </div>
               </div>
             </div>
 
-            {/* Call To Action Buttons (Memecahkan Dead-End Empty State) */}
+            {/* Call To Action Buttons */}
             <div className="flex flex-wrap items-center justify-center gap-3">
               <button
                 onClick={() => onNavigate?.('registration')}
@@ -337,7 +334,7 @@ export const PublicLiveBracket: React.FC<PublicLiveBracketProps> = ({ onNavigate
                 <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                 </svg>
-                <span>Daftar Turnamen Sekarang</span>
+                <span>Daftar Sekarang</span>
               </button>
               <button
                 onClick={() => onNavigate?.('overview-and-schedule')}
@@ -349,7 +346,7 @@ export const PublicLiveBracket: React.FC<PublicLiveBracketProps> = ({ onNavigate
                   <line x1="8" y1="2" x2="8" y2="6" />
                   <line x1="3" y1="10" x2="21" y2="10" />
                 </svg>
-                <span>Jadwal Mabar Komunitas</span>
+                <span>Lihat Jadwal</span>
               </button>
             </div>
           </div>
@@ -407,7 +404,7 @@ export const PublicLiveBracket: React.FC<PublicLiveBracketProps> = ({ onNavigate
                             {idx + 1}
                           </span>
                           <span className="font-medium text-primary">{row.nama}</span>
-                          {row.club && <span className="text-on-surface-variant text-[11px]">({row.club})</span>}
+                          {row.club && <span className="text-on-surface-variant text-[11px]">• {row.club}</span>}
                         </td>
                         <td className="py-2.5 px-3 text-center text-on-surface-variant">{row.played}</td>
                         <td className="py-2.5 px-3 text-center text-primary font-semibold">{row.won}</td>
@@ -489,7 +486,7 @@ export const PublicLiveBracket: React.FC<PublicLiveBracketProps> = ({ onNavigate
                           }`}
                         >
                           <span className="truncate">
-                            {m.isBye ? 'BYE (Lolos Otomatis)' : m.player2?.nama || (m.player2Id ? 'Pemain' : 'TBD')}
+                            {m.isBye ? 'BYE' : m.player2?.nama || (m.player2Id ? 'Pemain' : 'TBD')}
                           </span>
                           {m.winnerId === m.player2Id && (
                             <span className="text-[9px] font-bold text-primary bg-primary/20 px-1.5 py-0.5 rounded">
